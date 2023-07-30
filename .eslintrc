@@ -12,7 +12,6 @@
     ],
     "rules": {
         // 0 means off, 1 Means warning, 2 means error
-        "no-console": 2,
-        "prettier/prettier": 2
+        "no-console": 2
     }
 }
