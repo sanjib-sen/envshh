@@ -1,0 +1,36 @@
+{
+  "name": "starter-node",
+  "version": "1.0.0",
+  "description": "Just a cool description",
+  "main": "dist/index.js",
+  "scripts": {
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
+    "lint": "eslint --ext .js,.ts,.json --fix .",
+    "dev": "nodemon --watch src src/index.ts",
+    "build": "npm run format && npm run lint && tsc",
+    "start": "npm run build && node dist/src/index.js",
+    "docker:up": "docker-compose build --no-cache && docker-compose up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sanjib-sen/starter-node.git"
+  },
+  "homepage": "https://github.com/sanjib-sen/starter-node#readme",
+  "keywords": [
+    "starter"
+  ],
+  "author": "Sanjib Kumar Sen <mail@sanjibsen.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "eslint": "*",
+    "eslint-config-prettier": "*",
+    "eslint-plugin-prettier": "*",
+    "nodemon": "*",
+    "ts-node": "*",
+    "typescript": "*"
+  },
+  "dependencies": {}
+}
