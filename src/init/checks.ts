@@ -10,6 +10,7 @@ import {
   configPath,
   envExtensions,
   envQuotations,
+  excludedFiles,
 } from "./paths";
 import { execSync } from "child_process";
 import path from "path";
@@ -253,7 +254,38 @@ export function envshh_push(password: string, directory = "", file = "") {
 export function envshh_pull(password: string, projectName = "") {
   // TODO: Incomplete
   pullMasterRepo();
-  const source = path.join(getMasterRepoPath(), projectName);
-  const destination = process.cwd();
-  fs.cpSync(source, destination);
+  const source = path.join(
+    getMasterRepoPath(),
+    projectName ? projectName : getCurrentWorkingDirectoryName()
+  );
+
+  const envs = getAllEnvsFromMasterRepo(source);
+  for (let index = 0; index < envs.length; index++) {
+    const env = envs[index];
+    const destination = path.join(process.cwd(), env.replace(source, ""));
+    const decryptedEnv = getDecryptedEnv(env, password);
+    fs.writeFileSync(destination, decryptedEnv);
+  }
+}
+
+export function getAllEnvsFromMasterRepo(
+  dirPath: string,
+  arrayOfFiles: string[] = []
+) {
+  const files = fs.readdirSync(dirPath);
+  files.forEach(function (file) {
+    if (
+      fs.statSync(dirPath + "/" + file).isDirectory() &&
+      !dirPath + "/" + file === ".git"
+    ) {
+      arrayOfFiles = getAllEnvsFromMasterRepo(
+        dirPath + "/" + file,
+        arrayOfFiles
+      );
+    } else if (!excludedFiles.includes(file)) {
+      arrayOfFiles.push(path.join(dirPath, "/", file));
+    }
+  });
+
+  return arrayOfFiles;
 }

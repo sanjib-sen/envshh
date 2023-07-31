@@ -24,3 +24,5 @@ export const envExtensions = [
 ];
 
 export const envQuotations = ["'", '"'];
+
+export const excludedFiles = ["README.md", "Readme.md", ".gitignore"];
