@@ -1,38 +1,53 @@
+#! /usr/bin/env node
+
 // Copyright (c) 2023 Sanjib Kumar Sen <mail@sanjibsen.com>
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import {
-  cloneMasterRepo,
-  createMasterRepo,
-  // envshh_pull,
-  // envshh_push,
-  isGitInstalledAndPathed,
-  isInDebugMode,
-  isMasterRepoExists,
-  isMasterRepoIsGit,
-} from "./init/checks";
+import { envshh_pull, envshh_push } from "./init/checks";
+import { Command } from "commander";
+import * as readlineSync from "readline-sync";
 
-if (isInDebugMode()) {
-  process.stdout.write("Checking if git is installed and added to Path... ");
-}
-if (isGitInstalledAndPathed()) {
-  if (isInDebugMode()) {
-    process.stdout.write("OK\n");
-  }
-} else {
-  if (isInDebugMode()) {
-    process.stdout.write("Failed\n");
-  }
-  process.stdout.write("Error: Git is not installed or not added to Path.\n");
-  process.exit(1);
-}
+const program = new Command();
+program
+  .name("envshh")
+  .description(
+    "A command line tool to securely and automatically manage, store environment variables.",
+  );
 
-if (!isMasterRepoExists() || !isMasterRepoIsGit()) {
-  createMasterRepo();
-  cloneMasterRepo("https://github.com/sanjib-sen/sanjib-sen");
-}
+program
+  .command("push")
+  .description("Push local environment variables to GitHub Private Repository")
+  .option(
+    "-p, --project <project-name>",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+  )
+  .option(
+    "-d, --directory <relative-path-to-directory>",
+    "Directory where env files are located.",
+  )
 
-// envshh_push("123");
-// envshh_pull("123");
+  .option("-f, --file <relative-path-to-file>", "Select the .env file")
+  .action((options) => {
+    const password = readlineSync.question("Password: ", {
+      hideEchoBack: true,
+    });
+    envshh_push(password, options.project, options.directory, options.file);
+  });
+
+program
+  .command("pull")
+  .description("Pull environment variables from GitHub Private Repository")
+  .option(
+    "-p, --project <project-name>",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+  )
+  .action((options) => {
+    const password = readlineSync.question("Password: ", {
+      hideEchoBack: true,
+    });
+    envshh_pull(password, options.project);
+  });
+
+program.parse();

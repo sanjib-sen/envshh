@@ -15,7 +15,6 @@ import {
 import { execSync } from "child_process";
 import path from "path";
 import { decryptString, encryptString } from "./encryption";
-
 export interface IConfig {
   masterRepoUrl: string;
 }
@@ -162,7 +161,7 @@ export function readEnvByLine(path: string) {
 }
 
 export function getQuotedValueFromLine(line: string) {
-  const value = line.split("=")[1] as string;
+  const value = line.substring(line.indexOf("=") + 1) as string;
   return value;
 }
 
@@ -173,25 +172,28 @@ export function getQuteFromValue(value: string) {
       return quote;
     }
   }
+  return "";
 }
 
 export function getCleanValueFromLine(line: string) {
   const value = getQuotedValueFromLine(line);
   const quote = getQuteFromValue(value);
-  return quote ? value.replace(quote, "") : value;
+  return quote ? value.replaceAll(quote, "") : value;
 }
 
 export function getEncryptedValueFromLine(line: string, password: string) {
+  const quotedValue = getQuotedValueFromLine(line);
   const originalValue = getCleanValueFromLine(line);
   const encryptedValue = encryptString(originalValue, password);
-  const quote = getQuteFromValue(originalValue);
+  const quote = getQuteFromValue(quotedValue);
   return quote ? `${quote}${encryptedValue}${quote}` : encryptedValue;
 }
 
 export function getDecryptedValueFromLine(line: string, password: string) {
+  const quotedValue = getQuotedValueFromLine(line);
   const encryptedValue = getCleanValueFromLine(line);
   const originalValue = decryptString(encryptedValue, password);
-  const quote = getQuteFromValue(encryptedValue);
+  const quote = getQuteFromValue(quotedValue);
   return quote ? `${quote}${originalValue}${quote}` : originalValue;
 }
 
@@ -200,8 +202,12 @@ export function getEncryptedEnv(location: string, password: string) {
   const lines = readEnvByLine(location);
   const encryptedLines = [];
   for (let index = 0; index < lines.length; index++) {
-    const line = lines[index];
-    const key = line.split("=")[0].trim();
+    const line = lines[index].trim();
+    if (line === "" || line.startsWith("#") || line === "\n") {
+      encryptedLines.push(line);
+      continue;
+    }
+    const key = line.substring(0, line.indexOf("=")).trim();
     const value = getEncryptedValueFromLine(line, password);
     encryptedLines.push(`${key}=${value}`);
   }
@@ -215,7 +221,11 @@ export function getDecryptedEnv(location: string, password: string) {
   const decryptedLines = [];
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index];
-    const key = line.split("=")[0].trim();
+    if (line === "" || line.startsWith("#") || line === "\n") {
+      decryptedLines.push(line);
+      continue;
+    }
+    const key = line.substring(0, line.indexOf("=")).trim();
     const value = getDecryptedValueFromLine(line, password);
     decryptedLines.push(`${key}=${value}`);
   }
@@ -223,30 +233,62 @@ export function getDecryptedEnv(location: string, password: string) {
   return decryptedEnv;
 }
 
-export function saveEncryptedEnv(location: string, password: string) {
+export function getDirectoryWithoutEnvFile(location: string) {
+  const paths = location.split("\\");
+  paths.pop();
+  return paths.join("\\");
+}
+
+export function saveEncryptedEnv(
+  location: string,
+  password: string,
+  project: string
+) {
   const encryptedEnv = getEncryptedEnv(location, password);
   const destinationDirectory = path.join(
     getMasterRepoPath(),
-    getCurrentWorkingDirectoryName()
+    project || getCurrentWorkingDirectoryName()
   );
   const destination = location.replace(process.cwd(), destinationDirectory);
-  if (!fs.existsSync(destinationDirectory)) {
-    fs.mkdirSync(destinationDirectory, { recursive: true });
+
+  if (!fs.existsSync(getDirectoryWithoutEnvFile(destination))) {
+    fs.mkdirSync(getDirectoryWithoutEnvFile(destination), { recursive: true });
   }
 
   fs.writeFileSync(destination, encryptedEnv);
 }
 
-export function envshh_push(password: string, directory = "", file = "") {
+function getProjectNameFromRepoUrl(url: string) {
+  return url.split("/").pop()?.replace(".git", "");
+}
+
+function getGitRepoName(location: string) {
+  if (isDirectoryAGitRepository(location)) {
+    const origin = execSync("git config --get remote.origin.url").toString();
+    return getProjectNameFromRepoUrl(origin) as string;
+  }
+  return "";
+}
+
+export function envshh_push(
+  password: string,
+  project = "",
+  directory = "",
+  file = ""
+) {
   pullMasterRepo();
 
   const envs = file
     ? [file]
-    : getListOfEnvsInLocation(directory ? directory : process.cwd());
+    : getListOfEnvsInLocation(directory || process.cwd());
+
+  if (project === "") {
+    project = getGitRepoName(process.cwd()).trim();
+  }
 
   for (let index = 0; index < envs.length; index++) {
     const env = envs[index];
-    saveEncryptedEnv(env, password);
+    saveEncryptedEnv(env, password, project);
   }
   pushMasterRepo();
 }
@@ -256,7 +298,7 @@ export function envshh_pull(password: string, projectName = "") {
   pullMasterRepo();
   const source = path.join(
     getMasterRepoPath(),
-    projectName ? projectName : getCurrentWorkingDirectoryName()
+    projectName || getCurrentWorkingDirectoryName()
   );
 
   const envs = getAllEnvsFromMasterRepo(source);
@@ -264,6 +306,11 @@ export function envshh_pull(password: string, projectName = "") {
     const env = envs[index];
     const destination = path.join(process.cwd(), env.replace(source, ""));
     const decryptedEnv = getDecryptedEnv(env, password);
+    if (!fs.existsSync(getDirectoryWithoutEnvFile(destination))) {
+      fs.mkdirSync(getDirectoryWithoutEnvFile(destination), {
+        recursive: true,
+      });
+    }
     fs.writeFileSync(destination, decryptedEnv);
   }
 }

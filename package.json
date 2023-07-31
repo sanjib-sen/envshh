@@ -11,6 +11,9 @@
     "start": "npm run build && node dist/src/index.js",
     "docker:up": "docker-compose build --no-cache && docker-compose up"
   },
+  "bin": {
+    "envshh": "./dist/index.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/sanjib-sen/starter-node.git"
@@ -23,6 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "*",
+    "@types/readline-sync": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "eslint": "*",
@@ -32,5 +36,8 @@
     "ts-node": "*",
     "typescript": "*"
   },
-  "dependencies": {}
+  "dependencies": {
+    "commander": "*",
+    "readline-sync": "^1.4.10"
+  }
 }
