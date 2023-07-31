@@ -13,7 +13,7 @@ import {
 } from "./paths";
 import { execSync } from "child_process";
 import path from "path";
-import { encryptString } from "./encryption";
+import { decryptString, encryptString } from "./encryption";
 
 export interface IConfig {
   masterRepoUrl: string;
@@ -45,23 +45,39 @@ export function isMasterRepoIsGit() {
 }
 
 export function createMasterRepo() {
-  fs.mkdirSync(getMasterRepoPath());
+  try {
+    fs.mkdirSync(getMasterRepoPath());
+  } catch (error) {
+    new Error("Failed to create master repository.");
+  }
 }
 
 export function isMasterRepoSet() {
-  const config: IConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
-  return config.masterRepoUrl.startsWith("https://github.com/") ? true : false;
+  try {
+    const config: IConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    return config.masterRepoUrl.startsWith("https://github.com/")
+      ? true
+      : false;
+  } catch (error) {
+    return new Error("Failed to get master repository address.");
+  }
 }
 
 export function isMasterRepoAddressValid() {
-  if (!isMasterRepoSet()) return false;
-  const config: IConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
-  return isRepositoryExistsOnGitHub(config.masterRepoUrl);
+  const address = getMasterRepoAddress();
+  if (address instanceof Error) {
+    return address;
+  }
+  return isRepositoryExistsOnGitHub(address);
 }
 
 export function getMasterRepoAddress() {
-  const config: IConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
-  return config.masterRepoUrl;
+  try {
+    const config: IConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
+    return config.masterRepoUrl;
+  } catch (error) {
+    return new Error("Failed to get master repository address.");
+  }
 }
 
 export function getMasterRepoPath() {
@@ -92,9 +108,14 @@ export function isInDebugMode() {
   return inspector.url() !== undefined;
 }
 
-export function cloneMasterRepo() {
-  const config: IConfig = JSON.parse(fs.readFileSync(configPath, "utf8"));
-  execSync(`git clone ${config.masterRepoUrl} ${getMasterRepoPath()}`);
+export function cloneMasterRepo(address: string) {
+  createMasterRepo();
+  try {
+    execSync(`git clone ${address} ${getMasterRepoPath()}`);
+    return true;
+  } catch (error) {
+    return new Error("Failed to clone master repository.");
+  }
 }
 
 export function pullMasterRepo() {
@@ -102,10 +123,11 @@ export function pullMasterRepo() {
 }
 
 export function pushMasterRepo() {
+  execSync(`git -C ${getMasterRepoPath()} add .`);
   execSync(
-    `git -C ${getMasterRepoPath()} commit -a -m ${new Date().toString()}`
+    `git -C ${getMasterRepoPath()} commit -m "${new Date().toUTCString()}"`
   );
-  execSync(`git -C ${getMasterRepoPath()} push origin main`);
+  execSync(`git -C ${getMasterRepoPath()} push origin master`);
 }
 
 export function getCurrentWorkingDirectory() {
@@ -165,6 +187,13 @@ export function getEncryptedValueFromLine(line: string, password: string) {
   return quote ? `${quote}${encryptedValue}${quote}` : encryptedValue;
 }
 
+export function getDecryptedValueFromLine(line: string, password: string) {
+  const encryptedValue = getCleanValueFromLine(line);
+  const originalValue = decryptString(encryptedValue, password);
+  const quote = getQuteFromValue(encryptedValue);
+  return quote ? `${quote}${originalValue}${quote}` : originalValue;
+}
+
 export function getEncryptedEnv(location: string, password: string) {
   let encryptedEnv = "";
   const lines = readEnvByLine(location);
@@ -179,6 +208,20 @@ export function getEncryptedEnv(location: string, password: string) {
   return encryptedEnv;
 }
 
+export function getDecryptedEnv(location: string, password: string) {
+  let decryptedEnv = "";
+  const lines = readEnvByLine(location);
+  const decryptedLines = [];
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index];
+    const key = line.split("=")[0].trim();
+    const value = getDecryptedValueFromLine(line, password);
+    decryptedLines.push(`${key}=${value}`);
+  }
+  decryptedEnv += decryptedLines.join("\n");
+  return decryptedEnv;
+}
+
 export function saveEncryptedEnv(location: string, password: string) {
   const encryptedEnv = getEncryptedEnv(location, password);
   const destinationDirectory = path.join(
@@ -189,17 +232,28 @@ export function saveEncryptedEnv(location: string, password: string) {
   if (!fs.existsSync(destinationDirectory)) {
     fs.mkdirSync(destinationDirectory, { recursive: true });
   }
+
   fs.writeFileSync(destination, encryptedEnv);
 }
 
-export function envshh_push(password: string, directory: "", file: "") {
+export function envshh_push(password: string, directory = "", file = "") {
   pullMasterRepo();
+
   const envs = file
-    ? getListOfEnvsInLocation(directory ? directory : process.cwd())
-    : [file];
+    ? [file]
+    : getListOfEnvsInLocation(directory ? directory : process.cwd());
+
   for (let index = 0; index < envs.length; index++) {
     const env = envs[index];
     saveEncryptedEnv(env, password);
   }
   pushMasterRepo();
+}
+
+export function envshh_pull(password: string, projectName = "") {
+  // TODO: Incomplete
+  pullMasterRepo();
+  const source = path.join(getMasterRepoPath(), projectName);
+  const destination = process.cwd();
+  fs.cpSync(source, destination);
 }

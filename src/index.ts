@@ -3,7 +3,14 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { isGitInstalledAndPathed, isInDebugMode } from "./init/checks";
+import {
+  cloneMasterRepo,
+  createMasterRepo,
+  isGitInstalledAndPathed,
+  isInDebugMode,
+  isMasterRepoExists,
+  isMasterRepoIsGit,
+} from "./init/checks";
 
 if (isInDebugMode()) {
   process.stdout.write("Checking if git is installed and added to Path... ");
@@ -19,3 +26,11 @@ if (isGitInstalledAndPathed()) {
   process.stdout.write("Error: Git is not installed or not added to Path.\n");
   process.exit(1);
 }
+
+if (!isMasterRepoExists() || !isMasterRepoIsGit()) {
+  createMasterRepo();
+  cloneMasterRepo("https://github.com/sanjib-sen/sanjib-sen");
+}
+
+// envshh_push("123");
+// envshh_pull("123");
