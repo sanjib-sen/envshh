@@ -6,26 +6,30 @@
 // https://opensource.org/licenses/MIT
 
 import { envshh_pull, envshh_push } from "./init/checks";
+import { version } from "../package.json";
 import { Command } from "commander";
 import * as readlineSync from "readline-sync";
+import figlet from "figlet";
 
 const program = new Command();
 program
   .name("envshh")
+  .addHelpText("beforeAll", figlet.textSync("envshh"))
   .description(
-    "A command line tool to securely and automatically manage, store environment variables.",
-  );
+    "A command line tool to securely and automatically manage, store environment variables."
+  )
+  .version(version, "-v, --version");
 
 program
   .command("push")
   .description("Push local environment variables to GitHub Private Repository")
   .option(
     "-p, --project <project-name>",
-    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name."
   )
   .option(
     "-d, --directory <relative-path-to-directory>",
-    "Directory where env files are located.",
+    "Directory where env files are located."
   )
 
   .option("-f, --file <relative-path-to-file>", "Select the .env file")
@@ -41,7 +45,7 @@ program
   .description("Pull environment variables from GitHub Private Repository")
   .option(
     "-p, --project <project-name>",
-    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name."
   )
   .action((options) => {
     const password = readlineSync.question("Password: ", {

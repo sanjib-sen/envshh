@@ -1,7 +1,7 @@
 {
-  "name": "starter-node",
+  "name": "envshh",
   "version": "1.0.0",
-  "description": "Just a cool description",
+  "description": "A command line tool to securely and automatically manage, store environment variables.",
   "main": "dist/index.js",
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
@@ -12,21 +12,27 @@
     "docker:up": "docker-compose build --no-cache && docker-compose up"
   },
   "bin": {
-    "envshh": "./dist/index.js"
+    "envshh": "./dist/src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sanjib-sen/starter-node.git"
+    "url": "https://github.com/sanjib-sen/envshh.git"
   },
-  "homepage": "https://github.com/sanjib-sen/starter-node#readme",
+  "homepage": "https://github.com/sanjib-sen/envshh#readme",
   "keywords": [
-    "starter"
+    "dotenv",
+    "env",
+    "envshh",
+    "commandline",
+    "cli",
+    "environment"
   ],
   "author": "Sanjib Kumar Sen <mail@sanjibsen.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/figlet": "*",
     "@types/node": "*",
-    "@types/readline-sync": "^1.4.4",
+    "@types/readline-sync": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
     "eslint": "*",
@@ -38,6 +44,7 @@
   },
   "dependencies": {
     "commander": "*",
-    "readline-sync": "^1.4.10"
+    "figlet": "*",
+    "readline-sync": "*"
   }
 }
