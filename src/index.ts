@@ -2,13 +2,20 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-import { name } from "../package.json";
-process.stdout.write(`Hello from ${name}!\n`);
-import { execSync } from "child_process";
 
-try {
-  const gitVersion = execSync("git --version");
-  process.stdout.write(`${gitVersion}`);
-} catch (error) {
+import { isGitInstalledAndPathed, isInDebugMode } from "./init/checks";
+
+if (isInDebugMode()) {
+  process.stdout.write("Checking if git is installed and added to Path... ");
+}
+if (isGitInstalledAndPathed()) {
+  if (isInDebugMode()) {
+    process.stdout.write("OK\n");
+  }
+} else {
+  if (isInDebugMode()) {
+    process.stdout.write("Failed\n");
+  }
+  process.stdout.write("Error: Git is not installed or not added to Path.\n");
   process.exit(1);
 }
