@@ -124,7 +124,7 @@ export function pullMasterRepo() {
 export function pushMasterRepo() {
   execSync(`git -C ${getMasterRepoPath()} add .`);
   execSync(
-    `git -C ${getMasterRepoPath()} commit -m "${new Date().toUTCString()}"`
+    `git -C ${getMasterRepoPath()} commit -m "${new Date().toUTCString()}"`,
   );
   execSync(`git -C ${getMasterRepoPath()} push origin master`);
 }
@@ -241,12 +241,12 @@ export function getDirectoryWithoutEnvFile(location: string) {
 export function saveEncryptedEnv(
   location: string,
   password: string,
-  project: string
+  project: string,
 ) {
   const encryptedEnv = getEncryptedEnv(location, password);
   const destinationDirectory = path.join(
     getMasterRepoPath(),
-    project || getCurrentWorkingDirectoryName()
+    project || getCurrentWorkingDirectoryName(),
   );
   const destination = location.replace(process.cwd(), destinationDirectory);
 
@@ -273,14 +273,14 @@ export function envshh_push(
   password: string,
   project = "",
   directory = "",
-  file = ""
+  file = "",
 ) {
   pullMasterRepo();
 
   const envs = file
     ? [path.join(process.cwd(), file)]
     : getListOfEnvsInLocation(
-        directory ? path.join(process.cwd(), directory) : process.cwd()
+        directory ? path.join(process.cwd(), directory) : process.cwd(),
       );
 
   if (project === "") {
@@ -299,12 +299,10 @@ export function envshh_pull(password: string, projectName = "") {
   // pullMasterRepo();
   const source = path.join(
     getMasterRepoPath(),
-    projectName || getCurrentWorkingDirectoryName()
+    projectName || getCurrentWorkingDirectoryName(),
   );
 
   const envs = getAllEnvsFromMasterRepo(source);
-  process.stdout.write(`\nEncrypting ${source} env files...\n`);
-  process.stdout.write(`\nEncrypting ${envs} env files...\n`);
 
   for (let index = 0; index < envs.length; index++) {
     const env = envs[index];
@@ -313,33 +311,31 @@ export function envshh_pull(password: string, projectName = "") {
       env.replace(
         path.join(
           getMasterRepoPath(),
-          projectName || getCurrentWorkingDirectoryName()
+          projectName || getCurrentWorkingDirectoryName(),
         ),
-        ""
-      )
+        "",
+      ),
     );
-    process.stdout.write(`\nEncrypting ${destination} env file...\n`);
     const decryptedEnv = getDecryptedEnv(env, password);
     if (!fs.existsSync(getDirectoryWithoutEnvFile(destination))) {
       fs.mkdirSync(getDirectoryWithoutEnvFile(destination), {
         recursive: true,
       });
     }
-    process.stdout.write(`\nEncrypting ${decryptedEnv} env file...\n`);
     fs.writeFileSync(destination, decryptedEnv);
   }
 }
 
 export function getAllEnvsFromMasterRepo(
   dirPath: string,
-  arrayOfFiles: string[] = []
+  arrayOfFiles: string[] = [],
 ) {
   const files = fs.readdirSync(dirPath);
   files.forEach(function (file) {
     if (fs.statSync(dirPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllEnvsFromMasterRepo(
         dirPath + "/" + file,
-        arrayOfFiles
+        arrayOfFiles,
       );
     } else {
       arrayOfFiles.push(path.join(dirPath, file));
