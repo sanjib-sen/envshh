@@ -51,9 +51,9 @@ export function decryptString(
     );
 
     // Create buffers of salt and ciphertextAndNonce.
-    const salt = ciphertextAndNonceAndSalt.slice(0, PBKDF2_SALT_SIZE);
+    const salt = ciphertextAndNonceAndSalt.subarray(0, PBKDF2_SALT_SIZE);
     const ciphertextAndNonce =
-      ciphertextAndNonceAndSalt.slice(PBKDF2_SALT_SIZE);
+      ciphertextAndNonceAndSalt.subarray(PBKDF2_SALT_SIZE);
 
     // Derive the key using PBKDF2.
     const key = crypto.pbkdf2Sync(
@@ -86,12 +86,12 @@ function encrypt(plaintext: Buffer, key: Buffer) {
 
 function decrypt(ciphertextAndNonce: Buffer, key: Buffer) {
   // Create buffers of nonce, ciphertext and tag.
-  const nonce = ciphertextAndNonce.slice(0, ALGORITHM_NONCE_SIZE);
-  const ciphertext = ciphertextAndNonce.slice(
+  const nonce = ciphertextAndNonce.subarray(0, ALGORITHM_NONCE_SIZE);
+  const ciphertext = ciphertextAndNonce.subarray(
     ALGORITHM_NONCE_SIZE,
     ciphertextAndNonce.length - ALGORITHM_TAG_SIZE,
   );
-  const tag = ciphertextAndNonce.slice(
+  const tag = ciphertextAndNonce.subarray(
     ciphertext.length + ALGORITHM_NONCE_SIZE,
   );
 
