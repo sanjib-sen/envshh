@@ -5,7 +5,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { envshh_pull, envshh_push } from "./init/checks";
+import { envshh_pull, envshh_push } from "./init/checks.js";
 import { version } from "../package.json";
 import { Command } from "commander";
 import * as readlineSync from "readline-sync";

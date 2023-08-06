@@ -29,7 +29,8 @@ export class EnvshhInstance {
       process.exit(1);
     }
     this.initChecks();
-    this.createMainRepo();
+    this.createMainDirectory();
+    insertInstance(this.config);
   }
   private initChecks() {
     if (isGitInstalledAndPathed()) {
@@ -43,12 +44,12 @@ export class EnvshhInstance {
       !isDirectoryExists(this.config.mainDirectory)
     ) {
       log.error(
-        `Specified Directory ${this.config.mainDirectory} does not exist`
+        `Specified Directory ${this.config.mainDirectory} does not exist`,
       );
       process.exit(1);
     } else if (!this.config.mainDirectory) {
       log.info(
-        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`
+        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`,
       );
     } else if (
       this.config.mainDirectory &&
@@ -59,7 +60,7 @@ export class EnvshhInstance {
 
     if (!this.config.mainRepoUrl) {
       log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work."
+        "Did not specify any Master Repository URL. Online sync will not work.",
       );
     } else if (
       this.config.mainRepoUrl &&
@@ -71,14 +72,15 @@ export class EnvshhInstance {
       !isRepositoryExistsOnUpstream(this.config.mainRepoUrl)
     ) {
       log.error(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
       );
       process.exit(1);
     }
   }
-  private createMainRepo() {
+  private createMainDirectory() {
     createDirectory(this.config.mainDirectory);
   }
+
   isMainRepoUrlSet() {
     return this.config.mainRepoUrl ? true : false;
   }
