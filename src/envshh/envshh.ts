@@ -28,10 +28,10 @@ export class EnvshhInstance {
       }
       process.exit(1);
     }
-    this.initChecks(this.config);
-    this.createMasterRepo();
+    this.initChecks();
+    this.createMainRepo();
   }
-  private initChecks(EnvshhConfig?: EnvshhConfigType) {
+  private initChecks() {
     if (isGitInstalledAndPathed()) {
       log.success("Git is installed and in path");
     } else {
@@ -39,27 +39,27 @@ export class EnvshhInstance {
       process.exit(1);
     }
     if (
-      EnvshhConfig?.mainDirectory &&
-      !isDirectoryExists(EnvshhConfig?.mainDirectory)
+      this.config.mainDirectory &&
+      !isDirectoryExists(this.config.mainDirectory)
     ) {
       log.error(
-        `Specified Directory ${EnvshhConfig?.mainDirectory} does not exist`,
+        `Specified Directory ${this.config.mainDirectory} does not exist`
       );
       process.exit(1);
-    } else if (!EnvshhConfig?.mainDirectory) {
+    } else if (!this.config.mainDirectory) {
       log.info(
-        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`,
+        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`
       );
     } else if (
-      EnvshhConfig?.mainDirectory &&
-      isDirectoryExists(EnvshhConfig?.mainDirectory)
+      this.config.mainDirectory &&
+      isDirectoryExists(this.config.mainDirectory)
     ) {
       log.success(`Using Master Directory: ${this.config.mainDirectory}`);
     }
 
     if (!this.config.mainRepoUrl) {
       log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work.",
+        "Did not specify any Master Repository URL. Online sync will not work."
       );
     } else if (
       this.config.mainRepoUrl &&
@@ -71,15 +71,15 @@ export class EnvshhInstance {
       !isRepositoryExistsOnUpstream(this.config.mainRepoUrl)
     ) {
       log.error(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
       );
       process.exit(1);
     }
   }
-  private createMasterRepo() {
+  private createMainRepo() {
     createDirectory(this.config.mainDirectory);
   }
-  ismainRepoUrlSet() {
+  isMainRepoUrlSet() {
     return this.config.mainRepoUrl ? true : false;
   }
   getmainRepoUrl() {
