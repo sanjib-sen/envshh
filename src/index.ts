@@ -32,13 +32,24 @@ program
     "-d, --directory <relative-path-to-directory>",
     "Directory where env files are located.",
   )
-
   .option("-f, --file <relative-path-to-file>", "Select the .env file")
+  .option(
+    "-b, --branch <name>",
+    "Keep different branches for different production, development and staging. Defaults to 'main'.",
+  )
+  .option("--offline", "Don't push to remote repository. Just commit locally.")
   .action((options) => {
     const password = readlineSync.question("Password: ", {
       hideEchoBack: true,
     });
-    envshh_push(password, options.project, options.directory, options.file);
+    envshh_push(
+      password,
+      options.project,
+      options.directory,
+      options.file,
+      options.branch,
+      options.offline,
+    );
   });
 
 program
@@ -48,11 +59,16 @@ program
     "-p, --project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
   )
+  .option(
+    "-b, --branch <name>",
+    "Keep different branches for different production, development and staging. Defaults to 'main'.",
+  )
+  .option("--offline", "Don't push to remote repository. Just commit locally.")
   .action((options) => {
     const password = readlineSync.question("Password: ", {
       hideEchoBack: true,
     });
-    envshh_pull(password, options.project);
+    envshh_pull(password, options.project, options.branch, options.offline);
   });
 
 program.parse();

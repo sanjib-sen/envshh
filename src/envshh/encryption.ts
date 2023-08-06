@@ -43,27 +43,32 @@ export function decryptString(
   base64CiphertextAndNonceAndSalt: string,
   password: string,
 ) {
-  // Decode the base64.
-  const ciphertextAndNonceAndSalt = Buffer.from(
-    base64CiphertextAndNonceAndSalt,
-    "base64",
-  );
+  try {
+    // Decode the base64.
+    const ciphertextAndNonceAndSalt = Buffer.from(
+      base64CiphertextAndNonceAndSalt,
+      "base64",
+    );
 
-  // Create buffers of salt and ciphertextAndNonce.
-  const salt = ciphertextAndNonceAndSalt.slice(0, PBKDF2_SALT_SIZE);
-  const ciphertextAndNonce = ciphertextAndNonceAndSalt.slice(PBKDF2_SALT_SIZE);
+    // Create buffers of salt and ciphertextAndNonce.
+    const salt = ciphertextAndNonceAndSalt.slice(0, PBKDF2_SALT_SIZE);
+    const ciphertextAndNonce =
+      ciphertextAndNonceAndSalt.slice(PBKDF2_SALT_SIZE);
 
-  // Derive the key using PBKDF2.
-  const key = crypto.pbkdf2Sync(
-    Buffer.from(password, "utf8"),
-    salt,
-    PBKDF2_ITERATIONS,
-    ALGORITHM_KEY_SIZE,
-    PBKDF2_NAME,
-  );
+    // Derive the key using PBKDF2.
+    const key = crypto.pbkdf2Sync(
+      Buffer.from(password, "utf8"),
+      salt,
+      PBKDF2_ITERATIONS,
+      ALGORITHM_KEY_SIZE,
+      PBKDF2_NAME,
+    );
 
-  // Decrypt and return result.
-  return decrypt(ciphertextAndNonce, key).toString("utf8");
+    // Decrypt and return result.
+    return decrypt(ciphertextAndNonce, key).toString("utf8");
+  } catch (error) {
+    throw new Error("Wrong Password");
+  }
 }
 
 function encrypt(plaintext: Buffer, key: Buffer) {

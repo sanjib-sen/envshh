@@ -4,18 +4,19 @@
 // https://opensource.org/licenses/MIT
 
 import * as inspector from "inspector";
-import * as fs from "fs";
 import {
-  configDirectory,
+  defaultMasterDirectory,
   configPath,
   envExtensions,
   envQuotations,
-} from "./paths";
+} from "../envshh/defaults/defaults";
 import { execSync } from "child_process";
 import path from "path";
 import { decryptString, encryptString } from "./encryption";
+
 export interface IConfig {
-  masterRepoUrl: string;
+  masterRepoUrl?: string;
+  masterDirectory: string;
 }
 
 export function isGitInstalledAndPathed() {
@@ -27,8 +28,17 @@ export function isGitInstalledAndPathed() {
   }
 }
 
-export function isDirectoryExists() {
-  return fs.existsSync(configDirectory) ? true : false;
+export class Project {
+  private readonly name: string;
+  private readonly directory: string;
+  private readonly envs: string[];
+  private readonly branch: string;
+  constructor(
+    name: string,
+    directory: string,
+    envs: string[],
+    branch: string,
+  ) {}
 }
 
 export function isConfigFileExists() {
@@ -67,7 +77,7 @@ export function isMasterRepoAddressValid() {
   if (address instanceof Error) {
     return address;
   }
-  return isRepositoryExistsOnGitHub(address);
+  return isRepositoryExistsOnUpstream(address);
 }
 
 export function getMasterRepoAddress() {
@@ -80,7 +90,7 @@ export function getMasterRepoAddress() {
 }
 
 export function getMasterRepoPath() {
-  return path.join(configDirectory, "master");
+  return path.join(defaultMasterDirectory, "master");
 }
 
 export function isDirectoryAGitRepository(directory: string) {
@@ -94,7 +104,7 @@ export function isDirectoryAGitRepository(directory: string) {
   }
 }
 
-export function isRepositoryExistsOnGitHub(repositoryAddress: string) {
+export function isRepositoryExistsOnUpstream(repositoryAddress: string) {
   try {
     execSync(`git ls-remote ${repositoryAddress}`);
     return true;
@@ -137,11 +147,11 @@ export function getCurrentWorkingDirectoryName() {
   return getCurrentWorkingDirectory().split("\\").pop() as string;
 }
 
-export function getListOfEnvsInLocation(location: string) {
+export function getListOfEnvsInDirectory(directory: string) {
   const envs = [];
   for (let index = 0; index < envExtensions.length; index++) {
     const envExtension = envExtensions[index];
-    const env = path.join(location, envExtension);
+    const env = path.join(directory, envExtension);
     if (fs.existsSync(env)) {
       envs.push(env);
     }
@@ -274,12 +284,16 @@ export function envshh_push(
   project = "",
   directory = "",
   file = "",
+  branch = "development",
+  offline = false,
 ) {
-  pullMasterRepo();
+  if (!offline) {
+    pullMasterRepo();
+  }
 
   const envs = file
     ? [path.join(process.cwd(), file)]
-    : getListOfEnvsInLocation(
+    : getListOfEnvsInDirectory(
         directory ? path.join(process.cwd(), directory) : process.cwd(),
       );
 
@@ -291,15 +305,28 @@ export function envshh_push(
     const env = envs[index];
     saveEncryptedEnv(env, password, project);
   }
-  // pushMasterRepo();
+  if (!offline) {
+    pushMasterRepo();
+  }
 }
 
-export function envshh_pull(password: string, projectName = "") {
+export function envshh_pull(
+  password: string,
+  projectName = "",
+  branch = "development",
+  offline = false,
+) {
   // TODO: Incomplete
-  // pullMasterRepo();
+
+  if (!offline) {
+    pullMasterRepo();
+  }
   const source = path.join(
     getMasterRepoPath(),
-    projectName || getCurrentWorkingDirectoryName(),
+    projectName ||
+      getGitRepoName(getCurrentWorkingDirectoryName()) ||
+      getCurrentWorkingDirectoryName(),
+    `.envshh-branch-${branch}`,
   );
 
   const envs = getAllEnvsFromMasterRepo(source);
