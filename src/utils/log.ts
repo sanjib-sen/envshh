@@ -7,25 +7,28 @@ import { isInDebugMode } from "./checks.js";
 import chalk from "chalk";
 
 export class Log {
-  readonly log = process.stdout.write.bind(process.stdout);
+  readonly logger = process.stdout.write.bind(process.stdout);
   constructor() {
     if (isInDebugMode()) {
-      this.log("Debug mode is on");
+      this.logger("Debug mode is on");
     }
   }
+  log(message: string) {
+    this.logger(message + "\n");
+  }
   info(message: string) {
-    this.log(
+    this.logger(
       chalk.blueBright("Envshh Info: ") + chalk.whiteBright(message) + "\n",
     );
   }
   success(message: string) {
-    this.log(chalk.greenBright("Envshh Success: ") + message + "\n");
+    this.logger(chalk.greenBright("Envshh Success: ") + message + "\n");
   }
   error(message: string) {
-    this.log(chalk.redBright("Envshh Error: " + message) + "\n");
+    this.logger(chalk.redBright("Envshh Error: " + message) + "\n");
   }
   warn(message: string) {
-    this.log(chalk.yellowBright("Envshh Warning: ") + message + "\n");
+    this.logger(chalk.yellowBright("Envshh Warning: ") + message + "\n");
   }
 }
 

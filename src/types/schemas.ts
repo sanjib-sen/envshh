@@ -2,22 +2,24 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+
 import { z } from "zod";
 import {
   defaultMainDirectory,
   defaultRegexNameConventionMessage,
   defaultValidRegex,
-} from "../defaults/defaults.js";
+} from "../envshh/defaults/defaults.js";
 
-export const EnvshhConfigSchema = z
+export const EnvshhInstanceNameSchema = z
+  .string()
+  .regex(defaultValidRegex, defaultRegexNameConventionMessage("Instance"))
+  .min(1)
+  .max(25)
+  .default("main");
+
+export const EnvshhInstanceSchema = z
   .object({
-    name: z
-      .string()
-      .regex(defaultValidRegex, defaultRegexNameConventionMessage("Project"))
-      .min(1)
-      .max(25)
-
-      .default("main"),
+    name: EnvshhInstanceNameSchema,
     mainDirectory: z.string().default(defaultMainDirectory),
     mainRepoUrl: z
       .string()
@@ -28,4 +30,4 @@ export const EnvshhConfigSchema = z
     mainDirectory: defaultMainDirectory,
   });
 
-export type EnvshhConfigType = z.infer<typeof EnvshhConfigSchema>;
+export type EnvshhInstanceType = z.infer<typeof EnvshhInstanceSchema>;

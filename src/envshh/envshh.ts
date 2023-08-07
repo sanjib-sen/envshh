@@ -4,23 +4,26 @@
 // https://opensource.org/licenses/MIT
 
 import {
-  isDirectoryExists,
   isGitInstalledAndPathed,
   isRepositoryExistsOnUpstream,
-} from "./checks.js";
-import { log } from "./log.js";
-import { createDirectory } from "./filesystem/functions.js";
-import { EnvshhConfigSchema, EnvshhConfigType } from "./types/schemas.js";
-import { EnvshhConfigParamsType } from "./types/params.js";
+} from "../git/checks.js";
+import { isPathExists } from "../filesystem/checks.js";
+import { log } from "../utils/log.js";
+import {
+  createDirectory,
+  deleteDirectoryOrFile,
+} from "../filesystem/functions.js";
+import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
 import { defaultMainDirectory } from "./defaults/defaults.js";
-import { insertInstance } from "./db/controllers.js";
+import { insertInstance, deleteInstance } from "../db/controllers.js";
+import { commitRepo, pullRepo, pushRepo } from "../git/functions.js";
 
 export class EnvshhInstance {
-  config: EnvshhConfigType;
-  constructor(EnvshhConfigParams?: EnvshhConfigParamsType) {
+  config: EnvshhInstanceType;
+  constructor(EnvshhConfigParams?: EnvshhInstanceType) {
     try {
-      const parsedData = EnvshhConfigSchema.parse(EnvshhConfigParams);
+      const parsedData = EnvshhInstanceSchema.parse(EnvshhConfigParams);
       this.config = parsedData;
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -39,28 +42,25 @@ export class EnvshhInstance {
       log.error("Git is not installed or not in path");
       process.exit(1);
     }
-    if (
-      this.config.mainDirectory &&
-      !isDirectoryExists(this.config.mainDirectory)
-    ) {
+    if (this.config.mainDirectory && !isPathExists(this.config.mainDirectory)) {
       log.error(
-        `Specified Directory ${this.config.mainDirectory} does not exist`,
+        `Specified Directory ${this.config.mainDirectory} does not exist`
       );
       process.exit(1);
     } else if (!this.config.mainDirectory) {
       log.info(
-        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`,
+        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`
       );
     } else if (
       this.config.mainDirectory &&
-      isDirectoryExists(this.config.mainDirectory)
+      isPathExists(this.config.mainDirectory)
     ) {
       log.success(`Using Master Directory: ${this.config.mainDirectory}`);
     }
 
     if (!this.config.mainRepoUrl) {
       log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work.",
+        "Did not specify any Master Repository URL. Online sync will not work."
       );
     } else if (
       this.config.mainRepoUrl &&
@@ -72,7 +72,7 @@ export class EnvshhInstance {
       !isRepositoryExistsOnUpstream(this.config.mainRepoUrl)
     ) {
       log.error(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
       );
       process.exit(1);
     }
@@ -81,25 +81,52 @@ export class EnvshhInstance {
     createDirectory(this.config.mainDirectory);
   }
 
+  private deleteMainDirectory() {
+    deleteDirectoryOrFile(this.config.mainDirectory);
+  }
+
+  remove() {
+    this.deleteMainDirectory();
+    deleteInstance(this.config.name);
+  }
+
+  reset() {
+    this.deleteMainDirectory();
+    this.createMainDirectory();
+  }
+
+  gitPull() {
+    pullRepo(this.config);
+  }
+
+  gitCommit() {
+    commitRepo(this.config);
+  }
+
+  gitPush() {
+    pushRepo(this.config);
+  }
+
   isMainRepoUrlSet() {
     return this.config.mainRepoUrl ? true : false;
   }
-  getmainRepoUrl() {
+  getMainRepoUrl() {
     return this.config.mainRepoUrl;
   }
-  getmainDirectory() {
+  getMainDirectory() {
     return this.config.mainDirectory;
   }
-  setmainRepoUrl(mainRepoUrl: string) {
+  setMainRepoUrl(mainRepoUrl: string | undefined) {
     this.config.mainRepoUrl = mainRepoUrl;
   }
-  setmainDirectory(mainDirectory: string) {
+  setMainDirectory(mainDirectory: string) {
     this.config.mainDirectory = mainDirectory;
   }
 }
 
 export const envshh = new EnvshhInstance({
   name: "envshh",
+  mainDirectory: defaultMainDirectory,
 });
 
 insertInstance(envshh.config);

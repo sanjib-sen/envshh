@@ -8,9 +8,9 @@
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
     "lint": "eslint --ext .js,.ts,.json --fix .",
     "dev": "nodemon --watch src src/index.ts",
-    "dev2": "nodemon --watch src src/envshh/envshh",
+    "hello": "nodemon --watch src src/envshh/envshh",
     "build": "npm run format && npm run lint && tsc",
-    "start": "npm run build && node dist/src/index.js",
+    "start": "npm run build && node dist/envshh/envshh.js",
     "docker:up": "docker-compose build --no-cache && docker-compose up"
   },
   "bin": {
@@ -47,8 +47,8 @@
   "dependencies": {
     "commander": "*",
     "figlet": "*",
-    "lowdb": "^6.0.1",
+    "lowdb": "*",
     "readline-sync": "*",
-    "zod": "^3.21.4"
+    "zod": "*"
   }
 }

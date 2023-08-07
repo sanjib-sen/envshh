@@ -2,3 +2,34 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+
+import path from "path";
+import { getInstance } from "../../db/controllers.js";
+import { ProjectPushConfigParamsType } from "../../types/params.js";
+import { getAllEnvsFromProjectParams } from "../envs/get.js";
+import { defaultBranchNamePrefix } from "../defaults/defaults.js";
+import { createDirectory } from "../../filesystem/functions.js";
+import { saveEncryptedEnv } from "../encryption/encrypt.js";
+
+export function thePush(pushConfig: ProjectPushConfigParamsType) {
+  const envshh = getInstance(pushConfig.instance);
+  if (!pushConfig.offline) {
+    envshh.gitPull();
+  }
+  const envPaths = getAllEnvsFromProjectParams(pushConfig);
+  const destinationDirectory = path.join(
+    envshh.getMainDirectory(),
+    pushConfig.name,
+    defaultBranchNamePrefix,
+    pushConfig.branch
+  );
+  createDirectory(destinationDirectory);
+  for (let index = 0; index < envPaths.length; index++) {
+    const envPath = envPaths[index];
+    const destination = envPath.replace(process.cwd(), destinationDirectory);
+    saveEncryptedEnv(envPath, pushConfig.password, destination);
+  }
+  if (!pushConfig.offline) {
+    envshh.gitPush();
+  }
+}

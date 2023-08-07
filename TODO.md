@@ -37,3 +37,8 @@
 
 - [ ] Git Pull on masterRepo
 - [ ] Ask for Password, Decrypt the file and move to the relative directory
+
+## utils
+
+- [ ] encrypt+decrypt a file / directory from command line
+- [ ] encrypt+decrypt a string from command line

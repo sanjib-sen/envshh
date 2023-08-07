@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-// This file is collected from:
+// This file is collected and slightly updated from:
 // https://github.com/luke-park/SecureCompatibleEncryptionExamples
 
 import * as crypto from "crypto";

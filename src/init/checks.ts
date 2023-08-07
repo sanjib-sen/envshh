@@ -1,3 +1,17 @@
+// Copyright 2023 sanjib
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 // Copyright (c) 2023 Sanjib Kumar Sen <mail@sanjibsen.com>
 //
 // This software is released under the MIT License.
@@ -37,7 +51,7 @@ export class Project {
     name: string,
     directory: string,
     envs: string[],
-    branch: string,
+    branch: string
   ) {}
 }
 
@@ -134,7 +148,7 @@ export function pullMasterRepo() {
 export function pushMasterRepo() {
   execSync(`git -C ${getMasterRepoPath()} add .`);
   execSync(
-    `git -C ${getMasterRepoPath()} commit -m "${new Date().toUTCString()}"`,
+    `git -C ${getMasterRepoPath()} commit -m "${new Date().toUTCString()}"`
   );
   execSync(`git -C ${getMasterRepoPath()} push origin master`);
 }
@@ -157,53 +171,6 @@ export function getListOfEnvsInDirectory(directory: string) {
     }
   }
   return envs;
-}
-
-export function readEnv(path: string) {
-  const env = fs.readFileSync(path, "utf8");
-  return env;
-}
-
-export function readEnvByLine(path: string) {
-  const env = readEnv(path);
-  return env.split(/\r?\n/);
-}
-
-export function getQuotedValueFromLine(line: string) {
-  const value = line.substring(line.indexOf("=") + 1) as string;
-  return value;
-}
-
-export function getQuteFromValue(value: string) {
-  for (let index = 0; index < envQuotations.length; index++) {
-    const quote = envQuotations[index];
-    if (value.startsWith(quote) && value.endsWith(quote)) {
-      return quote;
-    }
-  }
-  return "";
-}
-
-export function getCleanValueFromLine(line: string) {
-  const value = getQuotedValueFromLine(line);
-  const quote = getQuteFromValue(value);
-  return quote ? value.replaceAll(quote, "") : value;
-}
-
-export function getEncryptedValueFromLine(line: string, password: string) {
-  const quotedValue = getQuotedValueFromLine(line);
-  const originalValue = getCleanValueFromLine(line);
-  const encryptedValue = encryptString(originalValue, password);
-  const quote = getQuteFromValue(quotedValue);
-  return quote ? `${quote}${encryptedValue}${quote}` : encryptedValue;
-}
-
-export function getDecryptedValueFromLine(line: string, password: string) {
-  const quotedValue = getQuotedValueFromLine(line);
-  const encryptedValue = getCleanValueFromLine(line);
-  const originalValue = decryptString(encryptedValue, password);
-  const quote = getQuteFromValue(quotedValue);
-  return quote ? `${quote}${originalValue}${quote}` : originalValue;
 }
 
 export function getEncryptedEnv(location: string, password: string) {
@@ -251,12 +218,12 @@ export function getDirectoryWithoutEnvFile(location: string) {
 export function saveEncryptedEnv(
   location: string,
   password: string,
-  project: string,
+  project: string
 ) {
   const encryptedEnv = getEncryptedEnv(location, password);
   const destinationDirectory = path.join(
     getMasterRepoPath(),
-    project || getCurrentWorkingDirectoryName(),
+    project || getCurrentWorkingDirectoryName()
   );
   const destination = location.replace(process.cwd(), destinationDirectory);
 
@@ -285,7 +252,7 @@ export function envshh_push(
   directory = "",
   file = "",
   branch = "development",
-  offline = false,
+  offline = false
 ) {
   if (!offline) {
     pullMasterRepo();
@@ -294,7 +261,7 @@ export function envshh_push(
   const envs = file
     ? [path.join(process.cwd(), file)]
     : getListOfEnvsInDirectory(
-        directory ? path.join(process.cwd(), directory) : process.cwd(),
+        directory ? path.join(process.cwd(), directory) : process.cwd()
       );
 
   if (project === "") {
@@ -314,7 +281,7 @@ export function envshh_pull(
   password: string,
   projectName = "",
   branch = "development",
-  offline = false,
+  offline = false
 ) {
   // TODO: Incomplete
 
@@ -326,7 +293,7 @@ export function envshh_pull(
     projectName ||
       getGitRepoName(getCurrentWorkingDirectoryName()) ||
       getCurrentWorkingDirectoryName(),
-    `.envshh-branch-${branch}`,
+    `.envshh-branch-${branch}`
   );
 
   const envs = getAllEnvsFromMasterRepo(source);
@@ -338,10 +305,10 @@ export function envshh_pull(
       env.replace(
         path.join(
           getMasterRepoPath(),
-          projectName || getCurrentWorkingDirectoryName(),
+          projectName || getCurrentWorkingDirectoryName()
         ),
-        "",
-      ),
+        ""
+      )
     );
     const decryptedEnv = getDecryptedEnv(env, password);
     if (!fs.existsSync(getDirectoryWithoutEnvFile(destination))) {
@@ -355,14 +322,14 @@ export function envshh_pull(
 
 export function getAllEnvsFromMasterRepo(
   dirPath: string,
-  arrayOfFiles: string[] = [],
+  arrayOfFiles: string[] = []
 ) {
   const files = fs.readdirSync(dirPath);
   files.forEach(function (file) {
     if (fs.statSync(dirPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllEnvsFromMasterRepo(
         dirPath + "/" + file,
-        arrayOfFiles,
+        arrayOfFiles
       );
     } else {
       arrayOfFiles.push(path.join(dirPath, file));
