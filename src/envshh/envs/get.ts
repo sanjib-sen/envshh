@@ -7,8 +7,9 @@ import path from "path";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
 import { isPathADirectory, isPathExists } from "../../filesystem/checks.js";
 import { envExtensions } from "../defaults/defaults.js";
+import * as fs from "fs";
 
-export function getListOfEnvsInDirectory(directory: string) {
+function getListOfEnvsInDirectory(directory: string) {
   const envs = [];
   for (let index = 0; index < envExtensions.length; index++) {
     const envExtension = envExtensions[index];
@@ -37,4 +38,23 @@ export function getAllEnvsFromProjectParams(
     }
   });
   return envs;
+}
+
+export function getAllEnvsFromMainRepo(
+  directoryPath: string,
+  arrayOfFiles: string[] = []
+) {
+  const files = fs.readdirSync(directoryPath);
+  files.forEach(function (file) {
+    if (fs.statSync(directoryPath + "/" + file).isDirectory()) {
+      arrayOfFiles = getAllEnvsFromMainRepo(
+        directoryPath + "/" + file,
+        arrayOfFiles
+      );
+    } else {
+      arrayOfFiles.push(path.join(directoryPath, file));
+    }
+  });
+
+  return arrayOfFiles;
 }

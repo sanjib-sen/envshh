@@ -3,13 +3,14 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
+import { createFile } from "../../filesystem/functions.js";
 import {
   getCleanValueFromLine,
   getQuotedValueFromLine,
   getQuteFromValue,
   readEnvByLine,
 } from "./common.js";
-import { decryptString } from "./encryption.js";
+import { decryptString } from "./lib.js";
 
 function getDecryptedValueFromLine(line: string, password: string) {
   const quotedValue = getQuotedValueFromLine(line);
@@ -35,4 +36,13 @@ export function getDecryptedEnv(location: string, password: string) {
   }
   decryptedEnv += decryptedLines.join("\n");
   return decryptedEnv;
+}
+
+export function saveDecryptedEnv(
+  envPath: string,
+  password: string,
+  destination: string
+) {
+  const decryptedEnv = getDecryptedEnv(envPath, password);
+  createFile(destination, decryptedEnv);
 }

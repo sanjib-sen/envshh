@@ -11,12 +11,21 @@
     "moduleResolution": "NodeNext",
     "noPropertyAccessFromIndexSignature": false,
     "isolatedModules": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "resolveJsonModule": true
   },
-  "lib": ["ESNext"],
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"],
+  "lib": [
+    "ESNext"
+  ],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "ts-node": {
     "transpileOnly": true,
     "files": true,

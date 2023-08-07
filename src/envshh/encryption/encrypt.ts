@@ -10,7 +10,7 @@ import {
   getQuteFromValue,
   readEnvByLine,
 } from "./common.js";
-import { encryptString } from "./encryption.js";
+import { encryptString } from "./lib.js";
 
 function getEncryptedValueFromLine(line: string, password: string) {
   const quotedValue = getQuotedValueFromLine(line);
