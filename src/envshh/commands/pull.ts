@@ -10,9 +10,9 @@ import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { getAllEnvsFromMainRepo } from "../envs/get.js";
 import { saveDecryptedEnv } from "../encryption/decrypt.js";
 
-export function thePush(pushConfig: ProjectConfigParansType) {
+export function thePull(pushConfig: ProjectConfigParansType) {
   const envshh = getInstance(pushConfig.instance);
-  if (!pushConfig.offline) {
+  if (!pushConfig.offline || envshh.isMainRepoUrlSet()) {
     envshh.gitPull();
   }
 
