@@ -34,3 +34,4 @@ Just use this as a [template](https://github.com/new?template_name=starter-node&
 | `npm run start`       | Compile TypeScript Files to JavaScript and run.                                                            | `npm run build`                   |
 | `npm run docker:up`   | Prepare, build and run Docker container using [docker-compose up](https://docs.docker.com/compose) command | `docker-compose build --no-cache` |
 | `npm run docker:down` | Stop Docker container using [docker-compose down](https://docs.docker.com/compose) command                 |                                   |
+# Envshh Instance personal

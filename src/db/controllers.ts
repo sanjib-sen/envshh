@@ -17,6 +17,7 @@ import {
   defaultMainDirectory,
 } from "../envshh/defaults/defaults.js";
 import * as readlineSync from "readline-sync";
+import path from "path";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -42,7 +43,7 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
       const envshh = new EnvshhInstance({
         name: defaultInstanceName,
         mainRepoUrl: repoUrl,
-        mainDirectory: defaultMainDirectory,
+        mainDirectory: path.join(defaultMainDirectory, defaultInstanceName),
       });
       envshh.create();
       return envshh;

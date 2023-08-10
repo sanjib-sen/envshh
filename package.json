@@ -9,8 +9,7 @@
     "lint": "eslint --ext .js,.ts,.json --fix .",
     "clean": "rm -rf node_modules dist package-lock.json",
     "dev": "nodemon --exec node --loader ts-node/esm --watch src src/index.ts",
-    "build": "npm run format && npm run lint && tsc",
-    "start": "rm -rf dist && npm run build && npm install -g . && envshh --version"
+    "build": "rm -rf dist  && npm run format && npm run lint && tsc"
   },
   "bin": {
     "envshh": "./dist/index.js"

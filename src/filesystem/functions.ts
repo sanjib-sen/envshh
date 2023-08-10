@@ -24,7 +24,7 @@ export function deleteDirectoryOrFile(
 ) {
   try {
     if (fs.existsSync(directoryOrFilePath)) {
-      fs.rmSync(directoryOrFilePath, { recursive: recursive });
+      fs.rmSync(directoryOrFilePath, { recursive: recursive, force: true });
     }
   } catch (error) {
     log.error(`Failed to Delete directory or file ${directoryOrFilePath}.`);

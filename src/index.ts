@@ -21,6 +21,7 @@ import { getGitRepoName } from "./git/functions.js";
 import { getCurrentWorkingDirectoryName } from "./filesystem/functions.js";
 import { thePush } from "./envshh/commands/push.js";
 import { thePull } from "./envshh/commands/pull.js";
+import { log } from "./utils/log.js";
 
 const program = new Command();
 program
@@ -65,6 +66,7 @@ program
     const password = readlineSync.question("Password: ", {
       hideEchoBack: true,
     });
+
     thePush({
       password: password,
       name: options.project,
@@ -96,8 +98,10 @@ program
   .option(
     "-i, --instance <Instance name.>",
     `[Advanced Option] Specify the instance name. Defaults to '${defaultInstanceName}'.`,
+    defaultInstanceName,
   )
   .action((options) => {
+    log.info(`${options.project} ${options.branch}`);
     const password = readlineSync.question("Password: ", {
       hideEchoBack: true,
     });

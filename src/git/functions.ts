@@ -26,16 +26,17 @@ export function cloneRepo(envshh: EnvshhInstanceType) {
     isDirectoryEmpty(envshh.mainDirectory) === false
   ) {
     log.error(
-      "Directory already exists. But it is not empty. It is not safe to clone here.",
+      `Directory ${envshh.mainDirectory} already exists. But it is not empty. It is not safe to clone here.`,
     );
     process.exit(1);
   }
 
   try {
-    execSync(`git clone ${envshh.mainDirectory} ${envshh.mainRepoUrl}`);
+    execSync(`git clone ${envshh.mainRepoUrl} ${envshh.mainDirectory}`);
     return true;
   } catch (error) {
     log.error("Failed to clone master repository.");
+    process.exit(1);
   }
 }
 
@@ -43,7 +44,25 @@ export function pullRepo(envshh: EnvshhInstanceType) {
   try {
     execSync(`git -C ${envshh.mainDirectory} pull`);
   } catch (error) {
+    if (error instanceof Error) {
+      log.warn(error.toString());
+    }
+    if (
+      error instanceof Error &&
+      error
+        .toString()
+        .trim()
+        .includes(
+          "Your configuration specifies to merge with the ref 'refs/heads/main'",
+        )
+    ) {
+      // deleteDirectoryOrFile(envshh.mainDirectory);
+      execSync(
+        `echo "# Envshh Instance ${envshh.name}" >> README.md && git add . && git branch -M main && git commit -m "first commit" && git push -u origin main`,
+      );
+    }
     log.error("Failed to pull master repository.");
+    process.exit(1);
   }
 }
 
@@ -67,7 +86,7 @@ export function pushRepo(envshh: EnvshhInstanceType) {
 }
 
 function getProjectNameFromRepoUrl(url: string) {
-  return url.split("/").pop()?.replace(".git", "");
+  return url.split("/").pop()?.replace(".git", "").trim();
 }
 
 export function getGitRepoName(location: string) {

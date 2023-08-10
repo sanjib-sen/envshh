@@ -16,7 +16,7 @@ import {
 import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
 import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
-import { commitRepo, pullRepo, pushRepo } from "../git/functions.js";
+import { cloneRepo, commitRepo, pullRepo, pushRepo } from "../git/functions.js";
 import { isDirectoryEmpty } from "../filesystem/checks.js";
 
 export class EnvshhInstance {
@@ -69,6 +69,9 @@ export class EnvshhInstance {
 
   create() {
     DBinsertInstance(this.config);
+    createDirectory(this.config.mainDirectory);
+    cloneRepo(this.config);
+    log.success(`Created new Directory ${this.config.mainDirectory}`);
     return this;
   }
 
