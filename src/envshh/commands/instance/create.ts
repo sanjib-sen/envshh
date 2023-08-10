@@ -8,7 +8,7 @@ import * as readlineSync from "readline-sync";
 import { EnvshhInstance } from "../../envshh.js";
 
 export function createInstance(
-  envshhCreateParams: EnvshhInstanceType | undefined
+  envshhCreateParams: EnvshhInstanceType | undefined,
 ) {
   const name =
     envshhCreateParams?.name || readlineSync.question("Instance Name: ");

@@ -20,7 +20,7 @@ export function thePull(pushConfig: ProjectConfigParansType) {
     envshh.getMainDirectory(),
     pushConfig.name,
     defaultBranchNamePrefix,
-    pushConfig.branch
+    pushConfig.branch,
   );
 
   const envPaths = getAllEnvsFromMainRepo(sourceDirectory);

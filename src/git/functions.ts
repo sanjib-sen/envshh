@@ -26,7 +26,7 @@ export function cloneRepo(envshh: EnvshhInstanceType) {
     isDirectoryEmpty(envshh.mainDirectory) === false
   ) {
     log.error(
-      "Directory already exists. But it is not empty. It is not safe to clone here."
+      "Directory already exists. But it is not empty. It is not safe to clone here.",
     );
     process.exit(1);
   }
@@ -51,7 +51,7 @@ export function commitRepo(envshh: EnvshhInstanceType) {
   try {
     execSync(`git -C ${envshh.mainDirectory} add .`);
     execSync(
-      `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`
+      `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
     );
   } catch (error) {
     log.error("Failed to commit changes.");

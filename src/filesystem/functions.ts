@@ -20,7 +20,7 @@ export function createDirectory(directoryPath: string, recursive = false) {
 
 export function deleteDirectoryOrFile(
   directoryOrFilePath: string,
-  recursive = false
+  recursive = false,
 ) {
   try {
     if (fs.existsSync(directoryOrFilePath)) {

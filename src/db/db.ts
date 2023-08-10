@@ -19,7 +19,7 @@ if (!isPathExists(defaultDBPath)) {
 }
 
 const adapter = new JSONFileSync<{ instances: EnvshhInstanceType[] }>(
-  defaultDBPath
+  defaultDBPath,
 );
 const defaultData = {
   instances: [],

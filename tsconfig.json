@@ -1,25 +1,30 @@
 {
   "compilerOptions": {
+    "moduleResolution": "NodeNext",
+    "module": "ESNext",
     "target": "ESNext",
-    "module": "NodeNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
-    "moduleResolution": "NodeNext",
     "noPropertyAccessFromIndexSignature": false,
     "isolatedModules": true,
     "types": ["node"],
+    "lib": ["ESNext"],
     "resolveJsonModule": true
   },
-  "lib": ["ESNext"],
-  "include": ["src"],
+  // "lib": ["ESNext"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"],
   "ts-node": {
     "transpileOnly": true,
     "files": true,
-    "experimentalResolver": true
+    "experimentalResolver": true,
+    "esm": true,
+    "compilerOptions": {
+      "module": "ESNext"
+    }
   }
 }

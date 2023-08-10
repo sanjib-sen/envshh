@@ -21,7 +21,7 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
     envshh.getMainDirectory(),
     pushConfig.name,
     defaultBranchNamePrefix,
-    pushConfig.branch
+    pushConfig.branch,
   );
   createDirectory(destinationDirectory);
   for (let index = 0; index < envPaths.length; index++) {

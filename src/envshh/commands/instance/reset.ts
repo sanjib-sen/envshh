@@ -11,7 +11,7 @@ import * as readlineSync from "readline-sync";
 export function resetInstance(name: EnvshhInstanceNameType) {
   const envshh = DBgetInstance(name);
   const confirm = readlineSync.question(
-    `Are you sure you want to clear ${name}? (y/N): `
+    `Are you sure you want to clear ${name}? (y/N): `,
   );
   if (confirm === "y") {
     log.info(`Instance ${name} Cleared.`);

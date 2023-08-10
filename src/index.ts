@@ -1,14 +1,13 @@
-// #! /usr/bin/env node
+#! /usr/bin/env node
 
-// // Copyright (c) 2023 Sanjib Kumar Sen <mail@sanjibsen.com>
-// //
-// // This software is released under the MIT License.
-// // https://opensource.org/licenses/MIT
+// Copyright (c) 2023 Sanjib Kumar Sen <mail@sanjibsen.com>
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 
 import { Command } from "commander";
 import * as readlineSync from "readline-sync";
 import figlet from "figlet";
-import { version } from "../package.json";
 import { syncDB } from "./envshh/commands/db/sync.js";
 import { clearDB } from "./envshh/commands/db/clear.js";
 import {
@@ -29,9 +28,12 @@ program
   .addHelpText("beforeAll", figlet.textSync("envshh"))
   .description(
     "A command line tool to securely and automatically manage, store environment variables.\
-    \nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh"
+    \nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
   )
-  .version(version, "-v, --version");
+  .version(
+    process.env.npm_package_version ? process.env.npm_package_version : "1.00",
+    "-v, --version",
+  );
 
 program
   .command("push")
@@ -41,23 +43,23 @@ program
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
     isDirectoryAGitRepository(process.cwd())
       ? getGitRepoName(process.cwd())
-      : getCurrentWorkingDirectoryName()
+      : getCurrentWorkingDirectoryName(),
   )
   .option(
     "-b, --branch <name>",
     `Keep different branches for different production, development and staging. Defaults to '${defaultBranchName}'.`,
-    defaultBranchName
+    defaultBranchName,
   )
   .option(
     "-e, --env <relative-path-to-folders/file where the .env/.envs are located.>",
     "Specify input directory or file location. Defaults to current directory.",
-    process.cwd()
+    process.cwd(),
   )
   .option("--offline", "Don't push to remote repository. Just commit locally.")
   .option(
     "-i, --instance <Instance name.>",
     `[Advanced Option] Specify the instance name. Defaults to '${defaultInstanceName}'.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .action((options) => {
     const password = readlineSync.question("Password: ", {
@@ -81,19 +83,19 @@ program
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
     isDirectoryAGitRepository(process.cwd())
       ? getGitRepoName(process.cwd())
-      : getCurrentWorkingDirectoryName()
+      : getCurrentWorkingDirectoryName(),
   )
   .option(
     "-b, --branch <name>",
-    `Keep different branches for different production, development and staging. Defaults to '${defaultBranchName}'.`
+    `Keep different branches for different production, development and staging. Defaults to '${defaultBranchName}'.`,
   )
   .option(
     "--offline",
-    "Don't pull from remote repository. Just do an offline pull. Default: false."
+    "Don't pull from remote repository. Just do an offline pull. Default: false.",
   )
   .option(
     "-i, --instance <Instance name.>",
-    `[Advanced Option] Specify the instance name. Defaults to '${defaultInstanceName}'.`
+    `[Advanced Option] Specify the instance name. Defaults to '${defaultInstanceName}'.`,
   )
   .action((options) => {
     const password = readlineSync.question("Password: ", {
@@ -113,7 +115,7 @@ program
   .description("[Advanced] Manage instance database")
   .command("sync")
   .description(
-    "[Advanced] Remove all deleted or moved instances from database."
+    "[Advanced] Remove all deleted or moved instances from database.",
   )
   .action(() => {
     syncDB();
@@ -129,16 +131,16 @@ program
   .description("[Advanced] Manage Instances")
   .command("create")
   .description(
-    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode."
+    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode.",
   )
   .option(
     "-n, --name <name>",
     `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .option(
     "-d, --directory <directory>",
-    "[Advanced] Specify the directory path for the instance."
+    "[Advanced] Specify the directory path for the instance.",
   )
   .option("-r, --remote <remote-url>", "Specify the Remote Repository URL.")
   .command("edit")
@@ -146,12 +148,12 @@ program
   .option(
     "-n, --name <name>",
     `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .option("--new-name <new-ame>", "Specify the new name for the instance.")
   .option(
     "--directory <directory-path>",
-    "Modify the directory path for the instance."
+    "Modify the directory path for the instance.",
   )
   .option("--remote <remote-url>", "Modify the Remote Repository URL.")
   .action(() => {
@@ -162,7 +164,7 @@ program
   .option(
     "-n, --name <name>",
     `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .action((options) => {
     removeInstance(options.name);
@@ -172,7 +174,7 @@ program
   .option(
     "-n, --name <name>",
     `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .action((options) => {
     resetInstance(options.name);

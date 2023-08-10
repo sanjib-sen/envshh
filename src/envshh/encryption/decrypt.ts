@@ -41,7 +41,7 @@ export function getDecryptedEnv(location: string, password: string) {
 export function saveDecryptedEnv(
   envPath: string,
   password: string,
-  destination: string
+  destination: string,
 ) {
   const decryptedEnv = getDecryptedEnv(envPath, password);
   createFile(destination, decryptedEnv);
