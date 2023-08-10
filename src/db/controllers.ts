@@ -11,6 +11,7 @@ import {
 import { EnvshhInstance } from "../envshh/envshh.js";
 import { log } from "../utils/log.js";
 import { EnvshhInstanceModifyParamsType } from "../types/params.js";
+import { isPathExists } from "../filesystem/checks.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -66,5 +67,21 @@ export function DBdeleteInstance(name: EnvshhInstanceNameType) {
     process.exit(1);
   }
   db.data.instances.splice(InstanceIndex, 1);
+  db.write();
+}
+
+export function DBSync() {
+  db.read();
+  db.data.instances.forEach((instance) => {
+    if (!isPathExists(instance.mainDirectory)) {
+      DBdeleteInstance(instance.name);
+    }
+  });
+  db.write();
+}
+
+export function DBClear() {
+  db.read();
+  db.data.instances = [];
   db.write();
 }

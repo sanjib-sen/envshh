@@ -7,7 +7,7 @@ import { EnvshhInstanceModifyParamsType } from "../../../types/params.js";
 import { DBgetInstance } from "../../../db/controllers.js";
 import { EnvshhInstanceNameType } from "../../../types/schemas.js";
 
-export function createInstance(
+export function editInstance(
   name: EnvshhInstanceNameType,
   envshhModifyParams: EnvshhInstanceModifyParamsType
 ) {

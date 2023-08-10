@@ -102,6 +102,7 @@ export class EnvshhInstance {
   reset() {
     this.deleteMainDirectory();
     this.createMainDirectory();
+    return this;
   }
 
   gitPull() {
