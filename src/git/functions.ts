@@ -58,7 +58,7 @@ export function pullRepo(envshh: EnvshhInstanceType) {
     ) {
       // deleteDirectoryOrFile(envshh.mainDirectory);
       execSync(
-        `echo "# Envshh Instance ${envshh.name}" >> README.md && git add . && git branch -M main && git commit -m "first commit" && git push -u origin main`,
+        `echo "# Envshh Instance ${envshh.name}" >> README.md && git add . && git commit -m "first commit" && git branch -M main && git push -u origin main`,
       );
     }
     log.error("Failed to pull master repository.");
