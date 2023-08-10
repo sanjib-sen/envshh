@@ -5,69 +5,177 @@
 // // This software is released under the MIT License.
 // // https://opensource.org/licenses/MIT
 
-// import { envshh_pull, envshh_push } from "./init/checks.js";
-// import { Command } from "commander";
-// import * as readlineSync from "readline-sync";
-// import figlet from "figlet";
-process.stdout.write("2");
-// const program = new Command();
-// program
-//   .name("envshh")
-//   .addHelpText("beforeAll", figlet.textSync("envshh"))
-//   .description(
-//     "A command line tool to securely and automatically manage, store environment variables.\
-//     \nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
-//   )
-//   .version(version, "-v, --version");
+import { Command } from "commander";
+import * as readlineSync from "readline-sync";
+import figlet from "figlet";
+import { version } from "../package.json";
+import { syncDB } from "./envshh/commands/db/sync.js";
+import { clearDB } from "./envshh/commands/db/clear.js";
+import {
+  defaultBranchName,
+  defaultInstanceName,
+} from "./envshh/defaults/defaults.js";
+import { resetInstance } from "./envshh/commands/instance/reset.js";
+import { removeInstance } from "./envshh/commands/instance/remove.js";
+import { isDirectoryAGitRepository } from "./git/checks.js";
+import { getGitRepoName } from "./git/functions.js";
+import { getCurrentWorkingDirectoryName } from "./filesystem/functions.js";
+import { thePush } from "./envshh/commands/push.js";
+import { thePull } from "./envshh/commands/pull.js";
 
-// program
-//   .command("push")
-//   .description("Push local environment variables to Upstream")
-//   .option(
-//     "-p, --project <project-name>",
-//     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
-//   )
-//   .option(
-//     "-d, --directory <relative-path-to-directory>",
-//     "Directory where env files are located.",
-//   )
-//   .option("-f, --file <relative-path-to-file>", "Select the .env file")
-//   .option(
-//     "-b, --branch <name>",
-//     "Keep different branches for different production, development and staging. Defaults to 'main'.",
-//   )
-//   .option("--offline", "Don't push to remote repository. Just commit locally.")
-//   .action((options) => {
-//     const password = readlineSync.question("Password: ", {
-//       hideEchoBack: true,
-//     });
-//     envshh_push(
-//       password,
-//       options.project,
-//       options.directory,
-//       options.file,
-//       options.branch,
-//       options.offline,
-//     );
-//   });
+const program = new Command();
+program
+  .name("envshh")
+  .addHelpText("beforeAll", figlet.textSync("envshh"))
+  .description(
+    "A command line tool to securely and automatically manage, store environment variables.\
+    \nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh"
+  )
+  .version(version, "-v, --version");
 
-// program
-//   .command("pull")
-//   .description("Pull environment variables from Upstream")
-//   .option(
-//     "-p, --project <project-name>",
-//     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
-//   )
-//   .option(
-//     "-b, --branch <name>",
-//     "Keep different branches for different production, development and staging. Defaults to 'main'.",
-//   )
-//   .option("--offline", "Don't push to remote repository. Just commit locally.")
-//   .action((options) => {
-//     const password = readlineSync.question("Password: ", {
-//       hideEchoBack: true,
-//     });
-//     envshh_pull(password, options.project, options.branch, options.offline);
-//   });
+program
+  .command("push")
+  .description("Push local environment variables to Upstream")
+  .option(
+    "-p, --project <project-name>",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+    isDirectoryAGitRepository(process.cwd())
+      ? getGitRepoName(process.cwd())
+      : getCurrentWorkingDirectoryName()
+  )
+  .option(
+    "-b, --branch <name>",
+    `Keep different branches for different production, development and staging. Defaults to '${defaultBranchName}'.`,
+    defaultBranchName
+  )
+  .option(
+    "-e, --env <relative-path-to-folders/file where the .env/.envs are located.>",
+    "Specify input directory or file location. Defaults to current directory.",
+    process.cwd()
+  )
+  .option("--offline", "Don't push to remote repository. Just commit locally.")
+  .option(
+    "-i, --instance <Instance name.>",
+    `[Advanced Option] Specify the instance name. Defaults to '${defaultInstanceName}'.`,
+    defaultInstanceName
+  )
+  .action((options) => {
+    const password = readlineSync.question("Password: ", {
+      hideEchoBack: true,
+    });
+    thePush({
+      password: password,
+      name: options.project,
+      envPath: options.env,
+      branch: options.branch,
+      offline: options.offline,
+      instance: options.instance,
+    });
+  });
 
-// program.parse();
+program
+  .command("pull")
+  .description("Pull environment variables from Upstream")
+  .option(
+    "-p, --project <project-name>",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+    isDirectoryAGitRepository(process.cwd())
+      ? getGitRepoName(process.cwd())
+      : getCurrentWorkingDirectoryName()
+  )
+  .option(
+    "-b, --branch <name>",
+    `Keep different branches for different production, development and staging. Defaults to '${defaultBranchName}'.`
+  )
+  .option(
+    "--offline",
+    "Don't pull from remote repository. Just do an offline pull. Default: false."
+  )
+  .option(
+    "-i, --instance <Instance name.>",
+    `[Advanced Option] Specify the instance name. Defaults to '${defaultInstanceName}'.`
+  )
+  .action((options) => {
+    const password = readlineSync.question("Password: ", {
+      hideEchoBack: true,
+    });
+    thePull({
+      password: password,
+      name: options.project,
+      branch: options.branch,
+      offline: options.offline,
+      instance: options.instance,
+    });
+  });
+
+program
+  .command("db")
+  .description("[Advanced] Manage instance database")
+  .command("sync")
+  .description(
+    "[Advanced] Remove all deleted or moved instances from database."
+  )
+  .action(() => {
+    syncDB();
+  })
+  .command("clear")
+  .description("[Advanced][Careful] Remove all instances from Database")
+  .action(() => {
+    clearDB();
+  });
+
+program
+  .command("instance")
+  .description("[Advanced] Manage Instances")
+  .command("create")
+  .description(
+    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode."
+  )
+  .option(
+    "-n, --name <name>",
+    `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
+    defaultInstanceName
+  )
+  .option(
+    "-d, --directory <directory>",
+    "[Advanced] Specify the directory path for the instance."
+  )
+  .option("-r, --remote <remote-url>", "Specify the Remote Repository URL.")
+  .command("edit")
+  .description("[Advanced] Modify an instance.")
+  .option(
+    "-n, --name <name>",
+    `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
+    defaultInstanceName
+  )
+  .option("--new-name <new-ame>", "Specify the new name for the instance.")
+  .option(
+    "--directory <directory-path>",
+    "Modify the directory path for the instance."
+  )
+  .option("--remote <remote-url>", "Modify the Remote Repository URL.")
+  .action(() => {
+    syncDB();
+  })
+  .command("remove")
+  .description("[Advanced][Careful] Delete the instance data.")
+  .option(
+    "-n, --name <name>",
+    `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
+    defaultInstanceName
+  )
+  .action((options) => {
+    removeInstance(options.name);
+  })
+  .command("reset")
+  .description("[Advanced][Careful] Reset the instance.")
+  .option(
+    "-n, --name <name>",
+    `Specify the instance name. Defaults to '${defaultInstanceName}'.`,
+    defaultInstanceName
+  )
+  .action((options) => {
+    resetInstance(options.name);
+  });
+
+program.parse();

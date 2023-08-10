@@ -17,7 +17,7 @@ export function createInstance(
     readlineSync.question("Directory Path: ");
   const mainRepoUrl =
     envshhCreateParams?.mainRepoUrl ||
-    readlineSync.question("Upstream Remote Repository URL: ");
+    readlineSync.question("Remote Repository URL: ");
   const envshh = new EnvshhInstance({
     name: name,
     mainDirectory: mainDirectory,

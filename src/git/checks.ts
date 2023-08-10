@@ -15,7 +15,7 @@ export function isGitInstalledAndPathed() {
   }
 }
 
-export function isRepositoryExistsOnUpstream(repositoryAddress: string) {
+export function isRepositoryExistsOnRemote(repositoryAddress: string) {
   try {
     execSync(`git ls-remote ${repositoryAddress}`);
     return true;

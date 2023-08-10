@@ -12,6 +12,11 @@ import { EnvshhInstance } from "../envshh/envshh.js";
 import { log } from "../utils/log.js";
 import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
+import {
+  defaultInstanceName,
+  defaultMainDirectory,
+} from "../envshh/defaults/defaults.js";
+import * as readlineSync from "readline-sync";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -32,6 +37,16 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
     (instance) => instance.name === name
   );
   if (InstanceIndex === -1) {
+    if (name === defaultInstanceName) {
+      const repoUrl = readlineSync.question("Remote Repository URL: ");
+      const envshh = new EnvshhInstance({
+        name: defaultInstanceName,
+        mainRepoUrl: repoUrl,
+        mainDirectory: defaultMainDirectory,
+      });
+      envshh.create();
+      return envshh;
+    }
     log.error(
       `Instance ${name} not found. Create one by running: envshh instance create`
     );

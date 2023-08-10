@@ -5,7 +5,7 @@
 
 import {
   isGitInstalledAndPathed,
-  isRepositoryExistsOnUpstream,
+  isRepositoryExistsOnRemote,
 } from "../git/checks.js";
 import { log } from "../utils/log.js";
 import {
@@ -46,12 +46,12 @@ export class EnvshhInstance {
       );
     } else if (
       this.config.mainRepoUrl &&
-      isRepositoryExistsOnUpstream(this.config.mainRepoUrl)
+      isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
       log.success(`Using Master Repository URL: ${this.config.mainRepoUrl}`);
     } else if (
       this.config.mainRepoUrl &&
-      !isRepositoryExistsOnUpstream(this.config.mainRepoUrl)
+      !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
       log.error(
         `Specified Repository URL ${this.config.mainRepoUrl} does not exist`

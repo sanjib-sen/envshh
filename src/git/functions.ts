@@ -6,7 +6,10 @@
 import { execSync } from "child_process";
 import { isDirectoryEmpty, isPathExists } from "../filesystem/checks.js";
 import { log } from "../utils/log.js";
-import { isRepositoryExistsOnUpstream } from "./checks.js";
+import {
+  isDirectoryAGitRepository,
+  isRepositoryExistsOnRemote,
+} from "./checks.js";
 import { EnvshhInstanceType } from "../types/schemas.js";
 
 export function cloneRepo(envshh: EnvshhInstanceType) {
@@ -14,8 +17,8 @@ export function cloneRepo(envshh: EnvshhInstanceType) {
     log.error("Repository URL is not defined.");
     process.exit(1);
   }
-  if (isRepositoryExistsOnUpstream(envshh.mainRepoUrl) === false) {
-    log.error("Repository does not exist on upstream.");
+  if (isRepositoryExistsOnRemote(envshh.mainRepoUrl) === false) {
+    log.error("Repository does not exist on Remote.");
     process.exit(1);
   }
   if (
@@ -61,4 +64,16 @@ export function pushRepo(envshh: EnvshhInstanceType) {
   } catch (error) {
     log.error("Failed to push.");
   }
+}
+
+function getProjectNameFromRepoUrl(url: string) {
+  return url.split("/").pop()?.replace(".git", "");
+}
+
+export function getGitRepoName(location: string) {
+  if (isDirectoryAGitRepository(location)) {
+    const origin = execSync("git config --get remote.origin.url").toString();
+    return getProjectNameFromRepoUrl(origin) as string;
+  }
+  return "";
 }

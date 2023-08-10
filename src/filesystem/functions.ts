@@ -61,3 +61,7 @@ export function copyFileAndFolder(sourcePath: string, destinationPath: string) {
     process.exit(1);
   }
 }
+
+export function getCurrentWorkingDirectoryName() {
+  return process.cwd().split("\\").pop() as string;
+}
