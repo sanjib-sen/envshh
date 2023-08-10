@@ -4,14 +4,14 @@
 // https://opensource.org/licenses/MIT
 
 import path from "path";
-import { getInstance } from "../../db/controllers.js";
+import { DBgetInstance } from "../../db/controllers.js";
 import { ProjectConfigParansType } from "../../types/params.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { getAllEnvsFromMainRepo } from "../envs/get.js";
 import { saveDecryptedEnv } from "../encryption/decrypt.js";
 
 export function thePull(pushConfig: ProjectConfigParansType) {
-  const envshh = getInstance(pushConfig.instance);
+  const envshh = DBgetInstance(pushConfig.instance);
   if (!pushConfig.offline || envshh.isMainRepoUrlSet()) {
     envshh.gitPull();
   }

@@ -5,6 +5,7 @@
 
 import { z } from "zod";
 import {
+  defaultInstanceName,
   defaultMainDirectory,
   defaultRegexNameConventionMessage,
   defaultValidRegex,
@@ -15,7 +16,7 @@ export const EnvshhInstanceNameSchema = z
   .regex(defaultValidRegex, defaultRegexNameConventionMessage("Instance"))
   .min(1)
   .max(25)
-  .default("main");
+  .default(defaultInstanceName);
 
 export const EnvshhInstanceSchema = z
   .object({
@@ -31,3 +32,4 @@ export const EnvshhInstanceSchema = z
   });
 
 export type EnvshhInstanceType = z.infer<typeof EnvshhInstanceSchema>;
+export type EnvshhInstanceNameType = z.infer<typeof EnvshhInstanceNameSchema>;

@@ -6,7 +6,7 @@
 export const defaultMainDirectory =
   process.platform === "win32"
     ? `${process.env.USERPROFILE}\\.envshh`
-    : `${process.env.HOME}/.envshh`;
+    : `${process.env.HOME}/.config/.envshh`;
 export const defaultDBPath =
   process.platform === "win32"
     ? `${process.env.USERPROFILE}\\.envshh\\db.json`
@@ -38,3 +38,7 @@ export const defaultRegexNameConventionMessage = (type: string) => {
         \n---- Name cannot contain consecutive dash (-), underscore (_)\
         `;
 };
+
+export const defaultInstanceName = "personal";
+
+export const defaultBranchName = "main";

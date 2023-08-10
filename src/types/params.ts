@@ -7,8 +7,9 @@ import { z } from "zod";
 import {
   defaultValidRegex,
   defaultRegexNameConventionMessage,
+  defaultBranchName,
 } from "../envshh/defaults/defaults.js";
-import { EnvshhInstanceNameSchema } from "./schemas.js";
+import { EnvshhInstanceNameSchema, EnvshhInstanceType } from "./schemas.js";
 
 export type EnvshhConfigParamsType = {
   name?: string;
@@ -27,7 +28,7 @@ export const ProjectConfigParans = z.object({
     .regex(defaultValidRegex, defaultRegexNameConventionMessage("Branch"))
     .min(1)
     .max(25)
-    .default("main"),
+    .default(defaultBranchName),
   offline: z.boolean().default(false),
   password: z.string().min(1).max(255),
 });
@@ -43,3 +44,12 @@ export type ProjectConfigParansType = z.infer<typeof ProjectConfigParans>;
 export type ProjectPushConfigParamsType = z.infer<
   typeof ProjectPushConfigParams
 >;
+
+type RequireAtLeastOneParam<T, R extends keyof T = keyof T> = Omit<T, R> &
+  { [P in R]: Required<Pick<T, P>> & Partial<Omit<T, P>> }[R];
+
+export type EnvshhInstanceModifyParamsType = Pick<EnvshhInstanceType, "name"> &
+  RequireAtLeastOneParam<
+    EnvshhInstanceType,
+    "mainDirectory" | "mainRepoUrl" | "name"
+  >;

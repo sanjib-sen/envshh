@@ -32,12 +32,12 @@ export function deleteDirectoryOrFile(
   }
 }
 
-export function getDirectoryPathFromFilePath(filePath: string) {
+export function getParentDirectory(filePath: string) {
   return path.resolve(filePath, "..");
 }
 
 export function createFile(filePath: string, data: string) {
-  const directoryPath = getDirectoryPathFromFilePath(filePath);
+  const directoryPath = getParentDirectory(filePath);
   createDirectory(directoryPath, true);
   try {
     if (!fs.existsSync(filePath)) {
@@ -49,6 +49,15 @@ export function createFile(filePath: string, data: string) {
       errorMessage = error.message;
     }
     log.error(`Failed to create file ${filePath}. ${errorMessage}`);
+    process.exit(1);
+  }
+}
+
+export function copyFileAndFolder(sourcePath: string, destinationPath: string) {
+  try {
+    fs.cpSync(sourcePath, destinationPath, { recursive: true });
+  } catch (error) {
+    log.error(`Failed to copy file ${sourcePath} to ${destinationPath}.`);
     process.exit(1);
   }
 }

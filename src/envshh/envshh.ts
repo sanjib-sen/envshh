@@ -7,17 +7,17 @@ import {
   isGitInstalledAndPathed,
   isRepositoryExistsOnUpstream,
 } from "../git/checks.js";
-import { isPathExists } from "../filesystem/checks.js";
 import { log } from "../utils/log.js";
 import {
+  copyFileAndFolder,
   createDirectory,
   deleteDirectoryOrFile,
 } from "../filesystem/functions.js";
 import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
-import { defaultMainDirectory } from "./defaults/defaults.js";
-import { insertInstance, deleteInstance } from "../db/controllers.js";
+import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
 import { commitRepo, pullRepo, pushRepo } from "../git/functions.js";
+import { isDirectoryEmpty } from "../filesystem/checks.js";
 
 export class EnvshhInstance {
   config: EnvshhInstanceType;
@@ -32,8 +32,6 @@ export class EnvshhInstance {
       process.exit(1);
     }
     this.initChecks();
-    this.createMainDirectory();
-    insertInstance(this.config);
   }
   private initChecks() {
     if (isGitInstalledAndPathed()) {
@@ -42,22 +40,6 @@ export class EnvshhInstance {
       log.error("Git is not installed or not in path");
       process.exit(1);
     }
-    if (this.config.mainDirectory && !isPathExists(this.config.mainDirectory)) {
-      log.error(
-        `Specified Directory ${this.config.mainDirectory} does not exist`
-      );
-      process.exit(1);
-    } else if (!this.config.mainDirectory) {
-      log.info(
-        `Did not specify any Master Directory. Using default: ${defaultMainDirectory}`
-      );
-    } else if (
-      this.config.mainDirectory &&
-      isPathExists(this.config.mainDirectory)
-    ) {
-      log.success(`Using Master Directory: ${this.config.mainDirectory}`);
-    }
-
     if (!this.config.mainRepoUrl) {
       log.warn(
         "Did not specify any Master Repository URL. Online sync will not work."
@@ -85,9 +67,36 @@ export class EnvshhInstance {
     deleteDirectoryOrFile(this.config.mainDirectory);
   }
 
+  create() {
+    DBinsertInstance(this.config);
+    return this;
+  }
+
+  edit(envshh: Partial<EnvshhInstanceType>) {
+    const newEnvshhInstance = new EnvshhInstance({
+      name: envshh.name || this.config.name,
+      mainDirectory: envshh.mainDirectory || this.config.mainDirectory,
+      mainRepoUrl: envshh.mainRepoUrl || this.config.mainRepoUrl,
+    });
+    if (newEnvshhInstance.config.mainDirectory !== this.config.mainDirectory) {
+      newEnvshhInstance.createMainDirectory();
+      if (!isDirectoryEmpty(this.config.mainDirectory)) {
+        copyFileAndFolder(
+          this.config.mainDirectory,
+          newEnvshhInstance.config.mainDirectory
+        );
+      }
+      this.deleteMainDirectory();
+    }
+    DBdeleteInstance(this.config.name);
+    newEnvshhInstance.create();
+    return newEnvshhInstance;
+  }
+
   remove() {
     this.deleteMainDirectory();
-    deleteInstance(this.config.name);
+    DBdeleteInstance(this.config.name);
+    return this;
   }
 
   reset() {
@@ -123,12 +132,3 @@ export class EnvshhInstance {
     this.config.mainDirectory = mainDirectory;
   }
 }
-
-export const envshh = new EnvshhInstance({
-  name: "envshh",
-  mainDirectory: defaultMainDirectory,
-});
-
-insertInstance(envshh.config);
-
-// log.info(envshh.config.name);

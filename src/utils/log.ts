@@ -18,7 +18,7 @@ export class Log {
   }
   info(message: string) {
     this.logger(
-      chalk.blueBright("Envshh Info: ") + chalk.whiteBright(message) + "\n",
+      chalk.blueBright("Envshh Info: ") + chalk.whiteBright(message) + "\n"
     );
   }
   success(message: string) {

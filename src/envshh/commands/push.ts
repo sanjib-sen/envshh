@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import path from "path";
-import { getInstance } from "../../db/controllers.js";
+import { DBgetInstance } from "../../db/controllers.js";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
 import { getAllEnvsFromProjectParams } from "../envs/get.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
@@ -12,7 +12,7 @@ import { createDirectory } from "../../filesystem/functions.js";
 import { saveEncryptedEnv } from "../encryption/encrypt.js";
 
 export function thePush(pushConfig: ProjectPushConfigParamsType) {
-  const envshh = getInstance(pushConfig.instance);
+  const envshh = DBgetInstance(pushConfig.instance);
   if (!pushConfig.offline || envshh.isMainRepoUrlSet()) {
     envshh.gitPull();
   }
