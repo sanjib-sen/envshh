@@ -56,10 +56,17 @@ export function pullRepo(envshh: EnvshhInstanceType) {
           "Your configuration specifies to merge with the ref 'refs/heads/main'",
         )
     ) {
-      // deleteDirectoryOrFile(envshh.mainDirectory);
-      execSync(
-        `echo "# Envshh Instance ${envshh.name}" >> README.md && git add . && git commit -m "first commit" && git branch -M main && git push -u origin main`,
-      );
+      try {
+        execSync(
+          `cd '${
+            envshh.mainDirectory
+          }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md && git add . && git commit -m "first commit" && git branch -M main && git push -u origin main`,
+        );
+        return true;
+      } catch (error) {
+        log.error("Failed to push init.");
+        process.exit(1);
+      }
     }
     log.error("Failed to pull master repository.");
     process.exit(1);
@@ -73,15 +80,17 @@ export function commitRepo(envshh: EnvshhInstanceType) {
       `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
     );
   } catch (error) {
-    log.error("Failed to commit changes.");
+    log.error(`Failed to commit changes. ${error}`);
+    process.exit(1);
   }
 }
 
 export function pushRepo(envshh: EnvshhInstanceType) {
   try {
-    execSync(`git -C ${envshh.mainDirectory} push origin master`);
+    execSync(`git -C ${envshh.mainDirectory} push origin main`);
   } catch (error) {
     log.error("Failed to push.");
+    process.exit(1);
   }
 }
 

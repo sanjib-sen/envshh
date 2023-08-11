@@ -90,10 +90,12 @@ program
   .option(
     "-b, --branch <name>",
     `Keep different branches for different production, development and staging. Defaults to '${defaultBranchName}'.`,
+    defaultBranchName,
   )
   .option(
     "--offline",
     "Don't pull from remote repository. Just do an offline pull. Default: false.",
+    false,
   )
   .option(
     "-i, --instance <Instance name.>",

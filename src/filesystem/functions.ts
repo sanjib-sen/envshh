@@ -7,13 +7,13 @@ import * as fs from "fs";
 import { log } from "../utils/log.js";
 import path from "path";
 
-export function createDirectory(directoryPath: string, recursive = false) {
+export function createDirectory(directoryPath: string, recursive = true) {
   try {
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: recursive });
     }
   } catch (error) {
-    log.error(`Failed to create directory ${directoryPath}.`);
+    log.error(`Failed to create directory ${directoryPath}.${error}`);
     process.exit(1);
   }
 }
