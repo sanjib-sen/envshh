@@ -11,6 +11,7 @@ import {
   isRepositoryExistsOnRemote,
 } from "./checks.js";
 import { EnvshhInstanceType } from "../types/schemas.js";
+import { runCommand } from "../utils/command.js";
 
 export function cloneRepo(envshh: EnvshhInstanceType) {
   if (!envshh.mainRepoUrl) {
@@ -42,7 +43,7 @@ export function cloneRepo(envshh: EnvshhInstanceType) {
 
 export function pullRepo(envshh: EnvshhInstanceType) {
   try {
-    execSync(`git -C ${envshh.mainDirectory} pull`);
+    runCommand(`git -C ${envshh.mainDirectory} pull`);
   } catch (error) {
     if (error instanceof Error) {
       log.warn(error.toString());

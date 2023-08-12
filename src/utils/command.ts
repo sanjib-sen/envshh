@@ -5,20 +5,19 @@
 import { execSync } from "child_process";
 import { log } from "./log.js";
 
-export function runCommand(command: string, ignoreIfFails: false) {
+export function runCommand(command: string, ignoreIfFails = false) {
   let result;
   try {
     result = execSync(command, {
-      stdio: "inherit",
+      stdio: "pipe",
     });
     return result;
   } catch (error) {
     if (error instanceof Error) {
       log.error("Got error while running command: " + command);
-      log.error("Command Output: " + (result ? result.toString() : ""));
-      log.error(error.message);
+      log.command("Command Output: " + (result ? result.toString() : ""));
       if (ignoreIfFails) {
-        return result;
+        return result || false;
       } else {
         process.exit(1);
       }

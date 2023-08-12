@@ -3,12 +3,12 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { execSync } from "child_process";
 import { isPathExists } from "../filesystem/checks.js";
+import { runCommand } from "../utils/command.js";
 
 export function isGitInstalledAndPathed() {
   try {
-    execSync("git --version");
+    runCommand("git --version", true);
     return true;
   } catch (error) {
     return false;
@@ -17,7 +17,7 @@ export function isGitInstalledAndPathed() {
 
 export function isRepositoryExistsOnRemote(repositoryAddress: string) {
   try {
-    execSync(`git ls-remote ${repositoryAddress}`);
+    runCommand(`git ls-remote ${repositoryAddress}`, true);
     return true;
   } catch (error) {
     return false;
@@ -27,9 +27,7 @@ export function isRepositoryExistsOnRemote(repositoryAddress: string) {
 export function isDirectoryAGitRepository(directoryPath: string) {
   if (isPathExists(directoryPath) === false) return false;
   try {
-    execSync(`git -C ${directoryPath} rev-parse --is-inside-work-tree`, {
-      stdio: "ignore",
-    });
+    runCommand(`git -C ${directoryPath} rev-parse --is-inside-work-tree`);
     return true;
   } catch (error) {
     return false;

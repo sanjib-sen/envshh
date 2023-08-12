@@ -20,14 +20,14 @@ export class Log {
     prefix: string,
     prefixChalkFunction: chalk.Chalk,
     message: string,
-    messageChalkFunction: chalk.Chalk
+    messageChalkFunction: chalk.Chalk,
   ) {
     this.logger(
-      `${new Date().toTimeString()} : ${prefixChalkFunction(
-        `${this.masterPrefix} ${prefix}`
+      `${new Date().toLocaleTimeString()}: ${prefixChalkFunction(
+        `${this.masterPrefix} ${prefix}`,
       )}: ${messageChalkFunction(
-        `${message.split("\n").join("-".repeat(prefix.length))} \n`
-      )}`
+        `${message.split("\n").join("-".repeat(prefix.length))} \n`,
+      )}`,
     );
   }
 
@@ -40,7 +40,7 @@ export class Log {
       "Command Result",
       chalk.blueBright,
       message,
-      chalk.whiteBright
+      chalk.whiteBright,
     );
   }
   success(message: string) {
