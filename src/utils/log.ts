@@ -8,27 +8,49 @@ import chalk from "chalk";
 
 export class Log {
   readonly logger = process.stdout.write.bind(process.stdout);
-  constructor() {
+  private masterPrefix = "Envshh";
+  constructor(masterPrefix?: string) {
     if (isInDebugMode()) {
       this.logger("Debug mode is on");
     }
+    this.masterPrefix = masterPrefix || this.masterPrefix;
   }
-  log(message: string) {
-    this.logger(message + "\n");
-  }
-  info(message: string) {
+
+  private toStdout(
+    prefix: string,
+    prefixChalkFunction: chalk.Chalk,
+    message: string,
+    messageChalkFunction: chalk.Chalk
+  ) {
     this.logger(
-      chalk.blueBright("Envshh Info: ") + chalk.whiteBright(message) + "\n",
+      `${new Date().toTimeString()} : ${prefixChalkFunction(
+        `${this.masterPrefix} ${prefix}`
+      )}: ${messageChalkFunction(
+        `${message.split("\n").join("-".repeat(prefix.length))} \n`
+      )}`
+    );
+  }
+
+  info(message: string) {
+    this.toStdout("Info", chalk.blueBright, message, chalk.white);
+  }
+
+  command(message: string) {
+    this.toStdout(
+      "Command Result",
+      chalk.blueBright,
+      message,
+      chalk.whiteBright
     );
   }
   success(message: string) {
-    this.logger(chalk.greenBright("Envshh Success: ") + message + "\n");
+    this.toStdout("Success", chalk.greenBright, message, chalk.whiteBright);
   }
   error(message: string) {
-    this.logger(chalk.redBright("Envshh Error: " + message) + "\n");
+    this.toStdout("Error", chalk.redBright, message, chalk.red);
   }
   warn(message: string) {
-    this.logger(chalk.yellowBright("Envshh Warning: ") + message + "\n");
+    this.toStdout("Warning", chalk.yellowBright, message, chalk.yellow);
   }
 }
 
