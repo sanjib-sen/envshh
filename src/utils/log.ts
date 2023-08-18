@@ -15,7 +15,6 @@ export class Log {
     }
     this.masterPrefix = masterPrefix || this.masterPrefix;
   }
-
   private toStdout(
     prefix: string,
     prefixChalkFunction: chalk.Chalk,
@@ -30,11 +29,9 @@ export class Log {
       )}`,
     );
   }
-
   info(message: string) {
     this.toStdout("Info", chalk.blueBright, message, chalk.white);
   }
-
   command(message: string) {
     this.toStdout(
       "Command Result",
@@ -42,6 +39,9 @@ export class Log {
       message,
       chalk.whiteBright,
     );
+  }
+  commandError(message: string) {
+    this.toStdout("Command Output", chalk.redBright, message, chalk.red);
   }
   success(message: string) {
     this.toStdout("Success", chalk.greenBright, message, chalk.whiteBright);

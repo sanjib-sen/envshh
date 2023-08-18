@@ -8,8 +8,7 @@ import { runCommand } from "../utils/command.js";
 
 export function isGitInstalledAndPathed() {
   try {
-    runCommand("git --version", true);
-    return true;
+    return runCommand("git2 --version", true);
   } catch (error) {
     return false;
   }
@@ -27,7 +26,7 @@ export function isRepositoryExistsOnRemote(repositoryAddress: string) {
 export function isDirectoryAGitRepository(directoryPath: string) {
   if (isPathExists(directoryPath) === false) return false;
   try {
-    runCommand(`git -C ${directoryPath} rev-parse --is-inside-work-tree`);
+    runCommand(`git -C ${directoryPath} rev-parse --is-inside-work-tree`, true);
     return true;
   } catch (error) {
     return false;

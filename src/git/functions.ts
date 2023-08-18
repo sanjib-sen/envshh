@@ -76,12 +76,12 @@ export function pullRepo(envshh: EnvshhInstanceType) {
 
 export function commitRepo(envshh: EnvshhInstanceType) {
   try {
-    execSync(`git -C ${envshh.mainDirectory} add .`);
-    execSync(
+    runCommand(`git -C ${envshh.mainDirectory} add .`);
+    runCommand(
       `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
     );
   } catch (error) {
-    log.error(`Failed to commit changes. ${error}`);
+    log.command(`Failed to commit changes. ${error}`);
     process.exit(1);
   }
 }
