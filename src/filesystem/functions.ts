@@ -40,9 +40,7 @@ export function createFile(filePath: string, data: string) {
   const directoryPath = getParentDirectory(filePath);
   createDirectory(directoryPath, true);
   try {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, data);
-    }
+    fs.writeFileSync(filePath, data);
   } catch (error) {
     let errorMessage = "";
     if (error instanceof Error) {
