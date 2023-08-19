@@ -32,18 +32,12 @@ export function cloneRepo(envshh: EnvshhInstanceType) {
     process.exit(1);
   }
 
-  try {
-    execSync(`git clone ${envshh.mainRepoUrl} ${envshh.mainDirectory}`);
-    return true;
-  } catch (error) {
-    log.error("Failed to clone master repository.");
-    process.exit(1);
-  }
+  runCommand(`git clone ${envshh.mainRepoUrl} ${envshh.mainDirectory}`);
 }
 
 export function pullRepo(envshh: EnvshhInstanceType) {
   try {
-    runCommand(`git -C ${envshh.mainDirectory} pull`);
+    execSync(`git -C ${envshh.mainDirectory} pull`);
   } catch (error) {
     if (error instanceof Error) {
       log.warn(error.toString());
@@ -75,24 +69,14 @@ export function pullRepo(envshh: EnvshhInstanceType) {
 }
 
 export function commitRepo(envshh: EnvshhInstanceType) {
-  try {
-    runCommand(`git -C ${envshh.mainDirectory} add .`);
-    runCommand(
-      `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
-    );
-  } catch (error) {
-    log.command(`Failed to commit changes. ${error}`);
-    process.exit(1);
-  }
+  runCommand(`git -C ${envshh.mainDirectory} add .`);
+  runCommand(
+    `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
+  );
 }
 
 export function pushRepo(envshh: EnvshhInstanceType) {
-  try {
-    execSync(`git -C ${envshh.mainDirectory} push origin main`);
-  } catch (error) {
-    log.error("Failed to push.");
-    process.exit(1);
-  }
+  runCommand(`git -C ${envshh.mainDirectory} push origin main`);
 }
 
 function getProjectNameFromRepoUrl(url: string) {
@@ -101,8 +85,8 @@ function getProjectNameFromRepoUrl(url: string) {
 
 export function getGitRepoName(location: string) {
   if (isDirectoryAGitRepository(location)) {
-    const origin = execSync("git config --get remote.origin.url").toString();
+    const origin = runCommand("git config --get remote.origin.url").toString();
     return getProjectNameFromRepoUrl(origin) as string;
   }
-  return "";
+  return undefined;
 }
