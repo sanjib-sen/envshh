@@ -7,28 +7,17 @@ import { isPathExists } from "../filesystem/checks.js";
 import { runCommand } from "../utils/command.js";
 
 export function isGitInstalledAndPathed() {
-  try {
-    return runCommand("git2 --version", true);
-  } catch (error) {
-    return false;
-  }
+  return runCommand("git --version", true);
 }
 
 export function isRepositoryExistsOnRemote(repositoryAddress: string) {
-  try {
-    runCommand(`git ls-remote ${repositoryAddress}`, true);
-    return true;
-  } catch (error) {
-    return false;
-  }
+  return runCommand(`git ls-remote ${repositoryAddress}`, true);
 }
 
 export function isDirectoryAGitRepository(directoryPath: string) {
   if (isPathExists(directoryPath) === false) return false;
-  try {
-    runCommand(`git -C ${directoryPath} rev-parse --is-inside-work-tree`, true);
-    return true;
-  } catch (error) {
-    return false;
-  }
+  return runCommand(
+    `git -C ${directoryPath} rev-parse --is-inside-work-tree`,
+    true
+  );
 }
