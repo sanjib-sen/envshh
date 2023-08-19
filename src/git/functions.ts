@@ -27,7 +27,7 @@ export function cloneRepo(envshh: EnvshhInstanceType) {
     isDirectoryEmpty(envshh.mainDirectory) === false
   ) {
     log.error(
-      `Directory ${envshh.mainDirectory} already exists. But it is not empty. It is not safe to clone here.`
+      `Directory ${envshh.mainDirectory} already exists. But it is not empty. It is not safe to clone here.`,
     );
     process.exit(1);
   }
@@ -48,14 +48,14 @@ export function pullRepo(envshh: EnvshhInstanceType) {
         .toString()
         .trim()
         .includes(
-          "Your configuration specifies to merge with the ref 'refs/heads/main'"
+          "Your configuration specifies to merge with the ref 'refs/heads/main'",
         )
     ) {
       try {
         execSync(
           `cd '${
             envshh.mainDirectory
-          }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md && git add . && git commit -m "first commit" && git branch -M main && git push -u origin main`
+          }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md && git add . && git commit -m "first commit" && git branch -M main && git push -u origin main`,
         );
         return true;
       } catch (error) {
@@ -71,7 +71,7 @@ export function pullRepo(envshh: EnvshhInstanceType) {
 export function commitRepo(envshh: EnvshhInstanceType) {
   runCommand(`git -C ${envshh.mainDirectory} add .`);
   runCommand(
-    `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`
+    `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
   );
 }
 

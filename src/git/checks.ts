@@ -18,6 +18,6 @@ export function isDirectoryAGitRepository(directoryPath: string) {
   if (isPathExists(directoryPath) === false) return false;
   return runCommand(
     `git -C ${directoryPath} rev-parse --is-inside-work-tree`,
-    true
+    true,
   );
 }

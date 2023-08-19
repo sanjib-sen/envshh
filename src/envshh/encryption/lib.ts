@@ -7,6 +7,7 @@
 // https://github.com/luke-park/SecureCompatibleEncryptionExamples
 
 import * as crypto from "crypto";
+import { log } from "../../utils/log.js";
 
 const ALGORITHM_NAME = "aes-128-gcm";
 const ALGORITHM_NONCE_SIZE = 12;
@@ -67,7 +68,8 @@ export function decryptString(
     // Decrypt and return result.
     return decrypt(ciphertextAndNonce, key).toString("utf8");
   } catch (error) {
-    throw new Error("Wrong Password");
+    log.error("Wrong Password");
+    process.exit(1);
   }
 }
 
