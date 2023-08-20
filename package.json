@@ -8,6 +8,7 @@
     "lint": "eslint --ext .js,.ts,.json --fix .",
     "clean": "rm -rf node_modules dist package-lock.json",
     "dev": "nodemon --exec node --loader ts-node/esm --watch src src/index.ts",
+    "register": "node --loader ts-node/esm -r ts-node/register src/index.ts",
     "build": "rm -rf dist  && npm run format && npm run lint && tsc"
   },
   "bin": {
@@ -28,6 +29,9 @@
   ],
   "author": "Sanjib Kumar Sen <mail@sanjibsen.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "commander": "*"
+  },
   "devDependencies": {
     "@types/figlet": "*",
     "@types/node": "*",
@@ -42,7 +46,7 @@
     "typescript": "*"
   },
   "dependencies": {
-    "commander": "*",
+    "@commander-js/extra-typings": "*",
     "figlet": "*",
     "lowdb": "*",
     "readline-sync": "*",
