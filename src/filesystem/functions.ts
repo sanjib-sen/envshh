@@ -29,7 +29,7 @@ export function readFile(destination: string) {
 
 export function deleteDirectoryOrFile(
   directoryOrFilePath: string,
-  recursive = false
+  recursive = false,
 ): void {
   try {
     if (fs.existsSync(directoryOrFilePath)) {
@@ -60,7 +60,7 @@ export function createFile(filePath: string, data: string): void {
 
 export function copyFileAndFolder(
   sourcePath: string,
-  destinationPath: string
+  destinationPath: string,
 ): void {
   if (isPathExists(sourcePath) === false)
     return exitWithError(`Source path ${sourcePath} does not exist.`);
@@ -70,7 +70,7 @@ export function copyFileAndFolder(
     fs.cpSync(sourcePath, destinationPath, { recursive: true });
   } catch (error) {
     return handleError(
-      `Failed to copy file ${sourcePath} to ${destinationPath}.`
+      `Failed to copy file ${sourcePath} to ${destinationPath}.`,
     );
   }
 }

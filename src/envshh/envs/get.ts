@@ -22,7 +22,7 @@ function getListOfEnvsInDirectory(directory: string) {
 }
 
 export function getAllEnvsFromProjectParams(
-  project: ProjectPushConfigParamsType
+  project: ProjectPushConfigParamsType,
 ) {
   const filesAndDirectories = project.envPath.split(" ");
   filesAndDirectories.map((fileOrDirectory) => {
@@ -42,14 +42,14 @@ export function getAllEnvsFromProjectParams(
 
 export function getAllEnvsFromMainRepo(
   directoryPath: string,
-  arrayOfFiles: string[] = []
+  arrayOfFiles: string[] = [],
 ) {
   const files = fs.readdirSync(directoryPath);
   files.forEach(function (file) {
     if (fs.statSync(directoryPath + "/" + file).isDirectory()) {
       arrayOfFiles = getAllEnvsFromMainRepo(
         directoryPath + "/" + file,
-        arrayOfFiles
+        arrayOfFiles,
       );
     } else {
       arrayOfFiles.push(path.join(directoryPath, file));

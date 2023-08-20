@@ -27,7 +27,7 @@ export function encryptString(plaintext: string, password: string) {
     salt,
     PBKDF2_ITERATIONS,
     ALGORITHM_KEY_SIZE,
-    PBKDF2_NAME
+    PBKDF2_NAME,
   );
 
   // Encrypt and prepend salt.
@@ -42,13 +42,13 @@ export function encryptString(plaintext: string, password: string) {
 
 export function decryptString(
   base64CiphertextAndNonceAndSalt: string,
-  password: string
+  password: string,
 ) {
   try {
     // Decode the base64.
     const ciphertextAndNonceAndSalt = Buffer.from(
       base64CiphertextAndNonceAndSalt,
-      "base64"
+      "base64",
     );
 
     // Create buffers of salt and ciphertextAndNonce.
@@ -62,7 +62,7 @@ export function decryptString(
       salt,
       PBKDF2_ITERATIONS,
       ALGORITHM_KEY_SIZE,
-      PBKDF2_NAME
+      PBKDF2_NAME,
     );
 
     // Decrypt and return result.
@@ -90,10 +90,10 @@ function decrypt(ciphertextAndNonce: Buffer, key: Buffer) {
   const nonce = ciphertextAndNonce.subarray(0, ALGORITHM_NONCE_SIZE);
   const ciphertext = ciphertextAndNonce.subarray(
     ALGORITHM_NONCE_SIZE,
-    ciphertextAndNonce.length - ALGORITHM_TAG_SIZE
+    ciphertextAndNonce.length - ALGORITHM_TAG_SIZE,
   );
   const tag = ciphertextAndNonce.subarray(
-    ciphertext.length + ALGORITHM_NONCE_SIZE
+    ciphertext.length + ALGORITHM_NONCE_SIZE,
   );
 
   // Create the cipher instance.

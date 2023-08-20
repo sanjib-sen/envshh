@@ -44,7 +44,7 @@ export class EnvshhInstance {
     }
     if (!this.config.mainRepoUrl) {
       log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work."
+        "Did not specify any Master Repository URL. Online sync will not work.",
       );
     } else if (
       this.config.mainRepoUrl &&
@@ -56,7 +56,7 @@ export class EnvshhInstance {
       !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
       return exitWithError(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
       );
     }
   }
@@ -87,7 +87,7 @@ export class EnvshhInstance {
       if (!isDirectoryEmpty(this.config.mainDirectory)) {
         copyFileAndFolder(
           this.config.mainDirectory,
-          newEnvshhInstance.config.mainDirectory
+          newEnvshhInstance.config.mainDirectory,
         );
       }
       this.deleteMainDirectory();

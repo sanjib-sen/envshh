@@ -42,7 +42,7 @@ export function getEncryptedEnv(location: string, password: string) {
 export function saveEncryptedEnv(
   envPath: string,
   password: string,
-  destination: string
+  destination: string,
 ) {
   const encryptedEnv = getEncryptedEnv(envPath, password);
   log.info(`Saving encrypted env ${encryptedEnv} to ${destination}`);

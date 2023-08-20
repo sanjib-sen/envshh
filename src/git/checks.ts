@@ -19,7 +19,7 @@ export function isDirectoryAGitRepository(directoryPath: string) {
   if (isPathExists(directoryPath) === false) exitWithError("Invalid path.");
   return runCommand(
     `git -C ${directoryPath} rev-parse --is-inside-work-tree`,
-    true
+    true,
   )
     ? true
     : false;
