@@ -2,7 +2,6 @@
   "name": "envshh",
   "version": "1.0.0",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
-  "exports": "./dist/index.js",
   "type": "module",
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",

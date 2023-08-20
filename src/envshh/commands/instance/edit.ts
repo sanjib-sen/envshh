@@ -9,7 +9,7 @@ import { EnvshhInstanceNameType } from "../../../types/schemas.js";
 
 export function editInstance(
   name: EnvshhInstanceNameType,
-  envshhModifyParams: EnvshhInstanceModifyParamsType,
+  envshhModifyParams: EnvshhInstanceModifyParamsType
 ) {
   const envshh = DBgetInstance(name);
   return envshh.edit(envshhModifyParams);

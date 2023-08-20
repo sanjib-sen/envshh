@@ -3,11 +3,11 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import * as fs from "fs";
 import { envQuotations } from "../defaults/defaults.js";
+import { readFile } from "../../filesystem/functions.js";
 
 function readEnv(path: string) {
-  const env = fs.readFileSync(path, "utf8");
+  const env = readFile(path);
   return env;
 }
 

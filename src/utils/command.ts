@@ -5,17 +5,20 @@
 
 import { execSync } from "child_process";
 import { log } from "./log.js";
+import { exitProcess } from "./process.js";
 
 export function runCommand(command: string, ignoreIfFails = false) {
   let result;
   try {
     result = execSync(command, {
-      stdio: "pipe",
-    });
-    return result.toString("utf-8").trim();
+      stdio: ["ignore", "pipe", "pipe"],
+    })
+      .toString("utf-8")
+      .trim();
+    return result;
   } catch (error) {
     if (!ignoreIfFails) {
-      return false;
+      return result || false;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let theError: string = (error as any).stderr
@@ -27,6 +30,6 @@ export function runCommand(command: string, ignoreIfFails = false) {
       theError = theError.replaceAll("/bin/sh: line 1: ", "");
     log.error("Got error while running command: " + command);
     log.commandError(theError);
-    process.exit(1);
+    exitProcess();
   }
 }

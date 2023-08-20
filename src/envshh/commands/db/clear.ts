@@ -8,7 +8,7 @@ import { log } from "../../../utils/log.js";
 import * as readlineSync from "readline-sync";
 export function clearDB() {
   const confirm = readlineSync.question(
-    `Are you sure you want to clear the Envshh Database? (y/N): `,
+    `Are you sure you want to clear the Envshh Database? (y/N): `
   );
   if (confirm === "y") {
     log.info(`Envshh Database Cleared.`);

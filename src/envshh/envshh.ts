@@ -18,6 +18,8 @@ import z from "zod";
 import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
 import { cloneRepo, commitRepo, pullRepo, pushRepo } from "../git/functions.js";
 import { isDirectoryEmpty } from "../filesystem/checks.js";
+import { exitWithError } from "../utils/process.js";
+import { handleError } from "../utils/error.js";
 
 export class EnvshhInstance {
   config: EnvshhInstanceType;
@@ -27,8 +29,9 @@ export class EnvshhInstance {
       this.config = parsedData;
     } catch (err) {
       if (err instanceof z.ZodError) {
-        log.error(err.issues.map((issue) => issue.message).join("\n"));
+        exitWithError(err.issues.map((issue) => issue.message).join("\n"));
       }
+      handleError(err);
       process.exit(1);
     }
     this.initChecks();
@@ -37,12 +40,11 @@ export class EnvshhInstance {
     if (isGitInstalledAndPathed()) {
       log.success("Git is installed and in path");
     } else {
-      log.error("Git is not installed or not in path");
-      process.exit(1);
+      return exitWithError("Git is not installed or not in path");
     }
     if (!this.config.mainRepoUrl) {
       log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work.",
+        "Did not specify any Master Repository URL. Online sync will not work."
       );
     } else if (
       this.config.mainRepoUrl &&
@@ -53,10 +55,9 @@ export class EnvshhInstance {
       this.config.mainRepoUrl &&
       !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
-      log.error(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
+      return exitWithError(
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
       );
-      process.exit(1);
     }
   }
   private createMainDirectory() {
@@ -86,7 +87,7 @@ export class EnvshhInstance {
       if (!isDirectoryEmpty(this.config.mainDirectory)) {
         copyFileAndFolder(
           this.config.mainDirectory,
-          newEnvshhInstance.config.mainDirectory,
+          newEnvshhInstance.config.mainDirectory
         );
       }
       this.deleteMainDirectory();
