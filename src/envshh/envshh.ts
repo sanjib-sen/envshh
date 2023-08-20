@@ -16,7 +16,13 @@ import {
 import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
 import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
-import { cloneRepo, commitRepo, pullRepo, pushRepo } from "../git/functions.js";
+import {
+  cloneRepo,
+  commitRepo,
+  initRepo,
+  pullRepo,
+  pushRepo,
+} from "../git/functions.js";
 import { isDirectoryEmpty } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
@@ -44,19 +50,19 @@ export class EnvshhInstance {
     }
     if (!this.config.mainRepoUrl) {
       log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work.",
+        "Did not specify any Remote Repository URL. Online sync will not work."
       );
     } else if (
       this.config.mainRepoUrl &&
       isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
-      log.success(`Using Master Repository URL: ${this.config.mainRepoUrl}`);
+      log.success(`Using Remote Repository URL: ${this.config.mainRepoUrl}`);
     } else if (
       this.config.mainRepoUrl &&
       !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
       return exitWithError(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
       );
     }
   }
@@ -71,7 +77,7 @@ export class EnvshhInstance {
   create() {
     DBinsertInstance(this.config);
     createDirectory(this.config.mainDirectory);
-    cloneRepo(this.config);
+    this.isMainRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
     log.success(`Created new Directory ${this.config.mainDirectory}`);
     return this;
   }
@@ -87,7 +93,7 @@ export class EnvshhInstance {
       if (!isDirectoryEmpty(this.config.mainDirectory)) {
         copyFileAndFolder(
           this.config.mainDirectory,
-          newEnvshhInstance.config.mainDirectory,
+          newEnvshhInstance.config.mainDirectory
         );
       }
       this.deleteMainDirectory();

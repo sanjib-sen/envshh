@@ -3,14 +3,20 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { EnvshhInstanceModifyParamsType } from "../../../types/params.js";
 import { DBgetInstance } from "../../../db/controllers.js";
-import { EnvshhInstanceNameType } from "../../../types/schemas.js";
+import {
+  EnvshhInstanceNameType,
+  EnvshhInstanceType,
+} from "../../../types/schemas.js";
+import { exitWithSuccess } from "../../../utils/process.js";
 
 export function editInstance(
   name: EnvshhInstanceNameType,
-  envshhModifyParams: EnvshhInstanceModifyParamsType,
+  envshhModifyParams: Partial<EnvshhInstanceType>,
 ) {
   const envshh = DBgetInstance(name);
-  return envshh.edit(envshhModifyParams);
+  const newEnvshh = envshh.edit(envshhModifyParams);
+  return exitWithSuccess(`Instance ${name} modified. Modified instance:\n
+    ${JSON.stringify(newEnvshh, null, 2)}
+  `);
 }

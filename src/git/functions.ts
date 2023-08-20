@@ -49,15 +49,33 @@ export function pullRepo(envshh: EnvshhInstanceType): void {
           "Your configuration specifies to merge with the ref 'refs/heads/main'",
         )
     ) {
-      runCommand(
-        `cd '${
-          envshh.mainDirectory
-        }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md && git add . && git commit -m "first commit" && git branch -M main && git push -u origin main`,
-      );
+      initRepo(envshh);
       return exitWithSuccess("Successfully pushed to remote repository");
     }
     return handleError(error);
   }
+}
+
+export function initRepo(envshh: EnvshhInstanceType) {
+  runCommand(`git -C ${envshh.mainDirectory} init`);
+  envshh.mainRepoUrl
+    ? runCommand(
+        `git -C ${envshh.mainDirectory} remote add origin ${envshh.mainRepoUrl}`,
+      )
+    : "";
+  runCommand(`git -C ${envshh.mainDirectory} branch -M main`);
+  runCommand(
+    `cd '${
+      envshh.mainDirectory
+    }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md`,
+  );
+  runCommand(`git -C ${envshh.mainDirectory} add .`);
+  runCommand(
+    `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
+  );
+  envshh.mainRepoUrl
+    ? runCommand(`git -C ${envshh.mainDirectory} push -u origin main`)
+    : "";
 }
 
 export function commitRepo(envshh: EnvshhInstanceType) {

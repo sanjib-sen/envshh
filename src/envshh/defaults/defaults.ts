@@ -32,11 +32,11 @@ export const defaultValidRegex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
 export const defaultBranchNamePrefix = "envshh-branch-";
 
 export const defaultRegexNameConventionMessage = (type: string) => {
-  return `${type}: Only letters, numbers, dash (-), underscore (_) are supported.\
-        \n---- Name must start or end with a letter or number.\
-        \n---- Name must be between 1 and 25 characters long.\
-        \n---- Name cannot contain consecutive dash (-), underscore (_)\
-        `;
+  return `${type} Name: Only letters, numbers, dash (-), underscore (_) are supported.
+                  Name must start or end with a letter or number.
+                  Name must be between 1 and 25 characters long.
+                  Name cannot contain consecutive dash (-), underscore (_)
+          `;
 };
 
 export const defaultInstanceName = "personal";

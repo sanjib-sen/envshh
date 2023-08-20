@@ -20,14 +20,14 @@ export const ProjectConfigParans = z.object({
   name: z
     .string()
     .regex(defaultValidRegex, defaultRegexNameConventionMessage("Project"))
-    .min(1)
-    .max(25),
+    .min(1, { message: "Project Name cannot be empty" })
+    .max(25, { message: "Project Name cannot be more than 25 characters" }),
   instance: EnvshhInstanceNameSchema,
   branch: z
     .string()
     .regex(defaultValidRegex, defaultRegexNameConventionMessage("Branch"))
-    .min(1)
-    .max(25)
+    .min(1, { message: "Branch Name cannot be empty" })
+    .max(25, { message: "Branch Name cannot be more than 25 characters" })
     .default(defaultBranchName),
   offline: z.boolean().default(false),
   password: z.string().min(1).max(255),

@@ -7,11 +7,19 @@ import { execSync } from "child_process";
 import { log } from "./log.js";
 import { exitProcess } from "./process.js";
 
-export function runCommand(command: string, ignoreIfFails = false) {
+export function runCommand(
+  command: string,
+  ignoreIfFails = false,
+  showOnTerminal = false,
+) {
   let result;
   try {
     result = execSync(command, {
-      stdio: ["ignore", "pipe", "pipe"],
+      stdio: [
+        "ignore",
+        showOnTerminal ? "inherit" : "pipe",
+        showOnTerminal ? "inherit" : "pipe",
+      ],
     })
       .toString("utf-8")
       .trim();
