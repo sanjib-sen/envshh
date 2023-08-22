@@ -136,6 +136,9 @@ export class EnvshhInstance {
   getMainDirectory() {
     return this.config.mainDirectory;
   }
+  getName() {
+    return this.config.name;
+  }
   setMainRepoUrl(mainRepoUrl: string | undefined) {
     this.config.mainRepoUrl = mainRepoUrl;
   }

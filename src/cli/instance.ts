@@ -37,11 +37,7 @@ instanceCommand
 instanceCommand
   .command("edit")
   .description("[Advanced] Modify an instance.")
-  .requiredOption(
-    "-n, --name <name>",
-    `Specify the instance name.`,
-    defaultInstanceName
-  )
+  .requiredOption("-n, --name <name>", `Specify the instance name.`)
   .option("--new-name <new-ame>", "Specify the new name for the instance.")
   .option(
     "--directory <directory-path>",
