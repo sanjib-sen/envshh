@@ -16,16 +16,16 @@ instanceCommand.name("instance").description("[Advanced] Manage Instances");
 instanceCommand
   .command("create")
   .description(
-    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode."
+    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode.",
   )
   .option("-n, --name <name>", `Specify the instance name.`)
   .option(
     "-d, --directory <directory>",
-    "[Advanced] Specify the directory path for the instance."
+    "[Advanced] Specify the directory path for the instance.",
   )
   .option(
     "-r, --remote <remote-url>",
-    "Specify the Remote Repository URL. Keep this blank if you want to use this instance offline."
+    "Specify the Remote Repository URL. Keep this blank if you want to use this instance offline.",
   )
   .action((options) => {
     createInstance({
@@ -41,7 +41,7 @@ instanceCommand
   .option("--new-name <new-ame>", "Specify the new name for the instance.")
   .option(
     "--directory <directory-path>",
-    "Modify the directory path for the instance."
+    "Modify the directory path for the instance.",
   )
   .option("--remote <remote-url>", "Modify the Remote Repository URL.")
   .action((options) => {
@@ -57,7 +57,7 @@ instanceCommand
   .requiredOption(
     "-n, --name <name>",
     `Specify the instance name.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .action((options) => {
     removeInstance(options.name);
@@ -68,7 +68,7 @@ instanceCommand
   .option(
     "-n, --name <name>",
     `Specify the instance name.`,
-    defaultInstanceName
+    defaultInstanceName,
   )
   .action((options) => {
     resetInstance(options.name);
