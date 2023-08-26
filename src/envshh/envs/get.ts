@@ -55,6 +55,5 @@ export function getAllEnvsFromMainRepo(
       arrayOfFiles.push(path.join(directoryPath, file));
     }
   });
-
   return arrayOfFiles;
 }

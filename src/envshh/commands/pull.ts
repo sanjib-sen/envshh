@@ -9,10 +9,12 @@ import { ProjectConfigParansType } from "../../types/params.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { getAllEnvsFromMainRepo } from "../envs/get.js";
 import { saveDecryptedEnv } from "../encryption/decrypt.js";
+import { isDirectoryEmpty, isPathExists } from "../../filesystem/checks.js";
+import { exitWithError } from "../../utils/process.js";
 
 export function thePull(pushConfig: ProjectConfigParansType) {
   const envshh = DBgetInstance(pushConfig.instance);
-  if (!pushConfig.offline || envshh.isMainRepoUrlSet()) {
+  if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
     envshh.gitPull();
   }
 
@@ -21,6 +23,9 @@ export function thePull(pushConfig: ProjectConfigParansType) {
     pushConfig.name,
     defaultBranchNamePrefix + pushConfig.branch,
   );
+
+  if (!isPathExists(sourceDirectory) || isDirectoryEmpty(sourceDirectory))
+    return exitWithError(`No envs found.`);
 
   const envPaths = getAllEnvsFromMainRepo(sourceDirectory);
 

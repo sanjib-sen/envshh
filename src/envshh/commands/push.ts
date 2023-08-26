@@ -31,7 +31,7 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
     saveEncryptedEnv(envPath, pushConfig.password, destination);
   }
   envshh.gitCommit();
-  if (!pushConfig.offline || envshh.isMainRepoUrlSet()) {
+  if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
     envshh.gitPush();
   }
 }

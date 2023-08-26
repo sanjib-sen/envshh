@@ -9,15 +9,10 @@ import {
   EnvshhInstanceType,
 } from "../types/schemas.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
-import { log } from "../utils/log.js";
 import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
-import {
-  defaultInstanceName,
-  defaultMainDirectory,
-} from "../envshh/defaults/defaults.js";
-import * as readlineSync from "readline-sync";
-import path from "path";
+import { log } from "../utils/log.js";
+import { exitWithError } from "../utils/process.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -30,6 +25,7 @@ export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
     db.data.instances[InstanceIndex] = envshhConfig;
   }
   db.write();
+  return new EnvshhInstance(db.data.instances[db.data.instances.length - 1]);
 }
 
 export function DBgetInstance(name: EnvshhInstanceNameType) {
@@ -38,22 +34,26 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
     (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
-    if (name === defaultInstanceName) {
-      const repoUrl = readlineSync.question("Remote Repository URL: ");
-      const envshh = new EnvshhInstance({
-        name: defaultInstanceName,
-        mainRepoUrl: repoUrl,
-        mainDirectory: path.join(defaultMainDirectory, defaultInstanceName),
-      });
-      envshh.create();
-      return envshh;
-    }
-    log.error(
+    // if (name === defaultInstanceName) {
+    //   const repoUrl = readlineSync.question("Remote Repository URL: ");
+    //   const envshh = new EnvshhInstance({
+    //     name: defaultInstanceName,
+    //     mainRepoUrl: repoUrl,
+    //     mainDirectory: path.join(defaultMainDirectory, defaultInstanceName),
+    //   });
+    //   envshh.create();
+    //   return envshh;
+    // }
+    return exitWithError(
       `Instance ${name} not found. Create one by running: envshh instance create`,
     );
-    process.exit(1);
   }
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
+}
+
+export function DBshowAll() {
+  db.read();
+  log.print(JSON.stringify(db.data, null, 2));
 }
 
 export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
@@ -62,8 +62,7 @@ export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
     (instance) => instance.name === envshh.name,
   );
   if (InstanceIndex === -1) {
-    log.error(`Instance ${envshh.name} not found.`);
-    process.exit(1);
+    return exitWithError(`Instance ${envshh.name} not found.`);
   }
   if (envshh.mainRepoUrl)
     db.data.instances[InstanceIndex].mainRepoUrl = envshh.mainRepoUrl;
@@ -79,8 +78,7 @@ export function DBdeleteInstance(name: EnvshhInstanceNameType) {
     (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
-    log.error("Instance not found.");
-    process.exit(1);
+    return exitWithError("Instance not found.");
   }
   db.data.instances.splice(InstanceIndex, 1);
   db.write();

@@ -45,7 +45,6 @@ export function saveEncryptedEnv(
   destination: string,
 ) {
   const encryptedEnv = getEncryptedEnv(envPath, password);
-
   log.info(`Saving encrypted env ${encryptedEnv} to ${destination}`);
   createFile(destination, encryptedEnv);
 }

@@ -22,12 +22,13 @@ export class Log {
     messageChalkFunction: chalk.Chalk,
   ) {
     this.logger(
-      `${new Date().toLocaleTimeString()}: ${prefixChalkFunction(
+      `${prefixChalkFunction(
         `${this.masterPrefix} ${prefix}`,
-      )}: ${messageChalkFunction(
-        `${message.split("\n").join("-".repeat(prefix.length))} \n`,
-      )}`,
+      )}: ${messageChalkFunction(`${message}\n`)}`,
     );
+  }
+  print(message: string) {
+    this.logger(message);
   }
   info(message: string) {
     this.toStdout("Info", chalk.blueBright, message, chalk.white);

@@ -14,8 +14,8 @@ import {
 export const EnvshhInstanceNameSchema = z
   .string()
   .regex(defaultValidRegex, defaultRegexNameConventionMessage("Instance"))
-  .min(1)
-  .max(25)
+  .min(1, { message: "Instance Name cannot be empty" })
+  .max(25, { message: "Instance Name cannot be more than 25 characters" })
   .default(defaultInstanceName);
 
 export const EnvshhInstanceSchema = z

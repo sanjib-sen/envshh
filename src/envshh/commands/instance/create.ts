@@ -6,22 +6,37 @@
 import { EnvshhInstanceType } from "../../../types/schemas.js";
 import * as readlineSync from "readline-sync";
 import { EnvshhInstance } from "../../envshh.js";
+import { exitWithError } from "../../../utils/process.js";
+import { defaultInstanceName } from "../../defaults/defaults.js";
 
 export function createInstance(
-  envshhCreateParams: EnvshhInstanceType | undefined,
+  envshhCreateParams: Partial<EnvshhInstanceType>
 ) {
   const name =
-    envshhCreateParams?.name || readlineSync.question("Instance Name: ");
+    envshhCreateParams?.name ||
+    readlineSync.question(
+      `Instance Name (Default: ${defaultInstanceName}): `
+    ) ||
+    defaultInstanceName;
   const mainDirectory =
     envshhCreateParams?.mainDirectory ||
     readlineSync.question("Directory Path: ");
+  if (!mainDirectory) {
+    return exitWithError(
+      `Instance ${name} not created. Directory Path is required.`
+    );
+  }
   const mainRepoUrl =
     envshhCreateParams?.mainRepoUrl ||
-    readlineSync.question("Remote Repository URL: ");
+    readlineSync.question(
+      "Remote Repository URL (Keep this blank if you want to use offline): "
+    ) ||
+    undefined;
   const envshh = new EnvshhInstance({
     name: name,
     mainDirectory: mainDirectory,
     mainRepoUrl: mainRepoUrl,
   });
-  return envshh.create();
+  const newEnvshh = envshh.create();
+  return newEnvshh.print();
 }

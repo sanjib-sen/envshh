@@ -16,8 +16,16 @@ import {
 import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
 import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
-import { cloneRepo, commitRepo, pullRepo, pushRepo } from "../git/functions.js";
+import {
+  cloneRepo,
+  commitRepo,
+  initRepo,
+  pullRepo,
+  pushRepo,
+} from "../git/functions.js";
 import { isDirectoryEmpty } from "../filesystem/checks.js";
+import { exitWithError } from "../utils/process.js";
+import { handleError } from "../utils/error.js";
 
 export class EnvshhInstance {
   config: EnvshhInstanceType;
@@ -27,36 +35,24 @@ export class EnvshhInstance {
       this.config = parsedData;
     } catch (err) {
       if (err instanceof z.ZodError) {
-        log.error(err.issues.map((issue) => issue.message).join("\n"));
+        exitWithError(err.issues.map((issue) => issue.message).join("\n"));
       }
+      handleError(err);
       process.exit(1);
     }
     this.initChecks();
   }
   private initChecks() {
-    if (isGitInstalledAndPathed()) {
-      log.success("Git is installed and in path");
-    } else {
-      log.error("Git is not installed or not in path");
-      process.exit(1);
+    if (!isGitInstalledAndPathed()) {
+      return exitWithError("Git is not installed or not in path");
     }
-    if (!this.config.mainRepoUrl) {
-      log.warn(
-        "Did not specify any Master Repository URL. Online sync will not work.",
-      );
-    } else if (
-      this.config.mainRepoUrl &&
-      isRepositoryExistsOnRemote(this.config.mainRepoUrl)
-    ) {
-      log.success(`Using Master Repository URL: ${this.config.mainRepoUrl}`);
-    } else if (
+    if (
       this.config.mainRepoUrl &&
       !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
-      log.error(
+      return exitWithError(
         `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
       );
-      process.exit(1);
     }
   }
   private createMainDirectory() {
@@ -69,9 +65,8 @@ export class EnvshhInstance {
 
   create() {
     DBinsertInstance(this.config);
-    createDirectory(this.config.mainDirectory);
-    cloneRepo(this.config);
-    log.success(`Created new Directory ${this.config.mainDirectory}`);
+    this.createMainDirectory();
+    this.isMainRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
     return this;
   }
 
@@ -102,6 +97,10 @@ export class EnvshhInstance {
     return this;
   }
 
+  print() {
+    log.print(JSON.stringify(this.config, null, 2));
+  }
+
   reset() {
     this.deleteMainDirectory();
     this.createMainDirectory();
@@ -128,6 +127,9 @@ export class EnvshhInstance {
   }
   getMainDirectory() {
     return this.config.mainDirectory;
+  }
+  getName() {
+    return this.config.name;
   }
   setMainRepoUrl(mainRepoUrl: string | undefined) {
     this.config.mainRepoUrl = mainRepoUrl;
