@@ -21,13 +21,13 @@ encryptFileCommand
   .option(
     "-o, --output <output>",
     "Specify the output file name/path",
-    path.join(process.cwd(), "encrypted.env")
+    path.join(process.cwd(), "encrypted.env"),
   )
   .option("-isenv, --isenv", "Specify if the file is a .env file", false)
   .option(
     "-r, --replace",
     "Replace the input file with the encrypted file",
-    false
+    false,
   )
   .action((file, options) => {
     const password = readlineSync.question("Password: ", {
@@ -50,13 +50,13 @@ decryptFileCommand
   .option(
     "-o, --output <output>",
     "Specify the output file name/path",
-    path.join(process.cwd(), "decrypted.env")
+    path.join(process.cwd(), "decrypted.env"),
   )
   .option("-isenv, --isenv", "Specify if the file is a .env file", false)
   .option(
     "-r, --replace",
     "Replace the input file with the decrypted file",
-    false
+    false,
   )
   .action((file, options) => {
     const password = readlineSync.question("Password: ", {
@@ -66,7 +66,7 @@ decryptFileCommand
       saveDecryptedEnv(file, password, options.output);
     } else {
       const encryptedString = readFile(file);
-      const decryptedString = encryptString(encryptedString, password);
+      const decryptedString = decryptString(encryptedString, password);
       createFile(options.output, decryptedString);
     }
   });
@@ -114,17 +114,17 @@ generateCommand
   .option(
     "-e, --env <relative-path>",
     "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-    process.cwd()
+    process.cwd(),
   )
   .option(
     "--value <value>",
     "Specify a value to replace empty values in the .env example file",
-    ""
+    "",
   )
   .option(
     "--suffix <suffix>",
     "Specify a suffix to put after the .env filename in place of 'example'",
-    "example"
+    "example",
   )
   .action((options) => {
     theGenerate({
