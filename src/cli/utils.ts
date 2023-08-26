@@ -11,6 +11,7 @@ import { createFile, readFile } from "../filesystem/functions.js";
 import { saveEncryptedEnv } from "../envshh/encryption/encrypt.js";
 import path from "path";
 import { saveDecryptedEnv } from "../envshh/encryption/decrypt.js";
+import { theGenerate } from "../envshh/commands/generate.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -115,4 +116,26 @@ generateCommand
     "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
     process.cwd()
   )
-  .action(() => {});
+  .option(
+    "-v, --value <value>",
+    "Specify a value to replace empty values in the .env example file",
+    ""
+  )
+  .option(
+    "--suffix <suffix>",
+    "Specify a suffix to put after the .env filename in place of 'example'",
+    "example"
+  )
+  .option(
+    "--prefix <prefix>",
+    "Specify a prefix to put before the .env filename",
+    ""
+  )
+  .action((options) => {
+    theGenerate({
+      envPath: options.env,
+      value: options.value,
+      suffix: options.suffix,
+      prefix: options.prefix,
+    });
+  });
