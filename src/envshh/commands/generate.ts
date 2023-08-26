@@ -28,7 +28,7 @@ export function getExampleFileString(location: string, defaultValue: string) {
 export function saveExampleFile(
   envPath: string,
   destination: string,
-  defaultValue: string
+  defaultValue: string,
 ) {
   const encryptedEnv = getExampleFileString(envPath, defaultValue);
   createFile(destination, encryptedEnv);
@@ -38,17 +38,15 @@ export function theGenerate({
   envPath,
   value,
   suffix,
-  prefix,
 }: {
   envPath: string;
   value: string;
   suffix: string;
-  prefix: string;
 }) {
   const envPaths = getAllEnvsFromEnvPath(envPath);
   for (let index = 0; index < envPaths.length; index++) {
     const envPath = envPaths[index];
-    const destination = `${prefix}${envPath}${suffix}`;
+    const destination = `${envPath}.${suffix}`;
     saveExampleFile(envPath, destination, value);
   }
 }

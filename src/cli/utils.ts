@@ -117,7 +117,7 @@ generateCommand
     process.cwd()
   )
   .option(
-    "-v, --value <value>",
+    "--value <value>",
     "Specify a value to replace empty values in the .env example file",
     ""
   )
@@ -126,16 +126,10 @@ generateCommand
     "Specify a suffix to put after the .env filename in place of 'example'",
     "example"
   )
-  .option(
-    "--prefix <prefix>",
-    "Specify a prefix to put before the .env filename",
-    ""
-  )
   .action((options) => {
     theGenerate({
       envPath: options.env,
       value: options.value,
       suffix: options.suffix,
-      prefix: options.prefix,
     });
   });
