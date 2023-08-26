@@ -33,7 +33,7 @@ pushCommand
   )
   .option(
     "-e, --env <relative-path>",
-    "Specify input directory or file where the .env/.envs is/are located.>. Defaults to current directory.",
+    "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
     process.cwd(),
   )
   .option(

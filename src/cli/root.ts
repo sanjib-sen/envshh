@@ -9,6 +9,13 @@ import { dbCommand } from "./db.js";
 import { instanceCommand } from "./instance.js";
 import { pullCommand } from "./main/pull.js";
 import { pushCommand } from "./main/push.js";
+import {
+  decryptFileCommand,
+  decryptTextCommand,
+  encryptFileCommand,
+  encryptTextCommand,
+  generateCommand,
+} from "./utils.js";
 
 export const program = new Command();
 
@@ -27,5 +34,10 @@ program
 program
   .addCommand(pushCommand)
   .addCommand(pullCommand)
+  .addCommand(generateCommand)
+  .addCommand(encryptFileCommand)
+  .addCommand(encryptTextCommand)
+  .addCommand(decryptFileCommand)
+  .addCommand(decryptTextCommand)
   .addCommand(dbCommand)
   .addCommand(instanceCommand);

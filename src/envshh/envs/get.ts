@@ -4,7 +4,6 @@
 // https://opensource.org/licenses/MIT
 
 import path from "path";
-import { ProjectPushConfigParamsType } from "../../types/params.js";
 import { isPathADirectory, isPathExists } from "../../filesystem/checks.js";
 import { envExtensions } from "../defaults/defaults.js";
 import * as fs from "fs";
@@ -21,10 +20,8 @@ function getListOfEnvsInDirectory(directory: string) {
   return envs;
 }
 
-export function getAllEnvsFromProjectParams(
-  project: ProjectPushConfigParamsType,
-) {
-  const filesAndDirectories = project.envPath.split(" ");
+export function getAllEnvsFromEnvPath(envPaths: string) {
+  const filesAndDirectories = envPaths.split(" ");
   filesAndDirectories.map((fileOrDirectory) => {
     return path.join(process.cwd(), fileOrDirectory);
   });

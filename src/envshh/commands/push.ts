@@ -6,7 +6,7 @@
 import path from "path";
 import { DBgetInstance } from "../../db/controllers.js";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
-import { getAllEnvsFromProjectParams } from "../envs/get.js";
+import { getAllEnvsFromEnvPath } from "../envs/get.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { createDirectory } from "../../filesystem/functions.js";
 import { saveEncryptedEnv } from "../encryption/encrypt.js";
@@ -17,7 +17,7 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
   if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
     envshh.gitPull();
   }
-  const envPaths = getAllEnvsFromProjectParams(pushConfig);
+  const envPaths = getAllEnvsFromEnvPath(pushConfig.envPath);
   const destinationDirectory = path.join(
     envshh.getMainDirectory(),
     pushConfig.name,
