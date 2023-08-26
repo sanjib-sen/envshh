@@ -6,8 +6,9 @@
 import { EnvshhInstanceType } from "../../../types/schemas.js";
 import * as readlineSync from "readline-sync";
 import { EnvshhInstance } from "../../envshh.js";
-import { exitWithError, exitWithSuccess } from "../../../utils/process.js";
+import { exitWithError } from "../../../utils/process.js";
 import { defaultInstanceName } from "../../defaults/defaults.js";
+import { log } from "../../../utils/log.js";
 
 export function createInstance(
   envshhCreateParams: Partial<EnvshhInstanceType>,
@@ -38,7 +39,6 @@ export function createInstance(
     mainRepoUrl: mainRepoUrl,
   });
   const newEnvshh = envshh.create();
-  return exitWithSuccess(`Instance ${name} created. At a glance:\n
-  ${JSON.stringify(newEnvshh, null, 2)}
-  `);
+  log.info("Creating..............");
+  return newEnvshh.print();
 }

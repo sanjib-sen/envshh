@@ -27,6 +27,9 @@ export class Log {
       )}: ${messageChalkFunction(`${message}\n`)}`,
     );
   }
+  print(message: string) {
+    this.logger(message);
+  }
   info(message: string) {
     this.toStdout("Info", chalk.blueBright, message, chalk.white);
   }

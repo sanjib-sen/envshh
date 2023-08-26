@@ -43,21 +43,10 @@ export class EnvshhInstance {
     this.initChecks();
   }
   private initChecks() {
-    if (isGitInstalledAndPathed()) {
-      log.success("Git is installed and in path");
-    } else {
+    if (!isGitInstalledAndPathed()) {
       return exitWithError("Git is not installed or not in path");
     }
-    if (!this.config.mainRepoUrl) {
-      log.warn(
-        "Did not specify any Remote Repository URL. Online sync will not work.",
-      );
-    } else if (
-      this.config.mainRepoUrl &&
-      isRepositoryExistsOnRemote(this.config.mainRepoUrl)
-    ) {
-      log.success(`Using Remote Repository URL: ${this.config.mainRepoUrl}`);
-    } else if (
+    if (
       this.config.mainRepoUrl &&
       !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
@@ -76,9 +65,8 @@ export class EnvshhInstance {
 
   create() {
     DBinsertInstance(this.config);
-    createDirectory(this.config.mainDirectory);
+    this.createMainDirectory();
     this.isMainRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
-    log.success(`Created new Directory ${this.config.mainDirectory}`);
     return this;
   }
 
@@ -107,6 +95,10 @@ export class EnvshhInstance {
     this.deleteMainDirectory();
     DBdeleteInstance(this.config.name);
     return this;
+  }
+
+  print() {
+    log.print(JSON.stringify(this.config, null, 2));
   }
 
   reset() {

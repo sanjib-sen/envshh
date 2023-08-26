@@ -8,7 +8,6 @@ import {
   EnvshhInstanceNameType,
   EnvshhInstanceType,
 } from "../../../types/schemas.js";
-import { exitWithSuccess } from "../../../utils/process.js";
 import * as readlineSync from "readline-sync";
 import { log } from "../../../utils/log.js";
 
@@ -48,7 +47,5 @@ export function editInstance(
   }
 
   const newEnvshh = envshh.edit(envshhModifyParams);
-  return exitWithSuccess(`Instance ${name} modified. Modified instance:\n
-    ${JSON.stringify(newEnvshh, null, 2)}
-  `);
+  return newEnvshh.print();
 }

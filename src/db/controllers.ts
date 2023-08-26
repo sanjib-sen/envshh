@@ -11,15 +11,8 @@ import {
 import { EnvshhInstance } from "../envshh/envshh.js";
 import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
-import {
-  defaultDBPath,
-  // defaultInstanceName,
-  // defaultMainDirectory,
-} from "../envshh/defaults/defaults.js";
-// import * as readlineSync from "readline-sync";
-// import path from "path";
-import { exitProcess, exitWithError } from "../utils/process.js";
-import { runCommand } from "../utils/command.js";
+import { log } from "../utils/log.js";
+import { exitWithError } from "../utils/process.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -32,7 +25,7 @@ export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
     db.data.instances[InstanceIndex] = envshhConfig;
   }
   db.write();
-  return exitProcess();
+  return new EnvshhInstance(db.data.instances[db.data.instances.length - 1]);
 }
 
 export function DBgetInstance(name: EnvshhInstanceNameType) {
@@ -60,8 +53,7 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
 
 export function DBshowAll() {
   db.read();
-  runCommand(`cat ${defaultDBPath}`, false, true);
-  exitProcess();
+  log.print(JSON.stringify(db.data, null, 2));
 }
 
 export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
