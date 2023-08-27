@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
     "moduleResolution": "NodeNext",
     "module": "ESNext",
     "target": "ESNext",
@@ -15,16 +16,7 @@
     "lib": ["ESNext"],
     "resolveJsonModule": true
   },
-  // "lib": ["ESNext"],
-  "include": ["."],
-  "exclude": ["node_modules", "dist"],
-  "ts-node": {
-    "transpileOnly": true,
-    "files": true,
-    "experimentalResolver": true,
-    "esm": true,
-    "compilerOptions": {
-      "module": "ESNext"
-    }
-  }
+  "lib": ["ESNext"],
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
