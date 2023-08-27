@@ -24,7 +24,7 @@ import { deleteDirectoryOrFile } from "../filesystem/functions.js";
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
-    (instance) => instance.name === envshhConfig.name
+    (instance) => instance.name === envshhConfig.name,
   );
   if (InstanceIndex === -1) {
     db.data.instances.push(envshhConfig);
@@ -36,11 +36,11 @@ export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
 }
 
 export function handleDefaultInstanceForPushNPull(
-  name: EnvshhInstanceNameType
+  name: EnvshhInstanceNameType,
 ) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
-    (instance) => instance.name === name
+    (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
     if (name === defaultInstanceName) {
@@ -54,7 +54,7 @@ export function handleDefaultInstanceForPushNPull(
       return envshh;
     } else {
       return exitWithError(
-        `Instance ${name} not found. Create one by running: envshh instance create`
+        `Instance ${name} not found. Create one by running: envshh instance create`,
       );
     }
   } else {
@@ -65,11 +65,11 @@ export function handleDefaultInstanceForPushNPull(
 export function DBgetInstance(name: EnvshhInstanceNameType) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
-    (instance) => instance.name === name
+    (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
     return exitWithError(
-      `Instance ${name} not found. Create one by running: envshh instance create`
+      `Instance ${name} not found. Create one by running: envshh instance create`,
     );
   }
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
@@ -88,7 +88,7 @@ export function DBshow(instanceName?: EnvshhInstanceNameType) {
 export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
-    (instance) => instance.name === envshh.name
+    (instance) => instance.name === envshh.name,
   );
   if (InstanceIndex === -1) {
     return exitWithError(`Instance ${envshh.name} not found.`);
@@ -104,7 +104,7 @@ export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
 export function DBdeleteInstance(name: EnvshhInstanceNameType) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
-    (instance) => instance.name === name
+    (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
     return exitWithError("Instance not found.");
