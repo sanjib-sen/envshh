@@ -25,9 +25,9 @@ export function theRemove(
   );
   for (let index = 0; index < envPaths.length; index++) {
     const envPath = envPaths[index];
-    deleteDirectoryOrFile(envPath);
     const destination = envPath.replace(process.cwd(), destinationDirectory);
     deleteDirectoryOrFile(destination);
+    deleteDirectoryOrFile(envPath);
   }
   envshh.gitCommit();
   if (!removeConfig.offline) {
