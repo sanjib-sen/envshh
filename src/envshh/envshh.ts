@@ -7,7 +7,6 @@ import {
   isGitInstalledAndPathed,
   isRepositoryExistsOnRemote,
 } from "../git/checks.js";
-import { log } from "../utils/log.js";
 import {
   copyFileAndFolder,
   createDirectory,
@@ -98,7 +97,7 @@ export class EnvshhInstance {
   }
 
   print() {
-    log.print(JSON.stringify(this.config, null, 2));
+    console.table(this.config);
   }
 
   reset() {

@@ -11,7 +11,6 @@ import {
 import { EnvshhInstance } from "../envshh/envshh.js";
 import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
-import { log } from "../utils/log.js";
 import { exitWithError } from "../utils/process.js";
 import {
   defaultInstanceName,
@@ -76,7 +75,7 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
 
 export function DBshowAll() {
   db.read();
-  log.print(JSON.stringify(db.data, null, 2));
+  console.table(db.data.instances);
 }
 
 export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
