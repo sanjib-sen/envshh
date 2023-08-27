@@ -13,11 +13,9 @@ import { isPathExists } from "../filesystem/checks.js";
 const jsonDefaultData = {
   instances: [],
 };
-
 if (!isPathExists(defaultDBPath)) {
   createFile(defaultDBPath, JSON.stringify(jsonDefaultData));
 }
-
 const adapter = new JSONFileSync<{ instances: EnvshhInstanceType[] }>(
   defaultDBPath,
 );

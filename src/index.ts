@@ -6,5 +6,10 @@
 // https://opensource.org/licenses/MIT
 
 import { program } from "./cli/root.js";
+import { defaultLocalDirectory } from "./envshh/defaults/defaults.js";
+import { createDirectory } from "./filesystem/functions.js";
+
+console.log("Envshh CLI");
+createDirectory(defaultLocalDirectory);
 
 program.parse();

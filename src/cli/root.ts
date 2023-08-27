@@ -17,6 +17,8 @@ import {
   generateCommand,
 } from "./utils.js";
 import { removeCommand } from "./main/remove.js";
+console.log("Envshh CLI");
+
 export const program = new Command();
 
 program

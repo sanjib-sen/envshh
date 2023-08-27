@@ -131,4 +131,5 @@ export function DBClear() {
   });
   db.write();
   deleteDirectoryOrFile(defaultDBPath);
+  deleteDirectoryOrFile(defaultLocalDirectory);
 }
