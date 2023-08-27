@@ -22,19 +22,34 @@ A always up-to-date starter template for Node.js projects with [TypeScript](http
 
 Just use this as a [template](https://github.com/new?template_name=starter-node&template_owner=sanjib-sen) for your new project and you are good to go.
 
-## NPM Scripts
+```
+╰─❯ envshh help
+                      _     _
+   ___ _ ____   _____| |__ | |__
+  / _ \ '_ \ \ / / __| '_ \| '_ \
+ |  __/ | | \ V /\__ \ | | | | | |
+  \___|_| |_|\_/ |___/_| |_|_| |_|
 
-| **Command**           | **Action**                                                                                                 | **preCommands**                   |
-| --------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| `npm install`         | Install all necessary dependencies                                                                         |                                   |
-| `npm run dev`         | Run and monitor changes using [nodemon](https://npmjs.com/package/nodemon)                                 |                                   |
-| `npm run build`       | Compile Typescript files to JavaScript. (Output directory=`/dist`)                                         | `npm run format && npm run lint`  |
-| `npm run format`      | Format files using [Prettier](https://prettier.io)                                                         |                                   |
-| `npm run lint`        | Check and Fix Linting issues using [ESLint](https://eslint.org)                                            |                                   |
-| `npm run start`       | Compile TypeScript Files to JavaScript and run.                                                            | `npm run build`                   |
-| `npm run docker:up`   | Prepare, build and run Docker container using [docker-compose up](https://docs.docker.com/compose) command | `docker-compose build --no-cache` |
-| `npm run docker:down` | Stop Docker container using [docker-compose down](https://docs.docker.com/compose) command                 |                                   |
+Usage: envshh [options] [command]
 
-# Envshh Instance personal
+A command line tool to securely and automatically manage, store environment variables.
+Made by Sanjib Sen <mail@sanjibsen.com>
+GitHub: https://github.com/sanjib-sen/envshh
 
-# Envshh Instance personal
+Options:
+  -v, --version                 output the version number
+  -h, --help                    display help for command
+
+Commands:
+  push [options]                Push local environment variables to Upstream
+  pull [options]                Pull environment variables from Upstream
+  generate [options]            Generate .env.example file
+  encryptfile [options] <file>  Encrypt a file
+  encrypttext [options] <text>  Encrypt a text
+  decryptfile [options] <file>  Decrypt a file
+  decrypttext [options] <text>  Decrypt a text
+  db                            [Advanced] Manage Instance database
+  instance                      [Advanced] Manage Instances
+  help [command]                display help for command
+
+```

@@ -1,7 +1,7 @@
 {
   "name": "envshh",
   "version": "0.0.1",
-  "description": "A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
+  "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
