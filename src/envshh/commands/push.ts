@@ -20,7 +20,7 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
   const destinationDirectory = path.join(
     envshh.getMainDirectory(),
     pushConfig.name,
-    defaultBranchNamePrefix + pushConfig.branch
+    defaultBranchNamePrefix + pushConfig.branch,
   );
   createDirectory(destinationDirectory);
   for (let index = 0; index < envPaths.length; index++) {

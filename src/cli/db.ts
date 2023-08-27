@@ -16,7 +16,7 @@ dbCommand
   .description("Show the instances Database")
   .option(
     "-i, --instance <name>",
-    "Show only instance <instance-name>. Default: All"
+    "Show only instance <instance-name>. Default: All",
   )
   .action((options) => {
     showDB(options.instance);
@@ -24,7 +24,7 @@ dbCommand
 dbCommand
   .command("sync")
   .description(
-    "[Advanced] Remove all deleted or moved instances from database."
+    "[Advanced] Remove all deleted or moved instances from database.",
   )
   .action(() => {
     syncDB();

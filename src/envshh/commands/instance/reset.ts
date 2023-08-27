@@ -13,7 +13,7 @@ export function resetInstance(name: EnvshhInstanceNameType, yes: boolean) {
     return envshh.reset();
   }
   const confirm = readlineSync.question(
-    `Are you sure you want to clear ${name}? This will remove data from remote repository too. (y/N): `
+    `Are you sure you want to clear ${name}? This will remove data from remote repository too. (y/N): `,
   );
   if (confirm === "y") {
     envshh.reset();
