@@ -6,12 +6,14 @@ import * as readlineSync from "readline-sync";
 
 export function askPassword(confirm = true) {
   if (!confirm) {
-    return readlineSync.questionNewPassword("Password: ", {
+    return readlineSync.question("Password: ", {
+      hideEchoBack: true,
       min: 4,
     });
   }
   return readlineSync.questionNewPassword("Password: ", {
     confirmMessage: "Confirm Password: ",
     min: 4,
+    max: 64,
   });
 }
