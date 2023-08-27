@@ -20,6 +20,7 @@ import {
 import path from "path";
 import * as readlineSync from "readline-sync";
 import { deleteDirectoryOrFile } from "../filesystem/functions.js";
+import { log } from "../utils/log.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -44,6 +45,12 @@ export function handleDefaultInstanceForPushNPull(
   );
   if (InstanceIndex === -1) {
     if (name === defaultInstanceName) {
+      log.info(
+        `.envs will be stored on a local directory (${defaultLocalDirectory}) and a Remote Git Repository created by you.
+Enter the already created Repository URL or Create one and then provide the URL.
+If you do not want to store the .envs in a remote repository, keep the URL blank.
+`,
+      );
       const repoUrl = readlineSync.question("Remote Repository URL: ");
       const envshh = new EnvshhInstance({
         name: defaultInstanceName,
