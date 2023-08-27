@@ -16,6 +16,7 @@ import {
   encryptTextCommand,
   generateCommand,
 } from "./utils.js";
+import { removeCommand } from "./main/remove.js";
 export const program = new Command();
 
 program
@@ -30,6 +31,7 @@ program
   .addCommand(pushCommand)
   .addCommand(pullCommand)
   .addCommand(generateCommand)
+  .addCommand(removeCommand)
   .addCommand(encryptFileCommand)
   .addCommand(encryptTextCommand)
   .addCommand(decryptFileCommand)
