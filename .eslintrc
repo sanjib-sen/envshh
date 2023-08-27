@@ -6,9 +6,5 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier"
-  ],
-  "rules": {
-    // 0 means off, 1 Means warning, 2 means error
-    "no-console": 2
-  }
+  ]
 }

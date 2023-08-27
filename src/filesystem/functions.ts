@@ -29,7 +29,7 @@ export function readFile(destination: string) {
 
 export function deleteDirectoryOrFile(
   directoryOrFilePath: string,
-  recursive = false,
+  recursive = true,
 ): void {
   try {
     if (fs.existsSync(directoryOrFilePath)) {

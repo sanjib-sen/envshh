@@ -1,14 +1,12 @@
 {
   "name": "envshh",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
     "lint": "eslint --ext .js,.ts,.json --fix .",
-    "clean": "rm -rf node_modules dist package-lock.json",
-    "dev": "nodemon --exec node --loader ts-node/esm --watch src src/index.ts",
-    "register": "node --loader ts-node/esm -r ts-node/register src/index.ts",
+    "clean": "rm -rf node_modules dist",
     "build": "rm -rf dist  && npm run format && npm run lint && tsc"
   },
   "bin": {
@@ -41,8 +39,6 @@
     "eslint": "*",
     "eslint-config-prettier": "*",
     "eslint-plugin-prettier": "*",
-    "nodemon": "*",
-    "ts-node": "*",
     "typescript": "*"
   },
   "dependencies": {

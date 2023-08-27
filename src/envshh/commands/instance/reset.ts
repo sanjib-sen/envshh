@@ -6,17 +6,17 @@
 import { DBgetInstance } from "../../../db/controllers.js";
 import { EnvshhInstanceNameType } from "../../../types/schemas.js";
 import * as readlineSync from "readline-sync";
-import { exitWithSuccess } from "../../../utils/process.js";
 
-export function resetInstance(name: EnvshhInstanceNameType) {
+export function resetInstance(name: EnvshhInstanceNameType, yes: boolean) {
   const envshh = DBgetInstance(name);
+  if (yes) {
+    return envshh.reset();
+  }
   const confirm = readlineSync.question(
     `Are you sure you want to clear ${name}? (y/N): `,
   );
   if (confirm === "y") {
     envshh.reset();
-    return exitWithSuccess(`Instance ${name} Cleared.`);
-  } else {
-    return exitWithSuccess(`Instance ${name} not Cleared.`);
+    return envshh.reset();
   }
 }

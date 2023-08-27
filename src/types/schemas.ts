@@ -24,7 +24,7 @@ export const EnvshhInstanceSchema = z
     mainDirectory: z.string().default(defaultMainDirectory),
     mainRepoUrl: z
       .string()
-      .url({ message: "Invalid Repository URL" })
+      // .url({ message: "Invalid Repository URL" })
       .optional(),
   })
   .default({

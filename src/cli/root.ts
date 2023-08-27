@@ -16,25 +16,22 @@ import {
   encryptTextCommand,
   generateCommand,
 } from "./utils.js";
-
+import { removeCommand } from "./main/remove.js";
 export const program = new Command();
 
 program
   .name("envshh")
   .addHelpText("beforeAll", figlet.textSync("envshh"))
   .description(
-    "A command line tool to securely and automatically manage, store environment variables.\
-    \nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
+    "A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
   )
-  .version(
-    process.env.npm_package_version ? process.env.npm_package_version : "1.00",
-    "-v, --version",
-  );
+  .version("0.0.1", "-v, --version");
 
 program
   .addCommand(pushCommand)
   .addCommand(pullCommand)
   .addCommand(generateCommand)
+  .addCommand(removeCommand)
   .addCommand(encryptFileCommand)
   .addCommand(encryptTextCommand)
   .addCommand(decryptFileCommand)

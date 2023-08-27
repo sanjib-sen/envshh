@@ -4,14 +4,15 @@
 // https://opensource.org/licenses/MIT
 
 import { DBClear } from "../../../db/controllers.js";
-import { log } from "../../../utils/log.js";
 import * as readlineSync from "readline-sync";
-export function clearDB() {
+export function clearDB(yes: boolean) {
+  if (yes) {
+    return DBClear();
+  }
   const confirm = readlineSync.question(
     `Are you sure you want to clear the Envshh Database? (y/N): `,
   );
   if (confirm === "y") {
-    log.info(`Envshh Database Cleared.`);
-    DBClear();
+    return DBClear();
   }
 }

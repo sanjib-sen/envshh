@@ -6,7 +6,6 @@
 import { Command } from "@commander-js/extra-typings";
 import { removeInstance } from "../envshh/commands/instance/remove.js";
 import { resetInstance } from "../envshh/commands/instance/reset.js";
-import { defaultInstanceName } from "../envshh/defaults/defaults.js";
 import { createInstance } from "../envshh/commands/instance/create.js";
 import { editInstance } from "../envshh/commands/instance/edit.js";
 
@@ -54,22 +53,16 @@ instanceCommand
 instanceCommand
   .command("remove")
   .description("[Advanced][Careful] Delete the instance data.")
-  .requiredOption(
-    "-n, --name <name>",
-    `Specify the instance name.`,
-    defaultInstanceName,
-  )
+  .requiredOption("-n, --name <name>", `Specify the instance name.`)
+  .option("-y, --yes", "Force delete the instance without confirmation.", false)
   .action((options) => {
-    removeInstance(options.name);
+    removeInstance(options.name, options.yes);
   });
 instanceCommand
   .command("reset")
   .description("[Advanced][Careful] Reset the instance.")
-  .option(
-    "-n, --name <name>",
-    `Specify the instance name.`,
-    defaultInstanceName,
-  )
+  .option("-y, --yes", "Force reset the instance without confirmation.", false)
+  .requiredOption("-n, --name <name>", `Specify the instance name.`)
   .action((options) => {
-    resetInstance(options.name);
+    resetInstance(options.name, options.yes);
   });

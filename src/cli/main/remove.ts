@@ -4,7 +4,6 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { thePull } from "../../envshh/commands/pull.js";
 import {
   defaultBranchName,
   defaultInstanceName,
@@ -12,14 +11,14 @@ import {
 import { getCurrentWorkingDirectoryName } from "../../filesystem/functions.js";
 import { isDirectoryAGitRepository } from "../../git/checks.js";
 import { getGitRepoName } from "../../git/functions.js";
-import { log } from "../../utils/log.js";
-import { askPassword } from "../../utils/password.js";
+import { theRemove } from "../../envshh/commands/remove.js";
+import * as readlineSync from "readline-sync";
 
-export const pullCommand = new Command();
+export const removeCommand = new Command();
 
-pullCommand
-  .name("pull")
-  .description("Pull environment variables from Upstream")
+removeCommand
+  .name("remove")
+  .description("Delete .envs from local and upstream")
   .option(
     "-p, --project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
@@ -33,21 +32,37 @@ pullCommand
     defaultBranchName,
   )
   .option(
+    "-e, --env <relative-path>",
+    "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
+    process.cwd(),
+  )
+  .option(
     "-i, --instance <Instance name.>",
     `[Advanced Option] Specify the instance name.`,
     defaultInstanceName,
   )
   .option(
     "--offline",
-    "Don't pull from remote repository. Just do an offline pull.",
+    "Don't delete from remote repository. Just commit locally.",
+    false,
+  )
+  .option(
+    "-y, --yes",
+    "Force delete .envs without asking for confirmation.",
     false,
   )
   .action((options) => {
-    log.info(`${options.project} ${options.branch}`);
-    const password = askPassword(false);
-    thePull({
-      password: password,
+    if (!options.yes) {
+      const confirm = readlineSync.question(
+        "Are you sure you want to delete .envs from local and upstream? (y/n): ",
+      );
+      if (confirm !== "y") {
+        process.exit(0);
+      }
+    }
+    theRemove({
       name: options.project,
+      envPath: options.env,
       branch: options.branch,
       offline: options.offline,
       instance: options.instance,

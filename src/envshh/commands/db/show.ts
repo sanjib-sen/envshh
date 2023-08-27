@@ -3,8 +3,9 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { DBshowAll } from "../../../db/controllers.js";
+import { DBshow } from "../../../db/controllers.js";
+import { EnvshhInstanceNameType } from "../../../types/schemas.js";
 
-export function showDB() {
-  DBshowAll();
+export function showDB(instance: EnvshhInstanceNameType | undefined) {
+  DBshow(instance);
 }

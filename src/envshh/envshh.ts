@@ -7,7 +7,6 @@ import {
   isGitInstalledAndPathed,
   isRepositoryExistsOnRemote,
 } from "../git/checks.js";
-import { log } from "../utils/log.js";
 import {
   copyFileAndFolder,
   createDirectory,
@@ -40,7 +39,6 @@ export class EnvshhInstance {
       handleError(err);
       process.exit(1);
     }
-    this.initChecks();
   }
   private initChecks() {
     if (!isGitInstalledAndPathed()) {
@@ -64,6 +62,7 @@ export class EnvshhInstance {
   }
 
   create() {
+    this.initChecks();
     DBinsertInstance(this.config);
     this.createMainDirectory();
     this.isMainRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
@@ -76,6 +75,7 @@ export class EnvshhInstance {
       mainDirectory: envshh.mainDirectory || this.config.mainDirectory,
       mainRepoUrl: envshh.mainRepoUrl || this.config.mainRepoUrl,
     });
+    newEnvshhInstance.initChecks();
     if (newEnvshhInstance.config.mainDirectory !== this.config.mainDirectory) {
       newEnvshhInstance.createMainDirectory();
       if (!isDirectoryEmpty(this.config.mainDirectory)) {
@@ -86,8 +86,8 @@ export class EnvshhInstance {
       }
       this.deleteMainDirectory();
     }
-    DBdeleteInstance(this.config.name);
     newEnvshhInstance.create();
+    DBdeleteInstance(this.config.name);
     return newEnvshhInstance;
   }
 
@@ -98,7 +98,7 @@ export class EnvshhInstance {
   }
 
   print() {
-    log.print(JSON.stringify(this.config, null, 2));
+    console.table([this.config]);
   }
 
   reset() {
@@ -108,6 +108,9 @@ export class EnvshhInstance {
   }
 
   gitPull() {
+    if (!this.isMainRepoUrlSet()) {
+      return;
+    }
     pullRepo(this.config);
   }
 
@@ -116,6 +119,9 @@ export class EnvshhInstance {
   }
 
   gitPush() {
+    if (!this.isMainRepoUrlSet()) {
+      return;
+    }
     pushRepo(this.config);
   }
 

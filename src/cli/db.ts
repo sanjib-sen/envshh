@@ -14,8 +14,12 @@ dbCommand.name("db").description("[Advanced] Manage Instance database");
 dbCommand
   .command("show")
   .description("Show the instances Database")
-  .action(() => {
-    showDB();
+  .option(
+    "-i, --instance <name>",
+    "Show only instance <instance-name>. Default: All",
+  )
+  .action((options) => {
+    showDB(options.instance);
   });
 dbCommand
   .command("sync")
@@ -28,6 +32,7 @@ dbCommand
 dbCommand
   .command("clear")
   .description("[Advanced][Careful] Remove all instances from Database")
-  .action(() => {
-    clearDB();
+  .option("-y, --yes", "Force clear the database without confirmation.", false)
+  .action((option) => {
+    clearDB(option.yes);
   });

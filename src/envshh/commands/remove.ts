@@ -8,28 +8,29 @@ import { handleDefaultInstanceForPushNPull } from "../../db/controllers.js";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
 import { getAllEnvsFromEnvPath } from "../envs/get.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
-import { createDirectory } from "../../filesystem/functions.js";
-import { saveEncryptedEnv } from "../encryption/encrypt.js";
+import { deleteDirectoryOrFile } from "../../filesystem/functions.js";
 
-export function thePush(pushConfig: ProjectPushConfigParamsType) {
-  const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
-  if (!pushConfig.offline) {
+export function theRemove(
+  removeConfig: Omit<ProjectPushConfigParamsType, "password">,
+) {
+  const envshh = handleDefaultInstanceForPushNPull(removeConfig.instance);
+  if (!removeConfig.offline) {
     envshh.gitPull();
   }
-  const envPaths = getAllEnvsFromEnvPath(pushConfig.envPath);
+  const envPaths = getAllEnvsFromEnvPath(removeConfig.envPath);
   const destinationDirectory = path.join(
     envshh.getMainDirectory(),
-    pushConfig.name,
-    defaultBranchNamePrefix + pushConfig.branch,
+    removeConfig.name,
+    defaultBranchNamePrefix + removeConfig.branch,
   );
-  createDirectory(destinationDirectory);
   for (let index = 0; index < envPaths.length; index++) {
     const envPath = envPaths[index];
+    deleteDirectoryOrFile(envPath);
     const destination = envPath.replace(process.cwd(), destinationDirectory);
-    saveEncryptedEnv(envPath, pushConfig.password, destination);
+    deleteDirectoryOrFile(destination);
   }
   envshh.gitCommit();
-  if (!pushConfig.offline) {
+  if (!removeConfig.offline) {
     envshh.gitPush();
   }
 }
