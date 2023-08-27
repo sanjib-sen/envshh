@@ -13,7 +13,7 @@ import { log } from "../../../utils/log.js";
 
 export function editInstance(
   name: EnvshhInstanceNameType,
-  envshhModifyParams: Partial<EnvshhInstanceType>,
+  envshhModifyParams: Partial<EnvshhInstanceType>
 ) {
   const envshh = DBgetInstance(name);
   if (
@@ -22,21 +22,21 @@ export function editInstance(
     !envshhModifyParams.remoteRepoUrl
   ) {
     log.info(
-      `Interactive mode. Press Ctrl+C to exit. Leave fields empty to keep the current value.`,
+      `Interactive mode. Press Ctrl+C to exit. Leave fields empty to keep the current value.`
     );
     const newName =
       readlineSync.question(`Instance Name (Current: ${name}): `) ||
       envshh.config.name;
     const localDirectory =
       readlineSync.question(
-        `Directory Path (Current: ${envshh.getLocalDirectory()}): `,
+        `Directory Path (Current: ${envshh.getLocalDirectory()}): `
       ) || envshh.config.localDirectory;
     const remoteRepoUrl =
       envshhModifyParams?.remoteRepoUrl ||
       readlineSync.question(
         `Remote Repository URL (Write "none" if you want to use offline. Current: ${
           envshh.getRemoteRepoUrl() ? envshh.config.remoteRepoUrl : "none"
-        }): `,
+        }): `
       ) ||
       envshh.config.remoteRepoUrl;
     envshhModifyParams = {
