@@ -18,7 +18,7 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
   }
   const envPaths = getAllEnvsFromEnvPath(pushConfig.envPath);
   const destinationDirectory = path.join(
-    envshh.getMainDirectory(),
+    envshh.getLocalDirectory(),
     pushConfig.name,
     defaultBranchNamePrefix + pushConfig.branch,
   );

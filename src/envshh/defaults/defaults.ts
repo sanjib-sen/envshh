@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-export const defaultMainDirectory =
+export const defaultLocalDirectory =
   process.platform === "win32"
     ? `${process.env.USERPROFILE}\\.envshh`
     : `${process.env.HOME}/.config/.envshh`;

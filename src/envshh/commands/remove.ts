@@ -19,7 +19,7 @@ export function theRemove(
   }
   const envPaths = getAllEnvsFromEnvPath(removeConfig.envPath);
   const destinationDirectory = path.join(
-    envshh.getMainDirectory(),
+    envshh.getLocalDirectory(),
     removeConfig.name,
     defaultBranchNamePrefix + removeConfig.branch,
   );

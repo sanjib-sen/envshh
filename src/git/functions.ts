@@ -16,26 +16,26 @@ import { exitWithError, exitWithSuccess } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
 
 export function cloneRepo(envshh: EnvshhInstanceType): void {
-  if (!envshh.mainRepoUrl) {
+  if (!envshh.remoteRepoUrl) {
     return exitWithError("Repository URL is not defined.");
   }
-  if (isRepositoryExistsOnRemote(envshh.mainRepoUrl) === false) {
+  if (isRepositoryExistsOnRemote(envshh.remoteRepoUrl) === false) {
     return exitWithError("Repository does not exist on Remote.");
   }
   if (
-    isPathExists(envshh.mainDirectory) === true &&
-    isDirectoryEmpty(envshh.mainDirectory) === false
+    isPathExists(envshh.localDirectory) === true &&
+    isDirectoryEmpty(envshh.localDirectory) === false
   ) {
     return exitWithError(
-      `Directory ${envshh.mainDirectory} already exists. But it is not empty. It is not safe to clone here.`,
+      `Directory ${envshh.localDirectory} already exists. But it is not empty. It is not safe to clone here.`,
     );
   }
-  runCommand(`git clone ${envshh.mainRepoUrl} ${envshh.mainDirectory}`);
+  runCommand(`git clone ${envshh.remoteRepoUrl} ${envshh.localDirectory}`);
 }
 
 export function pullRepo(envshh: EnvshhInstanceType): void {
   try {
-    execSync(`git -C ${envshh.mainDirectory} pull`);
+    execSync(`git -C ${envshh.localDirectory} pull`);
   } catch (error) {
     if (error instanceof Error) {
       log.warn(error.toString());
@@ -57,36 +57,36 @@ export function pullRepo(envshh: EnvshhInstanceType): void {
 }
 
 export function initRepo(envshh: EnvshhInstanceType) {
-  runCommand(`git -C ${envshh.mainDirectory} init`);
-  envshh.mainRepoUrl
+  runCommand(`git -C ${envshh.localDirectory} init`);
+  envshh.remoteRepoUrl
     ? runCommand(
-        `git -C ${envshh.mainDirectory} remote add origin ${envshh.mainRepoUrl}`,
+        `git -C ${envshh.localDirectory} remote add origin ${envshh.remoteRepoUrl}`,
       )
     : "";
-  runCommand(`git -C ${envshh.mainDirectory} branch -M main`);
+  runCommand(`git -C ${envshh.localDirectory} branch -M main`);
   runCommand(
     `cd '${
-      envshh.mainDirectory
+      envshh.localDirectory
     }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md`,
   );
-  runCommand(`git -C ${envshh.mainDirectory} add .`);
+  runCommand(`git -C ${envshh.localDirectory} add .`);
   runCommand(
-    `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
+    `git -C ${envshh.localDirectory} commit -m "${new Date().toUTCString()}"`,
   );
-  envshh.mainRepoUrl
-    ? runCommand(`git -C ${envshh.mainDirectory} push -u origin main`)
+  envshh.remoteRepoUrl
+    ? runCommand(`git -C ${envshh.localDirectory} push -u origin main`)
     : "";
 }
 
 export function commitRepo(envshh: EnvshhInstanceType) {
-  runCommand(`git -C ${envshh.mainDirectory} add .`);
+  runCommand(`git -C ${envshh.localDirectory} add .`);
   runCommand(
-    `git -C ${envshh.mainDirectory} commit -m "${new Date().toUTCString()}"`,
+    `git -C ${envshh.localDirectory} commit -m "${new Date().toUTCString()}"`,
   );
 }
 
 export function pushRepo(envshh: EnvshhInstanceType) {
-  runCommand(`git -C ${envshh.mainDirectory} push origin main`);
+  runCommand(`git -C ${envshh.localDirectory} push origin main`);
 }
 
 function getProjectNameFromRepoUrl(url: string) {

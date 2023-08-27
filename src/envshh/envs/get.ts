@@ -37,14 +37,14 @@ export function getAllEnvsFromEnvPath(envPaths: string) {
   return envs;
 }
 
-export function getAllEnvsFromMainRepo(
+export function getAllEnvsFromRemoteRepo(
   directoryPath: string,
   arrayOfFiles: string[] = [],
 ) {
   const files = fs.readdirSync(directoryPath);
   files.forEach(function (file) {
     if (fs.statSync(directoryPath + "/" + file).isDirectory()) {
-      arrayOfFiles = getAllEnvsFromMainRepo(
+      arrayOfFiles = getAllEnvsFromRemoteRepo(
         directoryPath + "/" + file,
         arrayOfFiles,
       );

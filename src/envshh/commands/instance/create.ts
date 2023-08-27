@@ -18,24 +18,24 @@ export function createInstance(
       `Instance Name (Default: ${defaultInstanceName}): `,
     ) ||
     defaultInstanceName;
-  const mainDirectory =
-    envshhCreateParams?.mainDirectory ||
+  const localDirectory =
+    envshhCreateParams?.localDirectory ||
     readlineSync.question("Directory Path: ");
-  if (!mainDirectory) {
+  if (!localDirectory) {
     return exitWithError(
       `Instance ${name} not created. Directory Path is required.`,
     );
   }
-  const mainRepoUrl =
-    envshhCreateParams?.mainRepoUrl ||
+  const remoteRepoUrl =
+    envshhCreateParams?.remoteRepoUrl ||
     readlineSync.question(
       "Remote Repository URL (Keep this blank if you want to use offline): ",
     ) ||
     undefined;
   const envshh = new EnvshhInstance({
     name: name,
-    mainDirectory: mainDirectory,
-    mainRepoUrl: mainRepoUrl,
+    localDirectory: localDirectory,
+    remoteRepoUrl: remoteRepoUrl,
   });
   const newEnvshh = envshh.create();
   return newEnvshh.print();
