@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import path from "path";
-import { DBgetInstance } from "../../db/controllers.js";
+import { handleDefaultInstanceForPushNPull } from "../../db/controllers.js";
 import { ProjectConfigParansType } from "../../types/params.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { getAllEnvsFromMainRepo } from "../envs/get.js";
@@ -13,7 +13,7 @@ import { isDirectoryEmpty, isPathExists } from "../../filesystem/checks.js";
 import { exitWithError } from "../../utils/process.js";
 
 export function thePull(pushConfig: ProjectConfigParansType) {
-  const envshh = DBgetInstance(pushConfig.instance);
+  const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
   if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
     envshh.gitPull();
   }

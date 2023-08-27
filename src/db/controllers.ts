@@ -13,6 +13,12 @@ import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
 import { log } from "../utils/log.js";
 import { exitWithError } from "../utils/process.js";
+import {
+  defaultInstanceName,
+  defaultMainDirectory,
+} from "../envshh/defaults/defaults.js";
+import path from "path";
+import * as readlineSync from "readline-sync";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -28,22 +34,39 @@ export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   return new EnvshhInstance(db.data.instances[db.data.instances.length - 1]);
 }
 
+export function handleDefaultInstanceForPushNPull(
+  name: EnvshhInstanceNameType,
+) {
+  db.read();
+  const InstanceIndex = db.data.instances.findIndex(
+    (instance) => instance.name === name,
+  );
+  if (InstanceIndex === -1) {
+    if (name === defaultInstanceName) {
+      const repoUrl = readlineSync.question("Remote Repository URL: ");
+      const envshh = new EnvshhInstance({
+        name: defaultInstanceName,
+        mainRepoUrl: repoUrl,
+        mainDirectory: path.join(defaultMainDirectory, defaultInstanceName),
+      });
+      envshh.create();
+      return envshh;
+    } else {
+      return exitWithError(
+        `Instance ${name} not found. Create one by running: envshh instance create`,
+      );
+    }
+  } else {
+    return DBgetInstance(name);
+  }
+}
+
 export function DBgetInstance(name: EnvshhInstanceNameType) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
-    // if (name === defaultInstanceName) {
-    //   const repoUrl = readlineSync.question("Remote Repository URL: ");
-    //   const envshh = new EnvshhInstance({
-    //     name: defaultInstanceName,
-    //     mainRepoUrl: repoUrl,
-    //     mainDirectory: path.join(defaultMainDirectory, defaultInstanceName),
-    //   });
-    //   envshh.create();
-    //   return envshh;
-    // }
     return exitWithError(
       `Instance ${name} not found. Create one by running: envshh instance create`,
     );
