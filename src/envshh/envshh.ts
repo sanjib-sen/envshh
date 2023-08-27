@@ -49,7 +49,7 @@ export class EnvshhInstance {
       !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
     ) {
       return exitWithError(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
+        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`
       );
     }
   }
@@ -81,7 +81,7 @@ export class EnvshhInstance {
       if (!isDirectoryEmpty(this.config.mainDirectory)) {
         copyFileAndFolder(
           this.config.mainDirectory,
-          newEnvshhInstance.config.mainDirectory,
+          newEnvshhInstance.config.mainDirectory
         );
       }
       this.deleteMainDirectory();
@@ -92,10 +92,7 @@ export class EnvshhInstance {
   }
 
   remove() {
-    this.gitPull();
     this.deleteMainDirectory();
-    this.gitCommit();
-    this.gitPush();
     DBdeleteInstance(this.config.name);
     return this;
   }
@@ -105,11 +102,8 @@ export class EnvshhInstance {
   }
 
   reset() {
-    this.gitPull();
     this.deleteMainDirectory();
     this.createMainDirectory();
-    this.gitCommit();
-    this.gitPush();
     return this;
   }
 

@@ -10,7 +10,7 @@ export function clearDB(yes: boolean) {
     return DBClear();
   }
   const confirm = readlineSync.question(
-    `Are you sure you want to clear the Envshh Database? This will remove all data from remote repository too. (y/N): `,
+    `Are you sure you want to clear the Envshh Database? (y/N): `
   );
   if (confirm === "y") {
     return DBClear();
