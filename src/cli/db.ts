@@ -14,13 +14,17 @@ dbCommand.name("db").description("[Advanced] Manage Instance database");
 dbCommand
   .command("show")
   .description("Show the instances Database")
-  .action(() => {
-    showDB();
+  .option(
+    "-i, --instance <name>",
+    "Show only instance <instance-name>. Default: All"
+  )
+  .action((options) => {
+    showDB(options.instance);
   });
 dbCommand
   .command("sync")
   .description(
-    "[Advanced] Remove all deleted or moved instances from database.",
+    "[Advanced] Remove all deleted or moved instances from database."
   )
   .action(() => {
     syncDB();

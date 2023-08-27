@@ -39,7 +39,6 @@ export class EnvshhInstance {
       handleError(err);
       process.exit(1);
     }
-    this.initChecks();
   }
   private initChecks() {
     if (!isGitInstalledAndPathed()) {
@@ -63,6 +62,7 @@ export class EnvshhInstance {
   }
 
   create() {
+    this.initChecks();
     DBinsertInstance(this.config);
     this.createMainDirectory();
     this.isMainRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
@@ -75,6 +75,7 @@ export class EnvshhInstance {
       mainDirectory: envshh.mainDirectory || this.config.mainDirectory,
       mainRepoUrl: envshh.mainRepoUrl || this.config.mainRepoUrl,
     });
+    newEnvshhInstance.initChecks();
     if (newEnvshhInstance.config.mainDirectory !== this.config.mainDirectory) {
       newEnvshhInstance.createMainDirectory();
       if (!isDirectoryEmpty(this.config.mainDirectory)) {
@@ -85,8 +86,8 @@ export class EnvshhInstance {
       }
       this.deleteMainDirectory();
     }
-    DBdeleteInstance(this.config.name);
     newEnvshhInstance.create();
+    DBdeleteInstance(this.config.name);
     return newEnvshhInstance;
   }
 
@@ -97,7 +98,7 @@ export class EnvshhInstance {
   }
 
   print() {
-    console.table(this.config);
+    console.table([this.config]);
   }
 
   reset() {

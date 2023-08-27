@@ -73,9 +73,14 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
 }
 
-export function DBshowAll() {
-  db.read();
-  console.table(db.data.instances);
+export function DBshow(instanceName?: EnvshhInstanceNameType) {
+  if (instanceName) {
+    const envshh = DBgetInstance(instanceName);
+    envshh.print();
+  } else {
+    db.read();
+    console.table(db.data.instances);
+  }
 }
 
 export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {

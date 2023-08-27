@@ -10,7 +10,6 @@ import { getAllEnvsFromEnvPath } from "../envs/get.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { createDirectory } from "../../filesystem/functions.js";
 import { saveEncryptedEnv } from "../encryption/encrypt.js";
-import { log } from "../../utils/log.js";
 
 export function thePush(pushConfig: ProjectPushConfigParamsType) {
   const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
@@ -27,7 +26,6 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
   for (let index = 0; index < envPaths.length; index++) {
     const envPath = envPaths[index];
     const destination = envPath.replace(process.cwd(), destinationDirectory);
-    log.info(`Pushing ${envPaths} to ${destinationDirectory}`);
     saveEncryptedEnv(envPath, pushConfig.password, destination);
   }
   envshh.gitCommit();
