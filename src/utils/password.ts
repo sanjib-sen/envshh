@@ -8,7 +8,6 @@ export function askPassword(confirm = true) {
   if (!confirm) {
     return readlineSync.question("Password: ", {
       hideEchoBack: true,
-      min: 4,
     });
   }
   return readlineSync.questionNewPassword("Password: ", {
