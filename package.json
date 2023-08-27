@@ -1,13 +1,13 @@
 {
   "name": "envshh",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
     "lint": "eslint --ext .js,.ts,.json --fix .",
     "clean": "rm -rf node_modules dist",
-    "build": "rm -rf dist  && npm run format && npm run lint && tsc",
+    "build": "rm -rf dist  && npm run format && npm run lint && tsc && cp package.json README.md LICENSE dist",
     "test": "npm run build && node dist/index.js -v"
   },
   "bin": {

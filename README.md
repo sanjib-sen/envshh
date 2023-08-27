@@ -1,55 +1,114 @@
-<!--
- Copyright (c) 2023 Sanjib Kumar Sen <mail@sanjibsen.com>
+<p align="center">
+  <a href="" rel="noopener">
+ <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+</p>
 
- This software is released under the MIT License.
- https://opensource.org/licenses/MIT
--->
+<h1 align="center">🤫 envshh</h1>
 
-# starter-node
+<div align="center">
 
-## Table of Contents
+[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+
+</div>
+
+---
+
+<p align="center"> A command line tool to securely and automatically manage, store environment variables.
+    <br> 
+</p>
+
+## 📝 Table of Contents
 
 - [About](#about)
 - [Getting Started](#getting_started)
+- [Deployment](#deployment)
 - [Usage](#usage)
-- [NPM Scripts](#npm_scripts)
+- [Built Using](#built_using)
+- [TODO](../TODO.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Authors](#authors)
+- [Acknowledgments](#acknowledgement)
 
-## About
+## 🧐 About <a name = "about"></a>
 
-A always up-to-date starter template for Node.js projects with [TypeScript](https://www.typescriptlang.org/), [Nodemon](https://npmjs.com/package/nodemon), [Prettier](https://prettier.io), [ESLint](https://eslint.org), [Docker](https://www.docker.com/), and [docker-compose](https://docs.docker.com/compose/) support.
+Write about 1-2 paragraphs describing the purpose of your project.
 
-## Getting Started
+## 🏁 Getting Started <a name = "getting_started"></a>
 
-Just use this as a [template](https://github.com/new?template_name=starter-node&template_owner=sanjib-sen) for your new project and you are good to go.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
 
-```
-╰─❯ envshh help
-                      _     _
-   ___ _ ____   _____| |__ | |__
-  / _ \ '_ \ \ / / __| '_ \| '_ \
- |  __/ | | \ V /\__ \ | | | | | |
-  \___|_| |_|\_/ |___/_| |_|_| |_|
+### Prerequisites
 
-Usage: envshh [options] [command]
-
-A command line tool to securely and automatically manage, store environment variables.
-Made by Sanjib Sen <mail@sanjibsen.com>
-GitHub: https://github.com/sanjib-sen/envshh
-
-Options:
-  -v, --version                 output the version number
-  -h, --help                    display help for command
-
-Commands:
-  push [options]                Push local environment variables to Upstream
-  pull [options]                Pull environment variables from Upstream
-  generate [options]            Generate .env.example file
-  encryptfile [options] <file>  Encrypt a file
-  encrypttext [options] <text>  Encrypt a text
-  decryptfile [options] <file>  Decrypt a file
-  decrypttext [options] <text>  Decrypt a text
-  db                            [Advanced] Manage Instance database
-  instance                      [Advanced] Manage Instances
-  help [command]                display help for command
+What things you need to install the software and how to install them.
 
 ```
+Give examples
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running.
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo.
+
+## 🔧 Running the tests <a name = "tests"></a>
+
+Explain how to run the automated tests for this system.
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## 🎈 Usage <a name="usage"></a>
+
+Add notes about how to use the system.
+
+## 🚀 Deployment <a name = "deployment"></a>
+
+Add additional notes about how to deploy this on a live system.
+
+## ⛏️ Built Using <a name = "built_using"></a>
+
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Express](https://expressjs.com/) - Server Framework
+- [VueJs](https://vuejs.org/) - Web Framework
+- [NodeJs](https://nodejs.org/en/) - Server Environment
+
+## ✍️ Authors <a name = "authors"></a>
+
+- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+
+See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+
+## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+
+- Hat tip to anyone whose code was used
+- Inspiration
+- References
