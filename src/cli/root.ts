@@ -19,7 +19,7 @@ import {
 import { removeCommand } from "./main/remove.js";
 import * as fs from "fs";
 
-const fileUrl = new URL("../../package.json", import.meta.url);
+const fileUrl = new URL("../package.json", import.meta.url);
 const packageInfo = JSON.parse(fs.readFileSync(fileUrl, "utf8"));
 
 export const program = new Command();
