@@ -28,7 +28,7 @@ removeCommand
   )
   .option(
     "-b, --branch <name>",
-    `Keep different branches for different production, development and staging.`,
+    `Keep different branches for different production, development and staging`,
     defaultBranchName,
   )
   .option(
@@ -38,7 +38,7 @@ removeCommand
   )
   .option(
     "-i, --instance <Instance name.>",
-    `[Advanced Option] Specify the instance name.`,
+    `[Advanced Option] Specify the instance name`,
     defaultInstanceName,
   )
   .option(
@@ -48,7 +48,7 @@ removeCommand
   )
   .option(
     "-y, --yes",
-    "Force delete .envs without asking for confirmation.",
+    "Force delete .envs without asking for confirmation",
     false,
   )
   .action((options) => {

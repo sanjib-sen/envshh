@@ -16,23 +16,21 @@ dbCommand
   .description("Show the instances Database")
   .option(
     "-i, --instance <name>",
-    "Show only instance <instance-name>. Default: All",
+    "Show only instance <instance-name> Default: All",
   )
   .action((options) => {
     showDB(options.instance);
   });
 dbCommand
   .command("sync")
-  .description(
-    "[Advanced] Remove all deleted or moved instances from database.",
-  )
+  .description("[Advanced] Remove all deleted or moved instances from database")
   .action(() => {
     syncDB();
   });
 dbCommand
   .command("clear")
-  .description("[Advanced][Careful] Remove all instances from Database")
-  .option("-y, --yes", "Force clear the database without confirmation.", false)
+  .description("[Advanced][Careful] Reset and clear everything")
+  .option("-y, --yes", "Force clear the database without confirmation", false)
   .action((option) => {
     clearDB(option.yes);
   });
