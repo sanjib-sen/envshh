@@ -8,11 +8,10 @@
     "lint": "eslint --ext .js,.ts,.json --fix .",
     "clean": "rm -rf node_modules dist",
     "build": "rm -rf dist  && npm run format && npm run lint && tsc",
-    "test": "npm run build && node dist/index.js -v",
-    "prepare": "husky install"
+    "test": "npm run build && node dist/index.js -v"
   },
   "bin": {
-    "envshh": "./dist/index.js"
+    "envshh": "index.js"
   },
   "repository": {
     "type": "git",
