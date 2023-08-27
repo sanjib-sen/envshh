@@ -26,7 +26,6 @@ program
     "A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
   )
   .version("0.0.1", "-v, --version");
-
 program
   .addCommand(pushCommand)
   .addCommand(pullCommand)

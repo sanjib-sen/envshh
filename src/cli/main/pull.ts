@@ -12,7 +12,6 @@ import {
 import { getCurrentWorkingDirectoryName } from "../../filesystem/functions.js";
 import { isDirectoryAGitRepository } from "../../git/checks.js";
 import { getGitRepoName } from "../../git/functions.js";
-import { log } from "../../utils/log.js";
 import { askPassword } from "../../utils/password.js";
 
 export const pullCommand = new Command();
@@ -25,22 +24,22 @@ pullCommand
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
     isDirectoryAGitRepository(process.cwd())
       ? getGitRepoName(process.cwd())
-      : getCurrentWorkingDirectoryName()
+      : getCurrentWorkingDirectoryName(),
   )
   .option(
     "-b, --branch <name>",
-    `Keep different branches for different production, development and staging.`,
-    defaultBranchName
+    `Keep different branches for different production, development and staging`,
+    defaultBranchName,
   )
   .option(
     "-i, --instance <Instance name.>",
-    `[Advanced Option] Specify the instance name.`,
-    defaultInstanceName
+    `[Advanced Option] Specify the instance name`,
+    defaultInstanceName,
   )
   .option(
     "--offline",
-    "Don't pull from remote repository. Just do an offline pull.",
-    false
+    "Don't pull from remote repository. Just do an offline pull",
+    false,
   )
   .action((options) => {
     const password = askPassword(false);

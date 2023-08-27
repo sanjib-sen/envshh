@@ -28,7 +28,7 @@ pushCommand
   )
   .option(
     "-b, --branch <name>",
-    `Keep different branches for different production, development and staging.`,
+    `Keep different branches for different production, development and staging`,
     defaultBranchName,
   )
   .option(
@@ -38,7 +38,7 @@ pushCommand
   )
   .option(
     "-i, --instance <Instance name.>",
-    `[Advanced Option] Specify the instance name.`,
+    `[Advanced Option] Specify the instance name`,
     defaultInstanceName,
   )
   .option(
