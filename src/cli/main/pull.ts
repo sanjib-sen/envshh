@@ -25,28 +25,29 @@ pullCommand
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
     isDirectoryAGitRepository(process.cwd())
       ? getGitRepoName(process.cwd())
-      : getCurrentWorkingDirectoryName(),
+      : getCurrentWorkingDirectoryName()
   )
   .option(
     "-b, --branch <name>",
     `Keep different branches for different production, development and staging.`,
-    defaultBranchName,
+    defaultBranchName
   )
   .option(
     "-i, --instance <Instance name.>",
     `[Advanced Option] Specify the instance name.`,
-    defaultInstanceName,
+    defaultInstanceName
   )
   .option(
     "--offline",
     "Don't pull from remote repository. Just do an offline pull.",
-    false,
+    false
   )
   .action((options) => {
     log.info(`${options.project} ${options.branch}`);
-    const password = readlineSync.question("Password: ", {
-      hideEchoBack: true,
+    const password = readlineSync.questionNewPassword("Password: ", {
+      confirmMessage: "Confirm Password: ",
     });
+
     thePull({
       password: password,
       name: options.project,

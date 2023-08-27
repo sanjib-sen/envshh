@@ -24,31 +24,31 @@ pushCommand
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
     isDirectoryAGitRepository(process.cwd())
       ? getGitRepoName(process.cwd())
-      : getCurrentWorkingDirectoryName(),
+      : getCurrentWorkingDirectoryName()
   )
   .option(
     "-b, --branch <name>",
     `Keep different branches for different production, development and staging.`,
-    defaultBranchName,
+    defaultBranchName
   )
   .option(
     "-e, --env <relative-path>",
     "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-    process.cwd(),
+    process.cwd()
   )
   .option(
     "-i, --instance <Instance name.>",
     `[Advanced Option] Specify the instance name.`,
-    defaultInstanceName,
+    defaultInstanceName
   )
   .option(
     "--offline",
     "Don't push to remote repository. Just commit locally.",
-    false,
+    false
   )
   .action((options) => {
-    const password = readlineSync.question("Password: ", {
-      hideEchoBack: true,
+    const password = readlineSync.questionNewPassword("Password: ", {
+      confirmMessage: "Confirm Password: ",
     });
 
     thePush({

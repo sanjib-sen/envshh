@@ -21,18 +21,19 @@ encryptFileCommand
   .option(
     "-o, --output <output>",
     "Specify the output file name/path",
-    path.join(process.cwd(), "encrypted.env"),
+    path.join(process.cwd(), "encrypted.env")
   )
   .option("-isenv, --isenv", "Specify if the file is a .env file", false)
   .option(
     "-r, --replace",
     "Replace the input file with the encrypted file",
-    false,
+    false
   )
   .action((file, options) => {
-    const password = readlineSync.question("Password: ", {
-      hideEchoBack: true,
+    const password = readlineSync.questionNewPassword("Password: ", {
+      confirmMessage: "Confirm Password: ",
     });
+
     if (options.isenv) {
       saveEncryptedEnv(file, password, options.output);
     } else {
@@ -50,18 +51,19 @@ decryptFileCommand
   .option(
     "-o, --output <output>",
     "Specify the output file name/path",
-    path.join(process.cwd(), "decrypted.env"),
+    path.join(process.cwd(), "decrypted.env")
   )
   .option("-isenv, --isenv", "Specify if the file is a .env file", false)
   .option(
     "-r, --replace",
     "Replace the input file with the decrypted file",
-    false,
+    false
   )
   .action((file, options) => {
-    const password = readlineSync.question("Password: ", {
-      hideEchoBack: true,
+    const password = readlineSync.questionNewPassword("Password: ", {
+      confirmMessage: "Confirm Password: ",
     });
+
     if (options.isenv) {
       saveDecryptedEnv(file, password, options.output);
     } else {
@@ -78,9 +80,10 @@ encryptTextCommand
   .argument("<text>", "Specify the text to encrypt")
   .option("-o, --output <output-path>", "Output to file <path>")
   .action((text, options) => {
-    const password = readlineSync.question("Password: ", {
-      hideEchoBack: true,
+    const password = readlineSync.questionNewPassword("Password: ", {
+      confirmMessage: "Confirm Password: ",
     });
+
     const encrypted = encryptString(text, password);
     if (!options.output) {
       log.print(encrypted);
@@ -96,9 +99,10 @@ decryptTextCommand
   .argument("<text>", "Specify the text to decrypt")
   .option("-o, --output <output-path>", "Output to file <path>")
   .action((text, options) => {
-    const password = readlineSync.question("Password: ", {
-      hideEchoBack: true,
+    const password = readlineSync.questionNewPassword("Password: ", {
+      confirmMessage: "Confirm Password: ",
     });
+
     const decrypted = decryptString(text, password);
     if (!options.output) {
       log.print(decrypted);
@@ -114,17 +118,17 @@ generateCommand
   .option(
     "-e, --env <relative-path>",
     "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-    process.cwd(),
+    process.cwd()
   )
   .option(
     "--value <value>",
     "Specify a value to replace empty values in the .env example file",
-    "",
+    ""
   )
   .option(
     "--suffix <suffix>",
     "Specify a suffix to put after the .env filename in place of 'example'",
-    "example",
+    "example"
   )
   .action((options) => {
     theGenerate({

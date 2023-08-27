@@ -13,7 +13,7 @@ export function removeInstance(name: EnvshhInstanceNameType, yes: boolean) {
     return envshh.remove();
   }
   const confirm = readlineSync.question(
-    `Are you sure you want to delete ${name}? (y/N): `
+    `Are you sure you want to delete ${name}? (y/N): `,
   );
   if (confirm === "y") {
     envshh.remove();
