@@ -6,7 +6,6 @@
 import { Command } from "@commander-js/extra-typings";
 import { removeInstance } from "../envshh/commands/instance/remove.js";
 import { resetInstance } from "../envshh/commands/instance/reset.js";
-import { defaultInstanceName } from "../envshh/defaults/defaults.js";
 import { createInstance } from "../envshh/commands/instance/create.js";
 import { editInstance } from "../envshh/commands/instance/edit.js";
 
@@ -16,16 +15,16 @@ instanceCommand.name("instance").description("[Advanced] Manage Instances");
 instanceCommand
   .command("create")
   .description(
-    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode.",
+    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode."
   )
   .option("-n, --name <name>", `Specify the instance name.`)
   .option(
     "-d, --directory <directory>",
-    "[Advanced] Specify the directory path for the instance.",
+    "[Advanced] Specify the directory path for the instance."
   )
   .option(
     "-r, --remote <remote-url>",
-    "Specify the Remote Repository URL. Keep this blank if you want to use this instance offline.",
+    "Specify the Remote Repository URL. Keep this blank if you want to use this instance offline."
   )
   .action((options) => {
     createInstance({
@@ -41,7 +40,7 @@ instanceCommand
   .option("--new-name <new-ame>", "Specify the new name for the instance.")
   .option(
     "--directory <directory-path>",
-    "Modify the directory path for the instance.",
+    "Modify the directory path for the instance."
   )
   .option("--remote <remote-url>", "Modify the Remote Repository URL.")
   .action((options) => {
@@ -54,22 +53,16 @@ instanceCommand
 instanceCommand
   .command("remove")
   .description("[Advanced][Careful] Delete the instance data.")
-  .requiredOption(
-    "-n, --name <name>",
-    `Specify the instance name.`,
-    defaultInstanceName,
-  )
+  .requiredOption("-n, --name <name>", `Specify the instance name.`)
+  .option("-y, --yes", "Force delete the instance without confirmation.", false)
   .action((options) => {
-    removeInstance(options.name);
+    removeInstance(options.name, options.yes);
   });
 instanceCommand
   .command("reset")
   .description("[Advanced][Careful] Reset the instance.")
-  .option(
-    "-n, --name <name>",
-    `Specify the instance name.`,
-    defaultInstanceName,
-  )
+  .option("-y, --yes", "Force reset the instance without confirmation.", false)
+  .requiredOption("-n, --name <name>", `Specify the instance name.`)
   .action((options) => {
-    resetInstance(options.name);
+    resetInstance(options.name, options.yes);
   });

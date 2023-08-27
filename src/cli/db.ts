@@ -32,6 +32,7 @@ dbCommand
 dbCommand
   .command("clear")
   .description("[Advanced][Careful] Remove all instances from Database")
-  .action(() => {
-    clearDB();
+  .option("-y, --yes", "Force clear the database without confirmation.", false)
+  .action((option) => {
+    clearDB(option.yes);
   });

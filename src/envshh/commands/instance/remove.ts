@@ -6,17 +6,17 @@
 import * as readlineSync from "readline-sync";
 import { DBgetInstance } from "../../../db/controllers.js";
 import { EnvshhInstanceNameType } from "../../../types/schemas.js";
-import { exitWithSuccess } from "../../../utils/process.js";
 
-export function removeInstance(name: EnvshhInstanceNameType) {
+export function removeInstance(name: EnvshhInstanceNameType, yes: boolean) {
   const envshh = DBgetInstance(name);
+  if (yes) {
+    return envshh.remove();
+  }
   const confirm = readlineSync.question(
-    `Are you sure you want to delete ${name}? (y/N): `,
+    `Are you sure you want to delete ${name}? This will remove data from remote repository too. (y/N): `
   );
   if (confirm === "y") {
     envshh.remove();
-    return exitWithSuccess(`Instance ${name} deleted.`);
-  } else {
-    return exitWithSuccess(`Instance ${name} not deleted.`);
+    return envshh.remove();
   }
 }

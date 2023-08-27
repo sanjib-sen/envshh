@@ -14,14 +14,14 @@ import { exitWithError } from "../../utils/process.js";
 
 export function thePull(pushConfig: ProjectConfigParansType) {
   const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
-  if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
+  if (!pushConfig.offline) {
     envshh.gitPull();
   }
 
   const sourceDirectory = path.join(
     envshh.getMainDirectory(),
     pushConfig.name,
-    defaultBranchNamePrefix + pushConfig.branch,
+    defaultBranchNamePrefix + pushConfig.branch
   );
 
   if (!isPathExists(sourceDirectory) || isDirectoryEmpty(sourceDirectory))

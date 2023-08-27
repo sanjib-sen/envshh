@@ -13,14 +13,14 @@ import { saveEncryptedEnv } from "../encryption/encrypt.js";
 
 export function thePush(pushConfig: ProjectPushConfigParamsType) {
   const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
-  if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
+  if (!pushConfig.offline) {
     envshh.gitPull();
   }
   const envPaths = getAllEnvsFromEnvPath(pushConfig.envPath);
   const destinationDirectory = path.join(
     envshh.getMainDirectory(),
     pushConfig.name,
-    defaultBranchNamePrefix + pushConfig.branch,
+    defaultBranchNamePrefix + pushConfig.branch
   );
   createDirectory(destinationDirectory);
   for (let index = 0; index < envPaths.length; index++) {
@@ -29,7 +29,7 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
     saveEncryptedEnv(envPath, pushConfig.password, destination);
   }
   envshh.gitCommit();
-  if (!pushConfig.offline && envshh.isMainRepoUrlSet()) {
+  if (!pushConfig.offline) {
     envshh.gitPush();
   }
 }
