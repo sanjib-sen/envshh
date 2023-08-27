@@ -44,7 +44,8 @@ export function getParentDirectory(filePath: string) {
   const parentDirectory = path.resolve(filePath, "..");
   if (isPathExists(parentDirectory)) return parentDirectory;
   else {
-    return exitWithError(`Parent directory ${parentDirectory} does not exist.`);
+    createDirectory(parentDirectory, true);
+    return parentDirectory;
   }
 }
 

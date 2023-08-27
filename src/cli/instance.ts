@@ -29,8 +29,8 @@ instanceCommand
   .action((options) => {
     createInstance({
       name: options.name,
-      mainDirectory: options.directory,
-      mainRepoUrl: options.remote,
+      localDirectory: options.directory,
+      remoteRepoUrl: options.remote,
     });
   });
 instanceCommand
@@ -46,8 +46,8 @@ instanceCommand
   .action((options) => {
     editInstance(options.name, {
       name: options.newName,
-      mainDirectory: options.directory,
-      mainRepoUrl: options.remote,
+      localDirectory: options.directory,
+      remoteRepoUrl: options.remote,
     });
   });
 instanceCommand

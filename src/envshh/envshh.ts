@@ -45,46 +45,48 @@ export class EnvshhInstance {
       return exitWithError("Git is not installed or not in path");
     }
     if (
-      this.config.mainRepoUrl &&
-      !isRepositoryExistsOnRemote(this.config.mainRepoUrl)
+      this.config.remoteRepoUrl &&
+      !isRepositoryExistsOnRemote(this.config.remoteRepoUrl)
     ) {
       return exitWithError(
-        `Specified Repository URL ${this.config.mainRepoUrl} does not exist`,
+        `Specified Repository URL ${this.config.remoteRepoUrl} does not exist`,
       );
     }
   }
-  private createMainDirectory() {
-    createDirectory(this.config.mainDirectory);
+  private createLocalDirectory() {
+    createDirectory(this.config.localDirectory);
   }
 
-  private deleteMainDirectory() {
-    deleteDirectoryOrFile(this.config.mainDirectory);
+  private deleteLocalDirectory() {
+    deleteDirectoryOrFile(this.config.localDirectory);
   }
 
   create() {
     this.initChecks();
     DBinsertInstance(this.config);
-    this.createMainDirectory();
-    this.isMainRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
+    this.createLocalDirectory();
+    this.isRemoteRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
     return this;
   }
 
   edit(envshh: Partial<EnvshhInstanceType>) {
     const newEnvshhInstance = new EnvshhInstance({
       name: envshh.name || this.config.name,
-      mainDirectory: envshh.mainDirectory || this.config.mainDirectory,
-      mainRepoUrl: envshh.mainRepoUrl || this.config.mainRepoUrl,
+      localDirectory: envshh.localDirectory || this.config.localDirectory,
+      remoteRepoUrl: envshh.remoteRepoUrl || this.config.remoteRepoUrl,
     });
     newEnvshhInstance.initChecks();
-    if (newEnvshhInstance.config.mainDirectory !== this.config.mainDirectory) {
-      newEnvshhInstance.createMainDirectory();
-      if (!isDirectoryEmpty(this.config.mainDirectory)) {
+    if (
+      newEnvshhInstance.config.localDirectory !== this.config.localDirectory
+    ) {
+      newEnvshhInstance.createLocalDirectory();
+      if (!isDirectoryEmpty(this.config.localDirectory)) {
         copyFileAndFolder(
-          this.config.mainDirectory,
-          newEnvshhInstance.config.mainDirectory,
+          this.config.localDirectory,
+          newEnvshhInstance.config.localDirectory,
         );
       }
-      this.deleteMainDirectory();
+      this.deleteLocalDirectory();
     }
     newEnvshhInstance.create();
     DBdeleteInstance(this.config.name);
@@ -92,7 +94,7 @@ export class EnvshhInstance {
   }
 
   remove() {
-    this.deleteMainDirectory();
+    this.deleteLocalDirectory();
     DBdeleteInstance(this.config.name);
     return this;
   }
@@ -102,13 +104,13 @@ export class EnvshhInstance {
   }
 
   reset() {
-    this.deleteMainDirectory();
-    this.createMainDirectory();
+    this.deleteLocalDirectory();
+    this.createLocalDirectory();
     return this;
   }
 
   gitPull() {
-    if (!this.isMainRepoUrlSet()) {
+    if (!this.isRemoteRepoUrlSet()) {
       return;
     }
     pullRepo(this.config);
@@ -119,28 +121,28 @@ export class EnvshhInstance {
   }
 
   gitPush() {
-    if (!this.isMainRepoUrlSet()) {
+    if (!this.isRemoteRepoUrlSet()) {
       return;
     }
     pushRepo(this.config);
   }
 
-  isMainRepoUrlSet() {
-    return this.config.mainRepoUrl ? true : false;
+  isRemoteRepoUrlSet() {
+    return this.config.remoteRepoUrl ? true : false;
   }
-  getMainRepoUrl() {
-    return this.config.mainRepoUrl;
+  getRemoteRepoUrl() {
+    return this.config.remoteRepoUrl;
   }
-  getMainDirectory() {
-    return this.config.mainDirectory;
+  getLocalDirectory() {
+    return this.config.localDirectory;
   }
   getName() {
     return this.config.name;
   }
-  setMainRepoUrl(mainRepoUrl: string | undefined) {
-    this.config.mainRepoUrl = mainRepoUrl;
+  setRemoteRepoUrl(remoteRepoUrl: string | undefined) {
+    this.config.remoteRepoUrl = remoteRepoUrl;
   }
-  setMainDirectory(mainDirectory: string) {
-    this.config.mainDirectory = mainDirectory;
+  setLocalDirectory(localDirectory: string) {
+    this.config.localDirectory = localDirectory;
   }
 }

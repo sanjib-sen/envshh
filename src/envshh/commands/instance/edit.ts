@@ -18,8 +18,8 @@ export function editInstance(
   const envshh = DBgetInstance(name);
   if (
     !envshhModifyParams.name &&
-    !envshhModifyParams.mainDirectory &&
-    !envshhModifyParams.mainRepoUrl
+    !envshhModifyParams.localDirectory &&
+    !envshhModifyParams.remoteRepoUrl
   ) {
     log.info(
       `Interactive mode. Press Ctrl+C to exit. Leave fields empty to keep the current value.`,
@@ -27,22 +27,22 @@ export function editInstance(
     const newName =
       readlineSync.question(`Instance Name (Current: ${name}): `) ||
       envshh.config.name;
-    const mainDirectory =
+    const localDirectory =
       readlineSync.question(
-        `Directory Path (Current: ${envshh.getMainDirectory()}): `,
-      ) || envshh.config.mainDirectory;
-    const mainRepoUrl =
-      envshhModifyParams?.mainRepoUrl ||
+        `Directory Path (Current: ${envshh.getLocalDirectory()}): `,
+      ) || envshh.config.localDirectory;
+    const remoteRepoUrl =
+      envshhModifyParams?.remoteRepoUrl ||
       readlineSync.question(
         `Remote Repository URL (Write "none" if you want to use offline. Current: ${
-          envshh.getMainRepoUrl() ? envshh.config.mainRepoUrl : "none"
+          envshh.getRemoteRepoUrl() ? envshh.config.remoteRepoUrl : "none"
         }): `,
       ) ||
-      envshh.config.mainRepoUrl;
+      envshh.config.remoteRepoUrl;
     envshhModifyParams = {
       name: newName,
-      mainDirectory: mainDirectory,
-      mainRepoUrl: mainRepoUrl === "none" ? undefined : mainRepoUrl,
+      localDirectory: localDirectory,
+      remoteRepoUrl: remoteRepoUrl === "none" ? undefined : remoteRepoUrl,
     };
   }
 

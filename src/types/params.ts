@@ -13,7 +13,7 @@ import { EnvshhInstanceNameSchema, EnvshhInstanceType } from "./schemas.js";
 
 export type EnvshhConfigParamsType = {
   name?: string;
-  mainDirectory?: string;
+  localDirectory?: string;
 };
 
 export const ProjectConfigParans = z.object({
@@ -51,5 +51,5 @@ type RequireAtLeastOneParam<T, R extends keyof T = keyof T> = Omit<T, R> &
 export type EnvshhInstanceModifyParamsType = Pick<EnvshhInstanceType, "name"> &
   RequireAtLeastOneParam<
     EnvshhInstanceType,
-    "mainDirectory" | "mainRepoUrl" | "name"
+    "localDirectory" | "remoteRepoUrl" | "name"
   >;

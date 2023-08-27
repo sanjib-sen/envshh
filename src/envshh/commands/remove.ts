@@ -19,15 +19,15 @@ export function theRemove(
   }
   const envPaths = getAllEnvsFromEnvPath(removeConfig.envPath);
   const destinationDirectory = path.join(
-    envshh.getMainDirectory(),
+    envshh.getLocalDirectory(),
     removeConfig.name,
     defaultBranchNamePrefix + removeConfig.branch,
   );
   for (let index = 0; index < envPaths.length; index++) {
     const envPath = envPaths[index];
-    deleteDirectoryOrFile(envPath);
     const destination = envPath.replace(process.cwd(), destinationDirectory);
     deleteDirectoryOrFile(destination);
+    deleteDirectoryOrFile(envPath);
   }
   envshh.gitCommit();
   if (!removeConfig.offline) {

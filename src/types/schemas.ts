@@ -6,7 +6,7 @@
 import { z } from "zod";
 import {
   defaultInstanceName,
-  defaultMainDirectory,
+  defaultLocalDirectory,
   defaultRegexNameConventionMessage,
   defaultValidRegex,
 } from "../envshh/defaults/defaults.js";
@@ -21,14 +21,14 @@ export const EnvshhInstanceNameSchema = z
 export const EnvshhInstanceSchema = z
   .object({
     name: EnvshhInstanceNameSchema,
-    mainDirectory: z.string().default(defaultMainDirectory),
-    mainRepoUrl: z
+    localDirectory: z.string().default(defaultLocalDirectory),
+    remoteRepoUrl: z
       .string()
       // .url({ message: "Invalid Repository URL" })
       .optional(),
   })
   .default({
-    mainDirectory: defaultMainDirectory,
+    localDirectory: defaultLocalDirectory,
   });
 
 export type EnvshhInstanceType = z.infer<typeof EnvshhInstanceSchema>;

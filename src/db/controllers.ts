@@ -13,11 +13,13 @@ import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import {
+  defaultDBPath,
   defaultInstanceName,
-  defaultMainDirectory,
+  defaultLocalDirectory,
 } from "../envshh/defaults/defaults.js";
 import path from "path";
 import * as readlineSync from "readline-sync";
+import { deleteDirectoryOrFile } from "../filesystem/functions.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -45,8 +47,8 @@ export function handleDefaultInstanceForPushNPull(
       const repoUrl = readlineSync.question("Remote Repository URL: ");
       const envshh = new EnvshhInstance({
         name: defaultInstanceName,
-        mainRepoUrl: repoUrl,
-        mainDirectory: path.join(defaultMainDirectory, defaultInstanceName),
+        remoteRepoUrl: repoUrl,
+        localDirectory: path.join(defaultLocalDirectory, defaultInstanceName),
       });
       envshh.create();
       return envshh;
@@ -91,10 +93,10 @@ export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
   if (InstanceIndex === -1) {
     return exitWithError(`Instance ${envshh.name} not found.`);
   }
-  if (envshh.mainRepoUrl)
-    db.data.instances[InstanceIndex].mainRepoUrl = envshh.mainRepoUrl;
-  if (envshh.mainDirectory)
-    db.data.instances[InstanceIndex].mainDirectory = envshh.mainDirectory;
+  if (envshh.remoteRepoUrl)
+    db.data.instances[InstanceIndex].remoteRepoUrl = envshh.remoteRepoUrl;
+  if (envshh.localDirectory)
+    db.data.instances[InstanceIndex].localDirectory = envshh.localDirectory;
   db.write();
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
 }
@@ -114,7 +116,7 @@ export function DBdeleteInstance(name: EnvshhInstanceNameType) {
 export function DBSync() {
   db.read();
   db.data.instances.forEach((instance) => {
-    if (!isPathExists(instance.mainDirectory)) {
+    if (!isPathExists(instance.localDirectory)) {
       DBdeleteInstance(instance.name);
     }
   });
@@ -128,4 +130,6 @@ export function DBClear() {
     envshh.remove();
   });
   db.write();
+  deleteDirectoryOrFile(defaultDBPath);
+  deleteDirectoryOrFile(defaultLocalDirectory);
 }
