@@ -4,7 +4,6 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import * as readlineSync from "readline-sync";
 import { decryptString, encryptString } from "../envshh/encryption/lib.js";
 import { log } from "../utils/log.js";
 import { createFile, readFile } from "../filesystem/functions.js";
@@ -12,6 +11,7 @@ import { saveEncryptedEnv } from "../envshh/encryption/encrypt.js";
 import path from "path";
 import { saveDecryptedEnv } from "../envshh/encryption/decrypt.js";
 import { theGenerate } from "../envshh/commands/generate.js";
+import { askPassword } from "../utils/password.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -30,10 +30,7 @@ encryptFileCommand
     false,
   )
   .action((file, options) => {
-    const password = readlineSync.questionNewPassword("Password: ", {
-      confirmMessage: "Confirm Password: ",
-    });
-
+    const password = askPassword(true);
     if (options.isenv) {
       saveEncryptedEnv(file, password, options.output);
     } else {
@@ -60,10 +57,7 @@ decryptFileCommand
     false,
   )
   .action((file, options) => {
-    const password = readlineSync.questionNewPassword("Password: ", {
-      confirmMessage: "Confirm Password: ",
-    });
-
+    const password = askPassword(false);
     if (options.isenv) {
       saveDecryptedEnv(file, password, options.output);
     } else {
@@ -80,10 +74,7 @@ encryptTextCommand
   .argument("<text>", "Specify the text to encrypt")
   .option("-o, --output <output-path>", "Output to file <path>")
   .action((text, options) => {
-    const password = readlineSync.questionNewPassword("Password: ", {
-      confirmMessage: "Confirm Password: ",
-    });
-
+    const password = askPassword(true);
     const encrypted = encryptString(text, password);
     if (!options.output) {
       log.print(encrypted);
@@ -99,10 +90,7 @@ decryptTextCommand
   .argument("<text>", "Specify the text to decrypt")
   .option("-o, --output <output-path>", "Output to file <path>")
   .action((text, options) => {
-    const password = readlineSync.questionNewPassword("Password: ", {
-      confirmMessage: "Confirm Password: ",
-    });
-
+    const password = askPassword(false);
     const decrypted = decryptString(text, password);
     if (!options.output) {
       log.print(decrypted);

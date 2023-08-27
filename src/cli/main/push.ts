@@ -4,7 +4,6 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import * as readlineSync from "readline-sync";
 import { thePush } from "../../envshh/commands/push.js";
 import {
   defaultBranchName,
@@ -13,6 +12,7 @@ import {
 import { getCurrentWorkingDirectoryName } from "../../filesystem/functions.js";
 import { isDirectoryAGitRepository } from "../../git/checks.js";
 import { getGitRepoName } from "../../git/functions.js";
+import { askPassword } from "../../utils/password.js";
 
 export const pushCommand = new Command();
 
@@ -47,10 +47,7 @@ pushCommand
     false,
   )
   .action((options) => {
-    const password = readlineSync.questionNewPassword("Password: ", {
-      confirmMessage: "Confirm Password: ",
-    });
-
+    const password = askPassword(true);
     thePush({
       password: password,
       name: options.project,
