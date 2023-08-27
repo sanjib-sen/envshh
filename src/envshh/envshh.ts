@@ -94,9 +94,9 @@ export class EnvshhInstance {
   remove() {
     this.gitPull();
     this.deleteMainDirectory();
-    DBdeleteInstance(this.config.name);
     this.gitCommit();
     this.gitPush();
+    DBdeleteInstance(this.config.name);
     return this;
   }
 
