@@ -4,6 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { createFile } from "../../filesystem/functions.js";
+import { exitWithError } from "../../utils/process.js";
 import { readEnvByLine } from "../encryption/common.js";
 import { getAllEnvsFromEnvPath } from "../envs/get.js";
 
@@ -44,6 +45,11 @@ export function theGenerate({
   suffix: string;
 }) {
   const envPaths = getAllEnvsFromEnvPath(envPath);
+  if (envPaths.length === 0) {
+    exitWithError(
+      "No .env found. Consider running envshh generate -e <.env-path>",
+    );
+  }
   for (let index = 0; index < envPaths.length; index++) {
     const envPath = envPaths[index];
     const destination = `${envPath}.${suffix}`;

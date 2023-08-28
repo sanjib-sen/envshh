@@ -15,7 +15,7 @@ import { exitWithError } from "../../utils/process.js";
 export function thePush(pushConfig: ProjectPushConfigParamsType) {
   const envPaths = getAllEnvsFromEnvPath(pushConfig.envPath);
   if (envPaths.length === 0) {
-    exitWithError("No .env found. Consider running envshh -e <.env-path>");
+    exitWithError("No .env found. Consider running envshh push -e <.env-path>");
   }
   const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
   if (!pushConfig.offline) {
