@@ -25,7 +25,7 @@ export function runCommand(
       .trim();
     return result;
   } catch (error) {
-    if (!ignoreIfFails) {
+    if (ignoreIfFails) {
       return result || false;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
