@@ -48,6 +48,7 @@ export function handleDefaultInstanceForPushNPull(
       log.info(
         `.envs will be stored on a local directory (${defaultLocalDirectory}) and a Remote Git Repository created by you.
 Enter the already created Repository URL or Create one and then provide the URL.
+Although the .envs are encrypted, it is recommended to make the Remote Repository Private.
 If you do not want to store the .envs in a remote repository, keep the URL blank.
 `,
       );
@@ -118,6 +119,17 @@ export function DBdeleteInstance(name: EnvshhInstanceNameType) {
   }
   db.data.instances.splice(InstanceIndex, 1);
   db.write();
+}
+
+export function DBCheckInstanceExists(name: EnvshhInstanceNameType) {
+  db.read();
+  const InstanceIndex = db.data.instances.findIndex(
+    (instance) => instance.name === name,
+  );
+  if (InstanceIndex === -1) {
+    return false;
+  }
+  return true;
 }
 
 export function DBSync() {

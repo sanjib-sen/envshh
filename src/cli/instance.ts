@@ -26,12 +26,16 @@ instanceCommand
     "-r, --remote <remote-url>",
     "Specify the Remote Repository URL. Keep this blank if you want to use this instance offline",
   )
+  .option("-y, --yes", "Force create the instance without confirmation", false)
   .action((options) => {
-    createInstance({
-      name: options.name,
-      localDirectory: options.directory,
-      remoteRepoUrl: options.remote,
-    });
+    createInstance(
+      {
+        name: options.name,
+        localDirectory: options.directory,
+        remoteRepoUrl: options.remote,
+      },
+      options.yes,
+    );
   });
 instanceCommand
   .command("edit")

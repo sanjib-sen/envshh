@@ -32,9 +32,9 @@ pushCommand
     defaultBranchName,
   )
   .option(
-    "-e, --env <relative-path>",
+    "-e, --env <relative-path...>",
     "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-    process.cwd(),
+    [process.cwd()],
   )
   .option(
     "-i, --instance <Instance name.>",

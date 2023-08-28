@@ -33,10 +33,9 @@ export const ProjectConfigParans = z.object({
   password: z.string().min(1).max(255),
 });
 
-export const envPath = z
-  .string()
-  .max(255, "Path can't be more than 255 characters!")
-  .default("");
+export const envPath = z.array(
+  z.string().max(255, "Path can't be more than 255 characters!"),
+);
 
 export const ProjectPushConfigParams = ProjectConfigParans.extend({ envPath });
 

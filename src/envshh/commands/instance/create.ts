@@ -8,9 +8,11 @@ import * as readlineSync from "readline-sync";
 import { EnvshhInstance } from "../../envshh.js";
 import { exitWithError } from "../../../utils/process.js";
 import { defaultInstanceName } from "../../defaults/defaults.js";
+import { DBCheckInstanceExists } from "../../../db/controllers.js";
 
 export function createInstance(
   envshhCreateParams: Partial<EnvshhInstanceType>,
+  yes: boolean,
 ) {
   const name =
     envshhCreateParams?.name ||
@@ -18,14 +20,15 @@ export function createInstance(
       `Instance Name (Default: ${defaultInstanceName}): `,
     ) ||
     defaultInstanceName;
+  if (DBCheckInstanceExists(name) && !yes)
+    return exitWithError(`Instance ${name} already exists.`);
   const localDirectory =
     envshhCreateParams?.localDirectory ||
     readlineSync.question("Directory Path: ");
-  if (!localDirectory) {
+  if (!localDirectory)
     return exitWithError(
       `Instance ${name} not created. Directory Path is required.`,
     );
-  }
   const remoteRepoUrl =
     envshhCreateParams?.remoteRepoUrl ||
     readlineSync.question(

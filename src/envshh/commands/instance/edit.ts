@@ -39,6 +39,7 @@ export function editInstance(
         }): `,
       ) ||
       envshh.config.remoteRepoUrl;
+
     envshhModifyParams = {
       name: newName,
       localDirectory: localDirectory,

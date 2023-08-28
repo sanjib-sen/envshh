@@ -14,6 +14,7 @@ import { EnvshhInstanceType } from "../types/schemas.js";
 import { runCommand } from "../utils/command.js";
 import { exitWithError, exitWithSuccess } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
+import { EnvshhInstance } from "../envshh/envshh.js";
 
 export function cloneRepo(envshh: EnvshhInstanceType): void {
   if (!envshh.remoteRepoUrl) {
@@ -35,7 +36,7 @@ export function cloneRepo(envshh: EnvshhInstanceType): void {
 
 export function pullRepo(envshh: EnvshhInstanceType): void {
   try {
-    execSync(`git -C ${envshh.localDirectory} pull`);
+    execSync(`git -C ${envshh.localDirectory} pull origin main`);
   } catch (error) {
     if (error instanceof Error) {
       log.warn(error.toString());
@@ -56,23 +57,22 @@ export function pullRepo(envshh: EnvshhInstanceType): void {
   }
 }
 
+export function addRemoteRepo(envshh: EnvshhInstanceType) {
+  runCommand(
+    `git -C ${envshh.localDirectory} remote add origin ${envshh.remoteRepoUrl}`,
+  );
+}
+
 export function initRepo(envshh: EnvshhInstanceType) {
   runCommand(`git -C ${envshh.localDirectory} init`);
-  envshh.remoteRepoUrl
-    ? runCommand(
-        `git -C ${envshh.localDirectory} remote add origin ${envshh.remoteRepoUrl}`,
-      )
-    : "";
+  envshh.remoteRepoUrl ?? addRemoteRepo(envshh);
   runCommand(`git -C ${envshh.localDirectory} branch -M main`);
   runCommand(
     `cd '${
       envshh.localDirectory
     }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md`,
   );
-  runCommand(`git -C ${envshh.localDirectory} add .`);
-  runCommand(
-    `git -C ${envshh.localDirectory} commit -m "${new Date().toUTCString()}"`,
-  );
+  new EnvshhInstance(envshh).gitCommit();
   envshh.remoteRepoUrl
     ? runCommand(`git -C ${envshh.localDirectory} push -u origin main`)
     : "";
@@ -82,6 +82,7 @@ export function commitRepo(envshh: EnvshhInstanceType) {
   runCommand(`git -C ${envshh.localDirectory} add .`);
   runCommand(
     `git -C ${envshh.localDirectory} commit -m "${new Date().toUTCString()}"`,
+    true,
   );
 }
 

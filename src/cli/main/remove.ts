@@ -32,9 +32,9 @@ removeCommand
     defaultBranchName,
   )
   .option(
-    "-e, --env <relative-path>",
+    "-e, --env <relative-path...>",
     "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-    process.cwd(),
+    [process.cwd()],
   )
   .option(
     "-i, --instance <Instance name.>",
@@ -54,7 +54,7 @@ removeCommand
   .action((options) => {
     if (!options.yes) {
       const confirm = readlineSync.question(
-        "Are you sure you want to delete .envs from local and upstream? (y/n): ",
+        "Are you sure you want to delete .envs from local and Remote Repository? (y/N): ",
       );
       if (confirm !== "y") {
         process.exit(0);

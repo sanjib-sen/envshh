@@ -20,11 +20,14 @@ function getListOfEnvsInDirectory(directory: string) {
   return envs;
 }
 
-export function getAllEnvsFromEnvPath(envPaths: string) {
-  const filesAndDirectories = envPaths.split(" ");
-  filesAndDirectories.map((fileOrDirectory) => {
-    return path.join(process.cwd(), fileOrDirectory);
-  });
+export function getAllEnvsFromEnvPath(envPaths: string[]) {
+  if (envPaths[0] != process.cwd()) {
+    envPaths.map(
+      (fileOrDirectory, index) =>
+        (envPaths[index] = path.join(process.cwd(), fileOrDirectory)),
+    );
+  }
+  const filesAndDirectories = envPaths;
   const envs: string[] = [];
   filesAndDirectories.map((fileOrDirectory) => {
     if (isPathADirectory(fileOrDirectory)) {

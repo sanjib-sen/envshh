@@ -16,6 +16,7 @@ import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
 import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
 import {
+  addRemoteRepo,
   cloneRepo,
   commitRepo,
   initRepo,
@@ -25,6 +26,8 @@ import {
 import { isDirectoryEmpty } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
+import path from "path";
+import { defaultLocalDirectory } from "./defaults/defaults.js";
 
 export class EnvshhInstance {
   config: EnvshhInstanceType;
@@ -65,7 +68,7 @@ export class EnvshhInstance {
     this.initChecks();
     DBinsertInstance(this.config);
     this.createLocalDirectory();
-    this.isRemoteRepoUrlSet() ? cloneRepo(this.config) : initRepo(this.config);
+    this.isRemoteRepoUrlSet() ? this.gitClone() : this.gitInit();
     return this;
   }
 
@@ -76,6 +79,18 @@ export class EnvshhInstance {
       remoteRepoUrl: envshh.remoteRepoUrl || this.config.remoteRepoUrl,
     });
     newEnvshhInstance.initChecks();
+    if (newEnvshhInstance.config.remoteRepoUrl && !this.config.remoteRepoUrl) {
+      const tempEnvshh = new EnvshhInstance({
+        name: "temp_envshh_temp_01",
+        localDirectory: path.join(defaultLocalDirectory, "temp_envshh_temp_01"),
+        remoteRepoUrl: newEnvshhInstance.config.remoteRepoUrl,
+      });
+      tempEnvshh.create();
+      deleteDirectoryOrFile(path.join(this.config.localDirectory, ".git"));
+      tempEnvshh.edit(newEnvshhInstance.config);
+      newEnvshhInstance.gitCommit();
+      newEnvshhInstance.gitPush();
+    }
     if (
       newEnvshhInstance.config.localDirectory !== this.config.localDirectory
     ) {
@@ -86,10 +101,11 @@ export class EnvshhInstance {
           newEnvshhInstance.config.localDirectory,
         );
       }
-      this.deleteLocalDirectory();
     }
-    newEnvshhInstance.create();
+    if (newEnvshhInstance.config.remoteRepoUrl !== this.config.remoteRepoUrl)
+      newEnvshhInstance.gitAddRemote();
     DBdeleteInstance(this.config.name);
+    DBinsertInstance(newEnvshhInstance.config);
     return newEnvshhInstance;
   }
 
@@ -104,9 +120,27 @@ export class EnvshhInstance {
   }
 
   reset() {
-    this.deleteLocalDirectory();
-    this.createLocalDirectory();
+    this.remove();
+    this.create();
     return this;
+  }
+
+  gitInit() {
+    initRepo(this.config);
+  }
+
+  gitClone() {
+    if (!this.isRemoteRepoUrlSet()) {
+      return;
+    }
+    cloneRepo(this.config);
+  }
+
+  gitAddRemote() {
+    if (!this.isRemoteRepoUrlSet()) {
+      return;
+    }
+    addRemoteRepo(this.config);
   }
 
   gitPull() {

@@ -40,7 +40,7 @@ export function theGenerate({
   value,
   suffix,
 }: {
-  envPath: string;
+  envPath: string[];
   value: string;
   suffix: string;
 }) {
