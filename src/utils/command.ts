@@ -26,7 +26,7 @@ export function runCommand(
     return result;
   } catch (error) {
     if (ignoreIfFails) {
-      return result || false;
+      return false;
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let theError: string = (error as any).stderr

@@ -25,7 +25,7 @@ export function thePull(pushConfig: ProjectConfigParansType) {
   );
 
   if (!isPathExists(sourceDirectory) || isDirectoryEmpty(sourceDirectory))
-    return exitWithError(`No envs found.`);
+    return exitWithError(`No .env found.`);
 
   const envPaths = getAllEnvsFromRemoteRepo(sourceDirectory);
 
