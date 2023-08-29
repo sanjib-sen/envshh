@@ -101,8 +101,8 @@ export class EnvshhInstance {
         `temp-${this.config.name}-${Date.now()}`,
       );
       createDirectory(tempDirectory);
-      deleteDirectoryOrFile(path.join(tempDirectory, ".git"));
       copyFileAndFolder(this.config.localDirectory, tempDirectory);
+      deleteDirectoryOrFile(path.join(tempDirectory, ".git"));
       this.deleteLocalDirectory();
       newEnvshhInstance.create();
       copyFileAndFolder(tempDirectory, newEnvshhInstance.config.localDirectory);
