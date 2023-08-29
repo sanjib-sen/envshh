@@ -27,6 +27,20 @@ export function readFile(destination: string) {
   }
 }
 
+export function renameFileOrDirectory(
+  sourcePath: string,
+  destinationPath: string,
+) {
+  try {
+    fs.renameSync(sourcePath, destinationPath);
+  } catch (error) {
+    return handleError(
+      error,
+      `Failed to rename ${sourcePath} to ${destinationPath}.`,
+    );
+  }
+}
+
 export function deleteDirectoryOrFile(
   directoryOrFilePath: string,
   recursive = true,

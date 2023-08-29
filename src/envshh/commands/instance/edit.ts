@@ -26,19 +26,19 @@ export function editInstance(
     );
     const newName =
       readlineSync.question(`Instance Name (Current: ${name}): `) ||
-      envshh.config.name;
+      envshh.getName();
     const localDirectory =
       readlineSync.question(
         `Directory Path (Current: ${envshh.getLocalDirectory()}): `,
-      ) || envshh.config.localDirectory;
+      ) || envshh.getLocalDirectory();
     const remoteRepoUrl =
       envshhModifyParams?.remoteRepoUrl ||
       readlineSync.question(
         `Remote Repository URL (Write "none" if you want to use offline. Current: ${
-          envshh.getRemoteRepoUrl() ? envshh.config.remoteRepoUrl : "none"
+          envshh.getRemoteRepoUrl() ? envshh.getRemoteRepoUrl() : "none"
         }): `,
       ) ||
-      envshh.config.remoteRepoUrl;
+      envshh.getRemoteRepoUrl();
 
     envshhModifyParams = {
       name: newName,

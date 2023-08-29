@@ -30,7 +30,7 @@ import path from "path";
 import { defaultLocalDirectory } from "./defaults/defaults.js";
 
 export class EnvshhInstance {
-  config: EnvshhInstanceType;
+  private readonly config: EnvshhInstanceType;
   constructor(EnvshhConfigParams?: EnvshhInstanceType) {
     try {
       const parsedData = EnvshhInstanceSchema.parse(EnvshhConfigParams);
@@ -79,18 +79,6 @@ export class EnvshhInstance {
       remoteRepoUrl: envshh.remoteRepoUrl || this.config.remoteRepoUrl,
     });
     newEnvshhInstance.initChecks();
-    if (newEnvshhInstance.config.remoteRepoUrl && !this.config.remoteRepoUrl) {
-      const tempEnvshh = new EnvshhInstance({
-        name: "temp_envshh_temp_01",
-        localDirectory: path.join(defaultLocalDirectory, "temp_envshh_temp_01"),
-        remoteRepoUrl: newEnvshhInstance.config.remoteRepoUrl,
-      });
-      tempEnvshh.create();
-      deleteDirectoryOrFile(path.join(this.config.localDirectory, ".git"));
-      tempEnvshh.edit(newEnvshhInstance.config);
-      newEnvshhInstance.gitCommit();
-      newEnvshhInstance.gitPush();
-    }
     if (
       newEnvshhInstance.config.localDirectory !== this.config.localDirectory
     ) {
@@ -101,11 +89,26 @@ export class EnvshhInstance {
           newEnvshhInstance.config.localDirectory,
         );
       }
+      this.setLocalDirectory(newEnvshhInstance.config.localDirectory);
     }
-    if (newEnvshhInstance.config.remoteRepoUrl !== this.config.remoteRepoUrl)
-      newEnvshhInstance.gitAddRemote();
-    DBdeleteInstance(this.config.name);
-    DBinsertInstance(newEnvshhInstance.config);
+
+    if (
+      newEnvshhInstance.config.remoteRepoUrl != this.config.remoteRepoUrl &&
+      newEnvshhInstance.config.remoteRepoUrl
+    ) {
+      const tempDirectory = path.join(
+        defaultLocalDirectory,
+        `temp-${this.config.name}-${Date.now()}`,
+      );
+      createDirectory(tempDirectory);
+      deleteDirectoryOrFile(path.join(tempDirectory, ".git"));
+      copyFileAndFolder(this.config.localDirectory, tempDirectory);
+      this.deleteLocalDirectory();
+      newEnvshhInstance.create();
+      copyFileAndFolder(tempDirectory, newEnvshhInstance.config.localDirectory);
+      deleteDirectoryOrFile(tempDirectory);
+      newEnvshhInstance.gitCommit();
+    }
     return newEnvshhInstance;
   }
 
@@ -178,5 +181,8 @@ export class EnvshhInstance {
   }
   setLocalDirectory(localDirectory: string) {
     this.config.localDirectory = localDirectory;
+  }
+  setName(name: string) {
+    this.config.name = name;
   }
 }
