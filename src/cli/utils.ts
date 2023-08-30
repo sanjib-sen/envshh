@@ -135,7 +135,7 @@ cloneCommand
   .action((args) => {
     runCommand(
       `git clone "${args}" && cd "$(basename "${args}" .git)" && npx envshh pull`,
-      false,
+      true,
       true,
     );
   });
