@@ -10,6 +10,7 @@ import { instanceCommand } from "./instance.js";
 import { pullCommand } from "./main/pull.js";
 import { pushCommand } from "./main/push.js";
 import {
+  cloneCommand,
   decryptFileCommand,
   decryptTextCommand,
   encryptFileCommand,
@@ -41,4 +42,5 @@ program
   .addCommand(decryptFileCommand)
   .addCommand(decryptTextCommand)
   .addCommand(dbCommand)
-  .addCommand(instanceCommand);
+  .addCommand(instanceCommand)
+  .addCommand(cloneCommand);

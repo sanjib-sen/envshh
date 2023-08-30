@@ -12,6 +12,7 @@ import path from "path";
 import { saveDecryptedEnv } from "../envshh/encryption/decrypt.js";
 import { theGenerate } from "../envshh/commands/generate.js";
 import { askPassword } from "../utils/password.js";
+import { runCommand } from "../utils/command.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -124,4 +125,15 @@ generateCommand
       value: options.value,
       suffix: options.suffix,
     });
+  });
+
+export const cloneCommand = new Command();
+cloneCommand
+  .name("clone")
+  .description("git clone and envshh pull at the same time")
+  .argument("<clone-opts-args...>", "git clone options and arguments")
+  .action((args) => {
+    runCommand(
+      `git clone "${args}" && cd "$(basename "${args}" .git)" && npx envshh pull`,
+    );
   });
