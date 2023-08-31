@@ -11,7 +11,7 @@ import {
 } from "./checks.js";
 import { EnvshhInstanceType } from "../types/schemas.js";
 import { runCommand } from "../utils/command.js";
-import { exitProcess, exitWithError } from "../utils/process.js";
+import { exitWithError } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
 import path from "path";
@@ -52,9 +52,10 @@ export function pullRepo(envshh: EnvshhInstanceType): void {
         error.toString().trim().includes("couldn't find remote ref main"))
     ) {
       initRepo(envshh);
-      return exitProcess();
+      runCommand(`git -C ${envshh.localDirectory} pull origin main`);
+    } else {
+      return handleError(error);
     }
-    return handleError(error);
   }
 }
 
