@@ -99,7 +99,7 @@ function getProjectNameFromRepoUrl(url: string) {
 
 export function getGitRepoName(location: string) {
   if (isDirectoryAGitRepository(location)) {
-    const origin = runCommand("git config --get remote.origin.url");
+    const origin = runCommand("git config --get remote.origin.url", true);
     return origin ? getProjectNameFromRepoUrl(origin) : undefined;
   }
   return undefined;

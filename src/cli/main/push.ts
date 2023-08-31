@@ -23,7 +23,7 @@ pushCommand
     "-p, --project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
     isDirectoryAGitRepository(process.cwd())
-      ? getGitRepoName(process.cwd())
+      ? getGitRepoName(process.cwd()) ?? getCurrentWorkingDirectoryName()
       : getCurrentWorkingDirectoryName(),
   )
   .option(
