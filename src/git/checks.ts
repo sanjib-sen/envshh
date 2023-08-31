@@ -12,7 +12,9 @@ export function isGitInstalledAndPathed() {
 }
 
 export function isRepositoryExistsOnRemote(repositoryAddress: string) {
-  return runCommand(`git ls-remote ${repositoryAddress}`, true) ? true : false;
+  const res = runCommand(`git ls-remote ${repositoryAddress}`, true);
+  if (res === false) return false;
+  return true;
 }
 
 export function isDirectoryAGitRepository(directoryPath: string) {
