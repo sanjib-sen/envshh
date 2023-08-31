@@ -131,10 +131,17 @@ export const cloneCommand = new Command();
 cloneCommand
   .name("clone")
   .description("git clone and envshh pull at the same time")
-  .argument("<clone-opts-args...>", "git clone options and arguments")
-  .action((args) => {
+  .argument("<repo>", "Repository url")
+  .argument("[dir]", "Directory to clone into")
+  .action((repo, directory) => {
     runCommand(
-      `git clone "${args}" && cd "$(basename "${args}" .git)" && npx envshh pull`,
+      `cd ${process.cwd()} && git clone ${repo} ${
+        directory ? directory : ""
+      } && cd "${
+        directory
+          ? directory
+          : repo.split("/")[repo.split("/").length - 1].replace(".git", "")
+      }" && npx envshh pull`,
       true,
       true,
     );
