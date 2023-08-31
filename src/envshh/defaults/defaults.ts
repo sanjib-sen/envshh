@@ -3,14 +3,19 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-export const defaultLocalDirectory =
-  process.platform === "win32"
-    ? `${process.env.USERPROFILE}\\.envshh`
-    : `${process.env.HOME}/.config/.envshh`;
-export const defaultDBPath =
-  process.platform === "win32"
-    ? `${process.env.USERPROFILE}\\.envshh\\db.json`
-    : `${process.env.HOME}/.config/.envshh/db.json`;
+import { getConfigs } from "../../db/controllers.js";
+
+export const defaultValidRegex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
+
+export const defaultRegexNameConventionMessage = (type: string) => {
+  return `${type} Name: Only letters, numbers, dash (-), underscore (_) are supported.
+                      Name must start or end with a letter or number.
+                      Name must be between 1 and 25 characters long.
+                      Name cannot contain consecutive dash (-), underscore (_)
+              `;
+};
+
+export const defaultLocalDirectory = getConfigs().localDirectory;
 
 export const envExtensions = [
   ".env",
@@ -23,22 +28,12 @@ export const envExtensions = [
   ".env.production.local",
 ];
 
-export const envQuotations = ["'", '"'];
+export const envQuotations = getConfigs().envValueQuotations;
 
-export const excludedFiles = ["README.md", "Readme.md", ".gitignore"];
+export const excludedFiles = getConfigs().ignoreFiles;
 
-export const defaultValidRegex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
+export const defaultBranchNamePrefix = getConfigs().branchNamePrefix;
 
-export const defaultBranchNamePrefix = "envshh-branch-";
+export const defaultInstanceName = getConfigs().instanceName;
 
-export const defaultRegexNameConventionMessage = (type: string) => {
-  return `${type} Name: Only letters, numbers, dash (-), underscore (_) are supported.
-                  Name must start or end with a letter or number.
-                  Name must be between 1 and 25 characters long.
-                  Name cannot contain consecutive dash (-), underscore (_)
-          `;
-};
-
-export const defaultInstanceName = "personal";
-
-export const defaultBranchName = "main";
+export const defaultBranchName = getConfigs().branchName;

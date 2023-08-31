@@ -7,7 +7,6 @@ import { z } from "zod";
 import {
   defaultValidRegex,
   defaultRegexNameConventionMessage,
-  defaultBranchName,
 } from "../envshh/defaults/defaults.js";
 import { EnvshhInstanceNameSchema, EnvshhInstanceType } from "./schemas.js";
 
@@ -27,8 +26,7 @@ export const ProjectConfigParans = z.object({
     .string()
     .regex(defaultValidRegex, defaultRegexNameConventionMessage("Branch"))
     .min(1, { message: "Branch Name cannot be empty" })
-    .max(25, { message: "Branch Name cannot be more than 25 characters" })
-    .default(defaultBranchName),
+    .max(25, { message: "Branch Name cannot be more than 25 characters" }),
   offline: z.boolean().default(false),
   password: z.string().min(1).max(255),
 });

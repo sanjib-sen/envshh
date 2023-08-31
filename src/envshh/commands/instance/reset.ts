@@ -16,7 +16,6 @@ export function resetInstance(name: EnvshhInstanceNameType, yes: boolean) {
     `Are you sure you want to clear ${name}? (y/N): `,
   );
   if (confirm === "y") {
-    envshh.reset();
     return envshh.reset();
   }
 }

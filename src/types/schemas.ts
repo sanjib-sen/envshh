@@ -5,8 +5,6 @@
 
 import { z } from "zod";
 import {
-  defaultInstanceName,
-  defaultLocalDirectory,
   defaultRegexNameConventionMessage,
   defaultValidRegex,
 } from "../envshh/defaults/defaults.js";
@@ -15,21 +13,15 @@ export const EnvshhInstanceNameSchema = z
   .string()
   .regex(defaultValidRegex, defaultRegexNameConventionMessage("Instance"))
   .min(1, { message: "Instance Name cannot be empty" })
-  .max(25, { message: "Instance Name cannot be more than 25 characters" })
-  .default(defaultInstanceName);
-
-export const EnvshhInstanceSchema = z
-  .object({
-    name: EnvshhInstanceNameSchema,
-    localDirectory: z.string().default(defaultLocalDirectory),
-    remoteRepoUrl: z
-      .string()
-      // .url({ message: "Invalid Repository URL" })
-      .optional(),
-  })
-  .default({
-    localDirectory: defaultLocalDirectory,
-  });
+  .max(25, { message: "Instance Name cannot be more than 25 characters" });
+export const EnvshhInstanceSchema = z.object({
+  name: EnvshhInstanceNameSchema,
+  localDirectory: z.string(),
+  remoteRepoUrl: z
+    .string()
+    // .url({ message: "Invalid Repository URL" })
+    .optional(),
+});
 
 export type EnvshhInstanceType = z.infer<typeof EnvshhInstanceSchema>;
 export type EnvshhInstanceNameType = z.infer<typeof EnvshhInstanceNameSchema>;

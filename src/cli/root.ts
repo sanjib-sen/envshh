@@ -19,6 +19,7 @@ import {
 } from "./utils.js";
 import { removeCommand } from "./main/remove.js";
 import * as fs from "fs";
+import { defaultDBPath } from "../db/db.js";
 
 const fileUrl = new URL("../package.json", import.meta.url);
 const packageInfo = JSON.parse(fs.readFileSync(fileUrl, "utf8"));
@@ -29,7 +30,7 @@ program
   .name("envshh")
   .addHelpText("beforeAll", figlet.textSync("envshh"))
   .description(
-    "A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh",
+    `A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh \n\nConfiguration file location: ${defaultDBPath}`,
   )
   .version(packageInfo.version, "-v, --version");
 program

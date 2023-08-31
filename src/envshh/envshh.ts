@@ -76,11 +76,11 @@ export class EnvshhInstance {
     return this;
   }
 
-  edit(envshh: Partial<EnvshhInstanceType>) {
+  edit(envshh: EnvshhInstanceType) {
     const newEnvshhInstance = new EnvshhInstance({
-      name: envshh.name || this.config.name,
-      localDirectory: envshh.localDirectory || this.config.localDirectory,
-      remoteRepoUrl: envshh.remoteRepoUrl || this.config.remoteRepoUrl,
+      name: envshh.name,
+      localDirectory: envshh.localDirectory,
+      remoteRepoUrl: envshh.remoteRepoUrl,
     });
     newEnvshhInstance.initChecks();
     if (

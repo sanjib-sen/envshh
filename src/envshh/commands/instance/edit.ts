@@ -33,20 +33,30 @@ export function editInstance(
       ) || envshh.getLocalDirectory();
     const remoteRepoUrl =
       envshhModifyParams?.remoteRepoUrl ||
-      readlineSync.question(
-        `Remote Repository URL (Write "none" if you want to use offline. Current: ${
-          envshh.getRemoteRepoUrl() ? envshh.getRemoteRepoUrl() : "none"
-        }): `,
-      ) ||
+      readlineSync
+        .question(
+          `Remote Repository URL (Write "none" if you want to use offline. Current: ${
+            envshh.getRemoteRepoUrl() ? envshh.getRemoteRepoUrl() : "none"
+          }): `,
+        )
+        .trim() ||
       envshh.getRemoteRepoUrl();
 
-    envshhModifyParams = {
+    const envshhModifyParamsUpdated = {
       name: newName,
       localDirectory: localDirectory,
       remoteRepoUrl: remoteRepoUrl === "none" ? undefined : remoteRepoUrl,
     };
+    const newEnvshh = envshh.edit(envshhModifyParamsUpdated);
+    return newEnvshh.print();
+  } else {
+    const newEnvshh = envshh.edit({
+      name: envshhModifyParams.name ?? envshh.getName(),
+      localDirectory:
+        envshhModifyParams.localDirectory ?? envshh.getLocalDirectory(),
+      remoteRepoUrl:
+        envshhModifyParams.remoteRepoUrl ?? envshh.getRemoteRepoUrl(),
+    });
+    return newEnvshh.print();
   }
-
-  const newEnvshh = envshh.edit(envshhModifyParams);
-  return newEnvshh.print();
 }

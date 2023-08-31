@@ -16,7 +16,6 @@ export function removeInstance(name: EnvshhInstanceNameType, yes: boolean) {
     `Are you sure you want to delete ${name}? (y/N): `,
   );
   if (confirm === "y") {
-    envshh.remove();
     return envshh.remove();
   }
 }

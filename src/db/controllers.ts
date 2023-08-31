@@ -12,7 +12,6 @@ import { EnvshhInstance } from "../envshh/envshh.js";
 import { isPathExists } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import {
-  defaultDBPath,
   defaultInstanceName,
   defaultLocalDirectory,
 } from "../envshh/defaults/defaults.js";
@@ -20,6 +19,7 @@ import path from "path";
 import * as readlineSync from "readline-sync";
 import { deleteDirectoryOrFile } from "../filesystem/functions.js";
 import { log } from "../utils/log.js";
+import { defaultDBPath } from "./db.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   db.read();
@@ -109,6 +109,11 @@ export function DBeditInstance(
     newEnvshh.getLocalDirectory();
   db.write();
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
+}
+
+export function getConfigs() {
+  db.read();
+  return db.data.defaults;
 }
 
 export function DBdeleteInstance(name: EnvshhInstanceNameType) {
