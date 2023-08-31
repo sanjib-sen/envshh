@@ -16,7 +16,10 @@ export function isRepositoryExistsOnRemote(repositoryAddress: string) {
 }
 
 export function isDirectoryAGitRepository(directoryPath: string) {
-  if (isPathExists(directoryPath) === false) exitWithError("Invalid path.");
+  if (isPathExists(directoryPath) === false)
+    exitWithError(
+      "Got invalid path while checking if the directory is a git repo. Path does not exist.",
+    );
   return runCommand(
     `git -C ${directoryPath} rev-parse --is-inside-work-tree`,
     true,

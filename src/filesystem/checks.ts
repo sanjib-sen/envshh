@@ -12,12 +12,16 @@ export function isPathExists(directoryOrFilePath: string) {
 
 export function isDirectoryEmpty(directoryPath: string) {
   if (isPathExists(directoryPath) === false)
-    return exitWithError("Invalid path.");
+    return exitWithError(
+      "Got Invalid for while checking if directory is Empty. Directory does not exist.",
+    );
   return fs.readdirSync(directoryPath).length === 0;
 }
 
 export function isPathADirectory(directoryOrFilePath: string) {
   if (isPathExists(directoryOrFilePath) === false)
-    return exitWithError("Invalid path.");
+    return exitWithError(
+      "Got invalid path while checking if the path is a directory. Path does not exist.",
+    );
   return fs.lstatSync(directoryOrFilePath).isDirectory();
 }

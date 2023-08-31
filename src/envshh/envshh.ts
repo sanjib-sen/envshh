@@ -14,7 +14,11 @@ import {
 } from "../filesystem/functions.js";
 import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import z from "zod";
-import { DBdeleteInstance, DBinsertInstance } from "../db/controllers.js";
+import {
+  DBdeleteInstance,
+  DBeditInstance,
+  DBinsertInstance,
+} from "../db/controllers.js";
 import {
   addRemoteRepo,
   cloneRepo,
@@ -83,13 +87,21 @@ export class EnvshhInstance {
       newEnvshhInstance.config.localDirectory !== this.config.localDirectory
     ) {
       newEnvshhInstance.createLocalDirectory();
-      if (!isDirectoryEmpty(this.config.localDirectory)) {
+      if (
+        isDirectoryEmpty(newEnvshhInstance.config.localDirectory) &&
+        !isDirectoryEmpty(this.config.localDirectory)
+      ) {
         copyFileAndFolder(
           this.config.localDirectory,
           newEnvshhInstance.config.localDirectory,
         );
+        this.deleteLocalDirectory();
+        this.setLocalDirectory(newEnvshhInstance.config.localDirectory);
+      } else {
+        return exitWithError(
+          "Got Error while copying files. Either the source directory does not exist or the destination directory is not empty",
+        );
       }
-      this.setLocalDirectory(newEnvshhInstance.config.localDirectory);
     }
 
     if (
@@ -109,6 +121,7 @@ export class EnvshhInstance {
       deleteDirectoryOrFile(tempDirectory);
       newEnvshhInstance.gitCommit();
     }
+    DBeditInstance(this.config.name, newEnvshhInstance);
     return newEnvshhInstance;
   }
 

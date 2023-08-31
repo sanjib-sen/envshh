@@ -9,7 +9,6 @@ import {
   EnvshhInstanceType,
 } from "../types/schemas.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
-import { EnvshhInstanceModifyParamsType } from "../types/params.js";
 import { isPathExists } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import {
@@ -93,18 +92,21 @@ export function DBshow(instanceName?: EnvshhInstanceNameType) {
   }
 }
 
-export function DBeditInstance(envshh: EnvshhInstanceModifyParamsType) {
+export function DBeditInstance(
+  instanceName: EnvshhInstanceNameType,
+  newEnvshh: EnvshhInstance,
+) {
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
-    (instance) => instance.name === envshh.name,
+    (instance) => instance.name === instanceName,
   );
   if (InstanceIndex === -1) {
-    return exitWithError(`Instance ${envshh.name} not found.`);
+    return exitWithError(`Instance ${instanceName} not found.`);
   }
-  if (envshh.remoteRepoUrl)
-    db.data.instances[InstanceIndex].remoteRepoUrl = envshh.remoteRepoUrl;
-  if (envshh.localDirectory)
-    db.data.instances[InstanceIndex].localDirectory = envshh.localDirectory;
+  db.data.instances[InstanceIndex].name = newEnvshh.getName();
+  db.data.instances[InstanceIndex].remoteRepoUrl = newEnvshh.getRemoteRepoUrl();
+  db.data.instances[InstanceIndex].localDirectory =
+    newEnvshh.getLocalDirectory();
   db.write();
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
 }

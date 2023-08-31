@@ -159,7 +159,7 @@ cloneCommand
   )
   .action((repo, directory, options) => {
     runCommand(
-      `cd ${process.cwd()} && git clone ${repo} ${directory ? directory : ""}`,
+      `git -C ${process.cwd()} clone ${repo} ${directory ? directory : ""}`,
       true,
       true,
     );

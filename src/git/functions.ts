@@ -15,6 +15,7 @@ import { runCommand } from "../utils/command.js";
 import { exitWithError, exitWithSuccess } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
+import path from "path";
 
 export function cloneRepo(envshh: EnvshhInstanceType): void {
   if (!envshh.remoteRepoUrl) {
@@ -70,9 +71,10 @@ export function initRepo(envshh: EnvshhInstanceType) {
   envshh.remoteRepoUrl ?? addRemoteRepo(envshh);
   runCommand(`git -C ${envshh.localDirectory} branch -M main`);
   runCommand(
-    `cd '${
-      envshh.localDirectory
-    }' && echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> README.md`,
+    `echo "# Envshh Instance: ${envshh.name.toUpperCase()}" >> ${path.join(
+      envshh.localDirectory,
+      "README.md",
+    )}`,
   );
   new EnvshhInstance(envshh).gitCommit();
   envshh.remoteRepoUrl
