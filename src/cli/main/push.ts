@@ -18,7 +18,7 @@ export const pushCommand = new Command();
 
 pushCommand
   .name("push")
-  .description("Push local environment variables to Upstream")
+  .description("Push local environment variables to Remote Repository")
   .option(
     "-p, --project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",

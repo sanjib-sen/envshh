@@ -18,7 +18,7 @@ export const pullCommand = new Command();
 
 pullCommand
   .name("pull")
-  .description("Pull environment variables from Upstream")
+  .description("Pull environment variables from Remote Repository")
   .option(
     "-p, --project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",

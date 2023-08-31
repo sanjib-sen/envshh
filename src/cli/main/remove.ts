@@ -18,7 +18,7 @@ export const removeCommand = new Command();
 
 removeCommand
   .name("remove")
-  .description("Delete .envs from local and upstream")
+  .description("Delete .envs from local and Remote Repository")
   .option(
     "-p, --project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",

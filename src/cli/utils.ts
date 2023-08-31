@@ -27,7 +27,7 @@ import { thePull } from "../envshh/commands/pull.js";
 export const encryptFileCommand = new Command();
 encryptFileCommand
   .name("encryptfile")
-  .description("Encrypt a file")
+  .description("[Extra Utilities] Encrypt a file")
   .argument("<file>", "Specify the file to encrypt")
   .option(
     "-o, --output <output>",
@@ -54,7 +54,7 @@ encryptFileCommand
 export const decryptFileCommand = new Command();
 decryptFileCommand
   .name("decryptfile")
-  .description("Decrypt a file")
+  .description("[Extra Utilities] Decrypt a file")
   .argument("<file>", "Specify the file to decrypt")
   .option(
     "-o, --output <output>",
@@ -81,7 +81,7 @@ decryptFileCommand
 export const encryptTextCommand = new Command();
 encryptTextCommand
   .name("encrypttext")
-  .description("Encrypt a text")
+  .description("[Extra Utilities] Encrypt a text")
   .argument("<text>", "Specify the text to encrypt")
   .option("-o, --output <output-path>", "Output to file <path>")
   .action((text, options) => {
@@ -97,7 +97,7 @@ encryptTextCommand
 export const decryptTextCommand = new Command();
 decryptTextCommand
   .name("decrypttext")
-  .description("Decrypt a text")
+  .description("[Extra Utilities] Decrypt a text")
   .argument("<text>", "Specify the text to decrypt")
   .option("-o, --output <output-path>", "Output to file <path>")
   .action((text, options) => {

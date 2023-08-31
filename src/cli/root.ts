@@ -37,11 +37,11 @@ program
   .addCommand(pushCommand)
   .addCommand(pullCommand)
   .addCommand(generateCommand)
+  .addCommand(cloneCommand)
   .addCommand(removeCommand)
   .addCommand(encryptFileCommand)
   .addCommand(encryptTextCommand)
   .addCommand(decryptFileCommand)
   .addCommand(decryptTextCommand)
   .addCommand(dbCommand)
-  .addCommand(instanceCommand)
-  .addCommand(cloneCommand);
+  .addCommand(instanceCommand);
