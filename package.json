@@ -1,6 +1,6 @@
 {
   "name": "envshh",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {

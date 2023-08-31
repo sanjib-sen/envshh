@@ -5,14 +5,13 @@
 
 import { execSync } from "child_process";
 import { isDirectoryEmpty, isPathExists } from "../filesystem/checks.js";
-import { log } from "../utils/log.js";
 import {
   isDirectoryAGitRepository,
   isRepositoryExistsOnRemote,
 } from "./checks.js";
 import { EnvshhInstanceType } from "../types/schemas.js";
 import { runCommand } from "../utils/command.js";
-import { exitWithError, exitWithSuccess } from "../utils/process.js";
+import { exitProcess, exitWithError } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
 import path from "path";
@@ -41,20 +40,19 @@ export function pullRepo(envshh: EnvshhInstanceType): void {
       stdio: ["ignore", "ignore", "pipe"],
     });
   } catch (error) {
-    if (error instanceof Error) {
-      log.warn(error.toString());
-    }
     if (
-      error instanceof Error &&
-      error
-        .toString()
-        .trim()
-        .includes(
-          "Your configuration specifies to merge with the ref 'refs/heads/main'",
-        )
+      (error instanceof Error &&
+        error
+          .toString()
+          .trim()
+          .includes(
+            "Your configuration specifies to merge with the ref 'refs/heads/main'",
+          )) ||
+      (error instanceof Error &&
+        error.toString().trim().includes("couldn't find remote ref main"))
     ) {
       initRepo(envshh);
-      return exitWithSuccess("Successfully pushed to remote repository");
+      return exitProcess();
     }
     return handleError(error);
   }
