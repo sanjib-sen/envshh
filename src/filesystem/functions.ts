@@ -91,5 +91,6 @@ export function copyFileAndFolder(
 }
 
 export function getCurrentWorkingDirectoryName() {
-  return process.cwd().split("\\").pop() as string;
+  const seperator = process.platform==="win32"?"\\":"/"
+  return process.cwd().split(seperator).pop() as string;
 }
