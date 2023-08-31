@@ -163,15 +163,11 @@ cloneCommand
       true,
       true,
     );
-    const directorySeperator = process.platform === "win32" ? "\\" : "/";
     process.chdir(
       directory
         ? directory
-        : repo
-            .split(directorySeperator)
-            [repo.split(directorySeperator).length - 1].replace(".git", ""),
+        : repo.split("/")[repo.split("/").length - 1].replace(".git", ""),
     );
-    console.log(process.cwd());
     const password = askPassword(false);
     thePull({
       password: password,
