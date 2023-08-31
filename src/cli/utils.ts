@@ -6,13 +6,23 @@
 import { Command } from "@commander-js/extra-typings";
 import { decryptString, encryptString } from "../envshh/encryption/lib.js";
 import { log } from "../utils/log.js";
-import { createFile, readFile } from "../filesystem/functions.js";
+import {
+  createFile,
+  getCurrentWorkingDirectoryName,
+  readFile,
+} from "../filesystem/functions.js";
 import { saveEncryptedEnv } from "../envshh/encryption/encrypt.js";
 import path from "path";
 import { saveDecryptedEnv } from "../envshh/encryption/decrypt.js";
 import { theGenerate } from "../envshh/commands/generate.js";
 import { askPassword } from "../utils/password.js";
 import { runCommand } from "../utils/command.js";
+import {
+  defaultBranchName,
+  defaultInstanceName,
+} from "../envshh/defaults/defaults.js";
+import { getGitRepoName } from "../git/functions.js";
+import { thePull } from "../envshh/commands/pull.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -133,16 +143,41 @@ cloneCommand
   .description("git clone and envshh pull at the same time")
   .argument("<repo>", "Repository url")
   .argument("[dir]", "Directory to clone into")
-  .action((repo, directory) => {
+  .option(
+    "-p, --project <project-name>",
+    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
+  )
+  .option(
+    "-b, --branch <name>",
+    `Keep different branches for different production, development and staging`,
+    defaultBranchName,
+  )
+  .option(
+    "-i, --instance <Instance name.>",
+    `[Advanced Option] Specify the instance name`,
+    defaultInstanceName,
+  )
+  .action((repo, directory, options) => {
     runCommand(
-      `cd ${process.cwd()} && git clone ${repo} ${
-        directory ? directory : ""
-      } && cd "${
-        directory
-          ? directory
-          : repo.split("/")[repo.split("/").length - 1].replace(".git", "")
-      }" && npx envshh pull`,
+      `cd ${process.cwd()} && git clone ${repo} ${directory ? directory : ""}`,
       true,
       true,
     );
+    process.chdir(
+      directory
+        ? directory
+        : repo.split("/")[repo.split("/").length - 1].replace(".git", ""),
+    );
+    console.log(process.cwd());
+    const password = askPassword(false);
+    thePull({
+      password: password,
+      name:
+        options.project ||
+        getGitRepoName(process.cwd()) ||
+        getCurrentWorkingDirectoryName(),
+      branch: options.branch,
+      offline: false,
+      instance: options.instance,
+    });
   });

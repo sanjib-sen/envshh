@@ -36,7 +36,9 @@ export function cloneRepo(envshh: EnvshhInstanceType): void {
 
 export function pullRepo(envshh: EnvshhInstanceType): void {
   try {
-    execSync(`git -C ${envshh.localDirectory} pull origin main`);
+    execSync(`git -C ${envshh.localDirectory} pull origin main`, {
+      stdio: ["ignore", "ignore", "pipe"],
+    });
   } catch (error) {
     if (error instanceof Error) {
       log.warn(error.toString());
