@@ -13,6 +13,10 @@ export function runCommand(
   showOnTerminal = false,
 ) {
   let result;
+  console.log(process.env.DEBUG);
+  if (process.env.DEBUG === "true") {
+    console.log(command);
+  }
   try {
     result = execSync(command, {
       stdio: [

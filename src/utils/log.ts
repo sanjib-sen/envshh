@@ -4,8 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { isInDebugMode } from "./checks.js";
-import chalk from "chalk";
-
+import chalk, { ChalkInstance } from "chalk";
 export class Log {
   readonly logger = process.stdout.write.bind(process.stdout);
   private masterPrefix = "Envshh";
@@ -17,9 +16,9 @@ export class Log {
   }
   private toStdout(
     prefix: string,
-    prefixChalkFunction: chalk.Chalk,
+    prefixChalkFunction: ChalkInstance,
     message: string,
-    messageChalkFunction: chalk.Chalk,
+    messageChalkFunction: ChalkInstance,
   ) {
     this.logger(
       `${prefixChalkFunction(
@@ -36,6 +35,14 @@ export class Log {
   command(message: string) {
     this.toStdout(
       "Command Result",
+      chalk.blueBright,
+      message,
+      chalk.whiteBright,
+    );
+  }
+  commandRun(message: string) {
+    this.toStdout(
+      "Running Command",
       chalk.blueBright,
       message,
       chalk.whiteBright,

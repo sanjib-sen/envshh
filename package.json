@@ -1,6 +1,6 @@
 {
   "name": "envshh",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "test": "npm run build && node dist/index.js -v"
   },
   "bin": {
-    "envshh": "index.js"
+    "envshh": "src/index.js"
   },
   "repository": {
     "type": "git",
@@ -29,26 +29,26 @@
   "author": "Sanjib Kumar Sen <mail@sanjibsen.com>",
   "license": "MIT",
   "peerDependencies": {
-    "commander": "*"
+    "commander": "~11.0.0"
   },
   "devDependencies": {
-    "@types/figlet": "*",
-    "@types/node": "*",
-    "@types/readline-sync": "*",
-    "@typescript-eslint/eslint-plugin": "*",
-    "@typescript-eslint/parser": "*",
-    "eslint": "*",
-    "eslint-config-prettier": "*",
-    "eslint-plugin-prettier": "*",
-    "husky": "*",
-    "typescript": "*"
+    "@types/figlet": "^1.5.6",
+    "@types/node": "^20.5.8",
+    "@types/readline-sync": "^1.4.4",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-plugin-prettier": "latest",
+    "husky": "^8.0.3",
+    "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@commander-js/extra-typings": "*",
-    "chalk": "*",
-    "figlet": "*",
-    "lowdb": "*",
-    "readline-sync": "*",
-    "zod": "*"
+    "@commander-js/extra-typings": "~11.0.0",
+    "chalk": "^5.3.0",
+    "figlet": "^1.6.0",
+    "lowdb": "^6.0.1",
+    "readline-sync": "^1.4.10",
+    "zod": "^3.22.2"
   }
 }

@@ -15,6 +15,8 @@ import { exitWithError } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
 import path from "path";
+import { log } from "../utils/log.js";
+import { isInDebugMode } from "../utils/checks.js";
 
 export function cloneRepo(envshh: EnvshhInstanceType): void {
   if (!envshh.remoteRepoUrl) {
@@ -35,8 +37,12 @@ export function cloneRepo(envshh: EnvshhInstanceType): void {
 }
 
 export function pullRepo(envshh: EnvshhInstanceType): void {
+  const pullCommand = `git -C ${envshh.localDirectory} pull origin main`;
   try {
-    execSync(`git -C ${envshh.localDirectory} pull origin main`, {
+    if (process.env.ENVSHH_DEBUG == "true" || isInDebugMode()) {
+      log.commandRun(pullCommand);
+    }
+    execSync(pullCommand, {
       stdio: ["ignore", "ignore", "pipe"],
     });
   } catch (error) {
