@@ -5,19 +5,23 @@
 
 import { isPathExists } from "../filesystem/checks.js";
 import { runCommand } from "../utils/command.js";
+import { log } from "../utils/log.js";
 import { exitWithError } from "../utils/process.js";
 
 export function isGitInstalledAndPathed() {
+  log.flow("Checking if git is installed and added to Path on the system");
   return runCommand("git --version", true) ? true : false;
 }
 
 export function isRepositoryExistsOnRemote(repositoryAddress: string) {
+  log.flow(`Checking if Repository ${repositoryAddress} exists on remote`);
   const res = runCommand(`git ls-remote ${repositoryAddress}`, true);
   if (res === false) return false;
   return true;
 }
 
 export function isDirectoryAGitRepository(directoryPath: string) {
+  log.flow(`Checking if Path ${directoryPath} exists`);
   if (isPathExists(directoryPath) === false)
     exitWithError(
       "Got invalid path while checking if the directory is a git repo. Path does not exist.",

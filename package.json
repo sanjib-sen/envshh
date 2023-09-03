@@ -6,9 +6,11 @@
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
     "lint": "eslint --ext .js,.ts,.json --fix .",
-    "clean": "rm -rf node_modules dist",
-    "build": "rm -rf dist  && npm run format && npm run lint && tsc && cp package.json README.md LICENSE dist",
-    "test": "npm run build && node dist/index.js -v"
+    "clean": "$npm_execpath run clean:win32 && $npm_execpath run clean:unix",
+    "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist",
+    "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist",
+    "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && tsc",
+    "test": "$npm_execpath run build && node dist/index.js -v"
   },
   "bin": {
     "envshh": "src/index.js"

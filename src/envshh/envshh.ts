@@ -135,6 +135,10 @@ export class EnvshhInstance {
     console.table([this.config]);
   }
 
+  getPrintFriendlyJSON() {
+    return JSON.stringify(this.config, null, 2);
+  }
+
   reset() {
     this.remove();
     this.create();

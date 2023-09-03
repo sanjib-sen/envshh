@@ -4,6 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { createFile } from "../../filesystem/functions.js";
+import { log } from "../../utils/log.js";
 import {
   getCleanValueFromLine,
   getQuotedValueFromLine,
@@ -21,6 +22,7 @@ function getEncryptedValueFromLine(line: string, password: string) {
 }
 
 export function getEncryptedEnv(location: string, password: string) {
+  log.flow(`Encrypting the ${location} file}`);
   let encryptedEnv = "";
   const lines = readEnvByLine(location);
   const encryptedLines = [];
@@ -43,6 +45,7 @@ export function saveEncryptedEnv(
   password: string,
   destination: string,
 ) {
+  log.flow(`Encrypting the ${envPath} file and saving to ${destination}`);
   const encryptedEnv = getEncryptedEnv(envPath, password);
   createFile(destination, encryptedEnv);
 }

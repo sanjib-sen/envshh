@@ -5,5 +5,5 @@
 import * as inspector from "inspector";
 
 export function isInDebugMode() {
-  return inspector.url() !== undefined;
+  return inspector.url() !== undefined || process.env.DEBUG === "true";
 }

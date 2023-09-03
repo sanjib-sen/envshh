@@ -3,7 +3,10 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { getConfigs } from "../../db/controllers.js";
+import { getConfigs } from "../../db/db.js";
+import { getCurrentWorkingDirectoryName } from "../../filesystem/functions.js";
+import { isDirectoryAGitRepository } from "../../git/checks.js";
+import { getGitRepoName } from "../../git/functions.js";
 
 export const defaultValidRegex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
 
@@ -16,6 +19,10 @@ export const defaultRegexNameConventionMessage = (type: string) => {
 };
 
 export const defaultLocalDirectory = getConfigs().localDirectory;
+
+export const defaultProjectName = isDirectoryAGitRepository(process.cwd())
+  ? getGitRepoName(process.cwd()) ?? getCurrentWorkingDirectoryName()
+  : getCurrentWorkingDirectoryName();
 
 export const envExtensions = [
   ".env",

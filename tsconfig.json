@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": ".",
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "target": "ESNext",
@@ -17,6 +17,6 @@
     "resolveJsonModule": true
   },
   "lib": ["ESNext"],
-  "include": ["src"],
+  "include": ["src", "package.json", "README.md"],
   "exclude": ["node_modules", "dist"]
 }

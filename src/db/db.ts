@@ -57,3 +57,8 @@ const adapter = new JSONFileSync<{
   instances: EnvshhInstanceType[];
 }>(defaultDBPath);
 export const db = new LowSync(adapter, jsonDefaultData);
+
+export function getConfigs() {
+  db.read();
+  return db.data.defaults;
+}

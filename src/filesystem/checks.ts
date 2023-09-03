@@ -5,12 +5,15 @@
 
 import * as fs from "fs";
 import { exitWithError } from "../utils/process.js";
+import { log } from "../utils/log.js";
 
 export function isPathExists(directoryOrFilePath: string) {
+  log.flow(`Checking if Path ${directoryOrFilePath} exists`);
   return fs.existsSync(directoryOrFilePath) ? true : false;
 }
 
 export function isDirectoryEmpty(directoryPath: string) {
+  log.flow(`Checking if Directory ${directoryPath} is empty`);
   if (isPathExists(directoryPath) === false)
     return exitWithError(
       "Got Invalid for while checking if directory is Empty. Directory does not exist.",
@@ -19,6 +22,7 @@ export function isDirectoryEmpty(directoryPath: string) {
 }
 
 export function isPathADirectory(directoryOrFilePath: string) {
+  log.flow(`Checking if Path ${directoryOrFilePath} is a directory`);
   if (isPathExists(directoryOrFilePath) === false)
     return exitWithError(
       "Got invalid path while checking if the path is a directory. Path does not exist.",

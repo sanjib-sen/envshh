@@ -8,6 +8,7 @@
 
 import * as crypto from "crypto";
 import { exitWithError } from "../../utils/process.js";
+import { log } from "../../utils/log.js";
 
 const ALGORITHM_NAME = "aes-128-gcm";
 const ALGORITHM_NONCE_SIZE = 12;
@@ -18,6 +19,7 @@ const PBKDF2_SALT_SIZE = 16;
 const PBKDF2_ITERATIONS = 32767;
 
 export function encryptString(plaintext: string, password: string) {
+  log.flow("Encrypting the string");
   // Generate a 128-bit salt using a CSPRNG.
   const salt = crypto.randomBytes(PBKDF2_SALT_SIZE);
 
@@ -44,6 +46,7 @@ export function decryptString(
   base64CiphertextAndNonceAndSalt: string,
   password: string,
 ) {
+  log.flow("Decrypting the string");
   try {
     // Decode the base64.
     const ciphertextAndNonceAndSalt = Buffer.from(

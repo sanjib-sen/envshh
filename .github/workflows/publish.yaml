@@ -18,7 +18,7 @@ jobs:
           node-version: latest
           registry-url: https://registry.npmjs.org
       - run: npm ci
-      - run: npm run build
+      - run: npm run build && cp README.md dist
       - run: cd dist && npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}

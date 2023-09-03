@@ -6,6 +6,7 @@
 import { execSync } from "child_process";
 import { log } from "./log.js";
 import { exitProcess } from "./process.js";
+import { isInDebugMode } from "./checks.js";
 
 export function runCommand(
   command: string,
@@ -13,9 +14,8 @@ export function runCommand(
   showOnTerminal = false,
 ) {
   let result;
-  console.log(process.env.DEBUG);
-  if (process.env.DEBUG === "true") {
-    console.log(command);
+  if (isInDebugMode()) {
+    log.commandRun(command);
   }
   try {
     result = execSync(command, {
@@ -27,6 +27,9 @@ export function runCommand(
     })
       .toString("utf-8")
       .trim();
+    if (isInDebugMode()) {
+      log.commandOutput(result);
+    }
     return result;
   } catch (error) {
     if (ignoreIfFails) {

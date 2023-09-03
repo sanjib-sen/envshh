@@ -4,8 +4,10 @@
 // https://opensource.org/licenses/MIT
 
 import * as readlineSync from "readline-sync";
+import { log } from "./log.js";
 
 export function askPassword(confirm = true) {
+  log.flow("Prompting for password to encrypt/decrypt the file/string");
   if (!confirm) {
     return readlineSync.question("Password: ", {
       hideEchoBack: true,
