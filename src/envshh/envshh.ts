@@ -13,7 +13,6 @@ import {
   deleteDirectoryOrFile,
 } from "../filesystem/functions.js";
 import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
-import z from "zod";
 import {
   DBdeleteInstance,
   DBeditInstance,
@@ -29,23 +28,14 @@ import {
 } from "../git/functions.js";
 import { isDirectoryEmpty } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
-import { handleError } from "../utils/error.js";
+import { handleZodError } from "../utils/error.js";
 import path from "path";
 import { defaultLocalDirectory } from "./defaults/defaults.js";
 
 export class EnvshhInstance {
   private readonly config: EnvshhInstanceType;
   constructor(EnvshhConfigParams?: EnvshhInstanceType) {
-    try {
-      const parsedData = EnvshhInstanceSchema.parse(EnvshhConfigParams);
-      this.config = parsedData;
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        exitWithError(err.issues.map((issue) => issue.message).join("\n"));
-      }
-      handleError(err);
-      process.exit(1);
-    }
+    this.config = handleZodError(EnvshhInstanceSchema, EnvshhConfigParams);
   }
   private initChecks() {
     if (!isGitInstalledAndPathed()) {

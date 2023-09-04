@@ -8,17 +8,9 @@ import { JSONFileSync } from "lowdb/node";
 
 import { createFile } from "../filesystem/functions.js";
 import { isPathExists } from "../filesystem/checks.js";
-import { EnvshhInstanceType } from "../types/schemas.js";
-
-type defaultsDataType = {
-  branchName: string;
-  instanceName: string;
-  envPatterns: string[];
-  envValueQuotations: string[];
-  localDirectory: string;
-  ignoreFiles: string[];
-  branchNamePrefix: string;
-};
+import { DBSchema, EnvshhInstanceType, configType } from "../types/schemas.js";
+import { handleZodError } from "../utils/error.js";
+import { log } from "../utils/log.js";
 
 const jsonDefaultData = {
   defaults: {
@@ -50,15 +42,22 @@ export const defaultDBPath =
     ? `${process.env.USERPROFILE}\\.envshh\\config.json`
     : `${process.env.HOME}/.config/.envshh/config.json`;
 if (!isPathExists(defaultDBPath)) {
+  log.flow(
+    `No config file found. Creating default config file at ${defaultDBPath}`,
+  );
   createFile(defaultDBPath, JSON.stringify(jsonDefaultData, null, 2));
 }
 const adapter = new JSONFileSync<{
-  defaults: defaultsDataType;
+  defaults: configType;
   instances: EnvshhInstanceType[];
 }>(defaultDBPath);
 export const db = new LowSync(adapter, jsonDefaultData);
 
 export function getConfigs() {
   db.read();
+  log.flow(
+    `Verifying Configuration Files. \n${JSON.stringify(db.data.defaults)}`,
+  );
+  handleZodError(DBSchema, db.data);
   return db.data.defaults;
 }

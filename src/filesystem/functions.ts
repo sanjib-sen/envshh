@@ -23,6 +23,8 @@ export function createDirectory(directoryPath: string, recursive = true) {
 
 export function readFile(destination: string) {
   log.flow(`Reading file ${destination}`);
+  if (isPathExists(destination) === false)
+    return exitWithError(`File ${destination} does not exist.`);
   try {
     return fs.readFileSync(destination, "utf-8");
   } catch (error) {
@@ -34,6 +36,8 @@ export function renameFileOrDirectory(
   sourcePath: string,
   destinationPath: string,
 ) {
+  if (isPathExists(sourcePath) === false)
+    return exitWithError(`Source path ${sourcePath} does not exist.`);
   log.flow(`Renaming ${sourcePath} to ${destinationPath}`);
   try {
     fs.renameSync(sourcePath, destinationPath);
