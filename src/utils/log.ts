@@ -4,15 +4,15 @@
 // https://opensource.org/licenses/MIT
 
 import figlet from "figlet";
-import { isInDebugMode } from "./checks.js";
+import { isInVerboseMode } from "./checks.js";
 import chalk, { ChalkInstance } from "chalk";
 
 export class Log {
   readonly logger = process.stdout.write.bind(process.stdout);
   private masterPrefix = "Envshh";
   constructor(masterPrefix?: string) {
-    if (isInDebugMode()) {
-      this.logger(figlet.textSync(`ENVSHH Debug Mode`) + "\n");
+    if (isInVerboseMode()) {
+      this.logger(figlet.textSync(`ENVSHH Verbose Mode`) + "\n");
     }
     this.masterPrefix = masterPrefix || this.masterPrefix;
   }
@@ -41,7 +41,7 @@ export class Log {
     this.toStdout("Running Command", chalk.blueBright, message, chalk);
   }
   flow(message: string) {
-    isInDebugMode()
+    isInVerboseMode()
       ? this.toStdout("Flow", chalk.blueBright, message, chalk)
       : "";
   }

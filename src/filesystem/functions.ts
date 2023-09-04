@@ -11,7 +11,7 @@ import { exitWithError } from "../utils/process.js";
 import { log } from "../utils/log.js";
 
 export function createDirectory(directoryPath: string, recursive = true) {
-  log.flow(`Creating directory ${directoryPath}`);
+  log.flow(`Creating directory ${directoryPath} if not exists`);
   try {
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: recursive });
@@ -19,6 +19,7 @@ export function createDirectory(directoryPath: string, recursive = true) {
   } catch (error) {
     return handleError(error, `Failed to create directory ${directoryPath}.`);
   }
+  log.flow(`Directory ${directoryPath} exists. Moving on...`);
 }
 
 export function readFile(destination: string) {

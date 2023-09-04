@@ -16,7 +16,7 @@ import { handleError } from "../utils/error.js";
 import { EnvshhInstance } from "../envshh/envshh.js";
 import path from "path";
 import { log } from "../utils/log.js";
-import { isInDebugMode } from "../utils/checks.js";
+import { isInVerboseMode } from "../utils/checks.js";
 
 export function cloneRepo(envshh: EnvshhInstanceType) {
   log.flow(`Git cloning ${envshh.remoteRepoUrl} to ${envshh.localDirectory}`);
@@ -42,14 +42,14 @@ export function pullRepo(envshh: EnvshhInstanceType) {
     `Executing a Git Pull on ${envshh.localDirectory} from ${envshh.remoteRepoUrl}`,
   );
   const pullCommand = `git -C ${envshh.localDirectory} pull origin main`;
-  if (isInDebugMode()) {
+  if (isInVerboseMode()) {
     log.commandRun(pullCommand);
   }
   try {
     const res = execSync(pullCommand, {
       stdio: ["ignore", "pipe", "pipe"],
     });
-    if (isInDebugMode()) {
+    if (isInVerboseMode()) {
       log.commandOutput(res?.toString("utf-8").trim());
     }
   } catch (error) {

@@ -6,7 +6,7 @@
 import { execSync } from "child_process";
 import { log } from "./log.js";
 import { exitProcess } from "./process.js";
-import { isInDebugMode } from "./checks.js";
+import { isInVerboseMode } from "./checks.js";
 
 export function runCommand(
   command: string,
@@ -14,7 +14,7 @@ export function runCommand(
   showOnTerminal = false,
 ) {
   let result;
-  if (isInDebugMode()) {
+  if (isInVerboseMode()) {
     log.commandRun(command);
   }
   try {
@@ -27,7 +27,7 @@ export function runCommand(
     })
       .toString("utf-8")
       .trim();
-    if (isInDebugMode()) {
+    if (isInVerboseMode()) {
       log.commandOutput(result);
     }
     return result;

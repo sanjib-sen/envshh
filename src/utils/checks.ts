@@ -4,6 +4,10 @@
 
 import * as inspector from "inspector";
 
-export function isInDebugMode() {
-  return inspector.url() !== undefined || process.env.DEBUG === "true";
+export function isInVerboseMode() {
+  return (
+    inspector.url() !== undefined ||
+    process.env.DEBUG === "true" ||
+    process.env.VERBOSE === "true"
+  );
 }

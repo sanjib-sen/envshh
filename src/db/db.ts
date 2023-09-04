@@ -53,11 +53,11 @@ const adapter = new JSONFileSync<{
 }>(defaultDBPath);
 export const db = new LowSync(adapter, jsonDefaultData);
 
+db.read();
+log.flow(
+  `Verifying Configuration Files. \n${JSON.stringify(db.data.defaults)}`,
+);
+handleZodError(DBSchema, db.data);
 export function getConfigs() {
-  db.read();
-  log.flow(
-    `Verifying Configuration Files. \n${JSON.stringify(db.data.defaults)}`,
-  );
-  handleZodError(DBSchema, db.data);
   return db.data.defaults;
 }
