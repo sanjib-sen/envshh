@@ -129,3 +129,12 @@ export function getGitRepoName(location: string) {
   }
   return undefined;
 }
+
+export function getDirectoryFromGitCloneCommand(args: string[]) {
+  if (args.length > 1) {
+    return args[1];
+  } else {
+    const repo = args[0];
+    return repo.split("/")[repo.split("/").length - 1].replace(".git", "");
+  }
+}

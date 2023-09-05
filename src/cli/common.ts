@@ -25,7 +25,7 @@ export const instanceNameOption = new Option(
 ).default(defaultInstanceName);
 
 export const offlineOption = new Option(
-  "--offline",
+  "-o, --offline",
   "Don't delete from remote repository. Just commit locally.",
 ).default(false);
 

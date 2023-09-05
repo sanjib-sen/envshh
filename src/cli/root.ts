@@ -19,6 +19,7 @@ import {
   encryptFileCommand,
   encryptTextCommand,
   generateCommand,
+  pipeCommand,
 } from "./utils.js";
 import { removeCommand } from "./main/remove.js";
 
@@ -33,10 +34,12 @@ program
     `A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh \n\nConfiguration file location: ${defaultDBPath}`,
   )
   .version(packageInfo.version, "-v, --version");
+
 program
   .addCommand(pushCommand)
   .addCommand(pullCommand)
   .addCommand(generateCommand)
+  .addCommand(pipeCommand)
   .addCommand(cloneCommand)
   .addCommand(removeCommand)
   .addCommand(encryptFileCommand)
