@@ -8,8 +8,10 @@ import path from "path";
 import { handleError } from "../utils/error.js";
 import { isPathExists } from "./checks.js";
 import { exitWithError } from "../utils/process.js";
+import { log } from "../utils/log.js";
 
-export function createDirectory(directoryPath: string, recursive = true): void {
+export function createDirectory(directoryPath: string, recursive = true) {
+  log.flow(`Creating directory ${directoryPath} if not exists`);
   try {
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: recursive });
@@ -17,9 +19,13 @@ export function createDirectory(directoryPath: string, recursive = true): void {
   } catch (error) {
     return handleError(error, `Failed to create directory ${directoryPath}.`);
   }
+  log.flow(`Directory ${directoryPath} exists. Moving on...`);
 }
 
 export function readFile(destination: string) {
+  log.flow(`Reading file ${destination}`);
+  if (isPathExists(destination) === false)
+    return exitWithError(`File ${destination} does not exist.`);
   try {
     return fs.readFileSync(destination, "utf-8");
   } catch (error) {
@@ -31,6 +37,9 @@ export function renameFileOrDirectory(
   sourcePath: string,
   destinationPath: string,
 ) {
+  if (isPathExists(sourcePath) === false)
+    return exitWithError(`Source path ${sourcePath} does not exist.`);
+  log.flow(`Renaming ${sourcePath} to ${destinationPath}`);
   try {
     fs.renameSync(sourcePath, destinationPath);
   } catch (error) {
@@ -44,7 +53,8 @@ export function renameFileOrDirectory(
 export function deleteDirectoryOrFile(
   directoryOrFilePath: string,
   recursive = true,
-): void {
+) {
+  log.flow(`Deleting ${directoryOrFilePath}`);
   try {
     if (fs.existsSync(directoryOrFilePath)) {
       fs.rmSync(directoryOrFilePath, { recursive: recursive, force: true });
@@ -55,6 +65,7 @@ export function deleteDirectoryOrFile(
 }
 
 export function getParentDirectory(filePath: string) {
+  log.flow(`Getting parent directory of ${filePath}`);
   const parentDirectory = path.resolve(filePath, "..");
   if (isPathExists(parentDirectory)) return parentDirectory;
   else {
@@ -63,7 +74,8 @@ export function getParentDirectory(filePath: string) {
   }
 }
 
-export function createFile(filePath: string, data: string): void {
+export function createFile(filePath: string, data: string) {
+  log.flow(`Creating file ${filePath}`);
   const directoryPath = getParentDirectory(filePath);
   createDirectory(directoryPath, true);
   try {
@@ -73,10 +85,8 @@ export function createFile(filePath: string, data: string): void {
   }
 }
 
-export function copyFileAndFolder(
-  sourcePath: string,
-  destinationPath: string,
-): void {
+export function copyFileAndFolder(sourcePath: string, destinationPath: string) {
+  log.flow(`Copying ${sourcePath} to ${destinationPath}`);
   if (isPathExists(sourcePath) === false)
     return exitWithError(`Source path ${sourcePath} does not exist.`);
   if (isPathExists(destinationPath) === false)
@@ -91,6 +101,9 @@ export function copyFileAndFolder(
 }
 
 export function getCurrentWorkingDirectoryName() {
+  log.flow(`Getting current working directory name`);
   const seperator = process.platform === "win32" ? "\\" : "/";
-  return process.cwd().split(seperator).pop() as string;
+  const directoryName = process.cwd().split(seperator).pop() as string;
+  log.flow(`Current working directory name: ${directoryName}`);
+  return directoryName;
 }

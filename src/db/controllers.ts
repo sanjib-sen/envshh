@@ -22,6 +22,13 @@ import { log } from "../utils/log.js";
 import { defaultDBPath } from "./db.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
+  log.flow(
+    `Inserting instance ${envshhConfig.name} into DB. Fields:\n${JSON.stringify(
+      envshhConfig,
+      null,
+      2,
+    )}`,
+  );
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === envshhConfig.name,
@@ -38,6 +45,9 @@ export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
 export function handleDefaultInstanceForPushNPull(
   name: EnvshhInstanceNameType,
 ) {
+  log.flow(
+    `Handling instance creation and getter for push and pull commands. Instance: ${name}`,
+  );
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === name,
@@ -70,6 +80,7 @@ If you do not want to store the .envs in a remote repository, keep the URL blank
 }
 
 export function DBgetInstance(name: EnvshhInstanceNameType) {
+  log.flow(`Getting instance ${name} from DB`);
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === name,
@@ -83,6 +94,11 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
 }
 
 export function DBshow(instanceName?: EnvshhInstanceNameType) {
+  log.flow(
+    `Showing ${instanceName ? instanceName : "all"} instance${
+      instanceName ? "s" : ""
+    } from DB`,
+  );
   if (instanceName) {
     const envshh = DBgetInstance(instanceName);
     envshh.print();
@@ -96,6 +112,9 @@ export function DBeditInstance(
   instanceName: EnvshhInstanceNameType,
   newEnvshh: EnvshhInstance,
 ) {
+  log.flow(
+    `Editing instance ${instanceName} in DB. Fields:\n${newEnvshh.getPrintFriendlyJSON()}`,
+  );
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === instanceName,
@@ -111,12 +130,8 @@ export function DBeditInstance(
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
 }
 
-export function getConfigs() {
-  db.read();
-  return db.data.defaults;
-}
-
 export function DBdeleteInstance(name: EnvshhInstanceNameType) {
+  log.flow(`Deleting instance ${name} from DB`);
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === name,
@@ -129,6 +144,7 @@ export function DBdeleteInstance(name: EnvshhInstanceNameType) {
 }
 
 export function DBCheckInstanceExists(name: EnvshhInstanceNameType) {
+  log.flow(`Checking if instance ${name} exists in DB`);
   db.read();
   const InstanceIndex = db.data.instances.findIndex(
     (instance) => instance.name === name,
@@ -140,6 +156,7 @@ export function DBCheckInstanceExists(name: EnvshhInstanceNameType) {
 }
 
 export function DBSync() {
+  log.flow(`Syncing DB`);
   db.read();
   db.data.instances.forEach((instance) => {
     if (!isPathExists(instance.localDirectory)) {
@@ -150,6 +167,7 @@ export function DBSync() {
 }
 
 export function DBClear() {
+  log.flow(`Resetting DB`);
   db.read();
   db.data.instances.map((instance) => {
     const envshh = new EnvshhInstance(instance);

@@ -6,6 +6,7 @@
 import { execSync } from "child_process";
 import { log } from "./log.js";
 import { exitProcess } from "./process.js";
+import { isInVerboseMode } from "./checks.js";
 
 export function runCommand(
   command: string,
@@ -13,6 +14,9 @@ export function runCommand(
   showOnTerminal = false,
 ) {
   let result;
+  if (isInVerboseMode()) {
+    log.commandRun(command);
+  }
   try {
     result = execSync(command, {
       stdio: [
@@ -23,6 +27,9 @@ export function runCommand(
     })
       .toString("utf-8")
       .trim();
+    if (isInVerboseMode()) {
+      log.commandOutput(result);
+    }
     return result;
   } catch (error) {
     if (ignoreIfFails) {

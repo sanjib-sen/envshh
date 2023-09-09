@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import path from "path";
-import { handleDefaultInstanceForPushNPull } from "../../db/controllers.js";
+import { DBgetInstance } from "../../db/controllers.js";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
 import { getAllEnvsFromEnvPath } from "../envs/get.js";
 import { defaultBranchNamePrefix } from "../defaults/defaults.js";
@@ -13,7 +13,7 @@ import { deleteDirectoryOrFile } from "../../filesystem/functions.js";
 export function theRemove(
   removeConfig: Omit<ProjectPushConfigParamsType, "password">,
 ) {
-  const envshh = handleDefaultInstanceForPushNPull(removeConfig.instance);
+  const envshh = DBgetInstance(removeConfig.instance);
   if (!removeConfig.offline) {
     envshh.gitPull();
   }

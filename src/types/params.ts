@@ -5,10 +5,11 @@
 
 import { z } from "zod";
 import {
-  defaultValidRegex,
-  defaultRegexNameConventionMessage,
-} from "../envshh/defaults/defaults.js";
-import { EnvshhInstanceNameSchema, EnvshhInstanceType } from "./schemas.js";
+  EnvshhBranchNameSchema,
+  EnvshhInstanceNameSchema,
+  EnvshhInstanceType,
+  EnvshhProjectNameSchema,
+} from "./schemas.js";
 
 export type EnvshhConfigParamsType = {
   name?: string;
@@ -16,17 +17,9 @@ export type EnvshhConfigParamsType = {
 };
 
 export const ProjectConfigParans = z.object({
-  name: z
-    .string()
-    .regex(defaultValidRegex, defaultRegexNameConventionMessage("Project"))
-    .min(1, { message: "Project Name cannot be empty" })
-    .max(25, { message: "Project Name cannot be more than 25 characters" }),
+  name: EnvshhProjectNameSchema,
   instance: EnvshhInstanceNameSchema,
-  branch: z
-    .string()
-    .regex(defaultValidRegex, defaultRegexNameConventionMessage("Branch"))
-    .min(1, { message: "Branch Name cannot be empty" })
-    .max(25, { message: "Branch Name cannot be more than 25 characters" }),
+  branch: EnvshhBranchNameSchema,
   offline: z.boolean().default(false),
   password: z.string().min(1).max(255),
 });

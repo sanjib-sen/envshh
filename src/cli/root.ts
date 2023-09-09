@@ -5,6 +5,9 @@
 
 import figlet from "figlet";
 import { Command } from "@commander-js/extra-typings";
+import * as fs from "fs";
+import { defaultDBPath } from "../db/db.js";
+
 import { dbCommand } from "./db.js";
 import { instanceCommand } from "./instance.js";
 import { pullCommand } from "./main/pull.js";
@@ -16,16 +19,14 @@ import {
   encryptFileCommand,
   encryptTextCommand,
   generateCommand,
+  pipeCommand,
 } from "./utils.js";
 import { removeCommand } from "./main/remove.js";
-import * as fs from "fs";
-import { defaultDBPath } from "../db/db.js";
 
-const fileUrl = new URL("../package.json", import.meta.url);
+const fileUrl = new URL("../../package.json", import.meta.url);
 const packageInfo = JSON.parse(fs.readFileSync(fileUrl, "utf8"));
 
 export const program = new Command();
-
 program
   .name("envshh")
   .addHelpText("beforeAll", figlet.textSync("envshh"))
@@ -33,10 +34,12 @@ program
     `A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh \n\nConfiguration file location: ${defaultDBPath}`,
   )
   .version(packageInfo.version, "-v, --version");
+
 program
   .addCommand(pushCommand)
   .addCommand(pullCommand)
   .addCommand(generateCommand)
+  .addCommand(pipeCommand)
   .addCommand(cloneCommand)
   .addCommand(removeCommand)
   .addCommand(encryptFileCommand)

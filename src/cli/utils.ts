@@ -6,23 +6,24 @@
 import { Command } from "@commander-js/extra-typings";
 import { decryptString, encryptString } from "../envshh/encryption/lib.js";
 import { log } from "../utils/log.js";
-import {
-  createFile,
-  getCurrentWorkingDirectoryName,
-  readFile,
-} from "../filesystem/functions.js";
+import { createFile, readFile } from "../filesystem/functions.js";
 import { saveEncryptedEnv } from "../envshh/encryption/encrypt.js";
 import path from "path";
 import { saveDecryptedEnv } from "../envshh/encryption/decrypt.js";
 import { theGenerate } from "../envshh/commands/generate.js";
 import { askPassword } from "../utils/password.js";
-import { runCommand } from "../utils/command.js";
 import {
   defaultBranchName,
   defaultInstanceName,
+  defaultProjectName,
 } from "../envshh/defaults/defaults.js";
-import { getGitRepoName } from "../git/functions.js";
+import { exitWithError } from "../utils/process.js";
+import { runCommand } from "../utils/command.js";
 import { thePull } from "../envshh/commands/pull.js";
+import { getAllEnvsFromEnvPath } from "../envshh/envs/get.js";
+import { readEnvByLine } from "../envshh/encryption/common.js";
+import { spawnSync } from "child_process";
+import { getDirectoryFromGitCloneCommand } from "../git/functions.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -137,46 +138,75 @@ generateCommand
     });
   });
 
+export const pipeCommand = new Command();
+pipeCommand
+  .name("pipe")
+  .description("Load .env files directly and run command")
+  .argument("<commands...>", "Arguments for git clone command")
+  .option(
+    "-e, --env <relative-path>",
+    "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
+    process.cwd(),
+  )
+  .action((args, options) => {
+    const files = getAllEnvsFromEnvPath(options.env.split(","));
+    files.map((file) => {
+      const linesFromFile = readEnvByLine(file);
+      linesFromFile.map((line) => {
+        const key = line.substring(0, line.indexOf("=")).trim();
+        const value = line.substring(line.indexOf("=") + 1).trim();
+        process.env[key] = value;
+      });
+    });
+    spawnSync(args[0], args.slice(1), { stdio: "inherit" });
+  });
+
 export const cloneCommand = new Command();
 cloneCommand
   .name("clone")
   .description("git clone and envshh pull at the same time")
-  .argument("<repo>", "Repository url")
-  .argument("[dir]", "Directory to clone into")
+  .argument("<clone-args...>", "Arguments for git clone command")
   .option(
-    "-p, --project <project-name>",
+    "--project <project-name>",
     "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
   )
   .option(
-    "-b, --branch <name>",
+    "--branch <name>",
     `Keep different branches for different production, development and staging`,
     defaultBranchName,
   )
   .option(
-    "-i, --instance <Instance name.>",
+    "--instance <Instance name.>",
     `[Advanced Option] Specify the instance name`,
     defaultInstanceName,
   )
-  .action((repo, directory, options) => {
+  .option(
+    "--offline",
+    "Don't delete from remote repository. Just commit locally.",
+    false,
+  )
+  .allowUnknownOption()
+  .action((args, options) => {
+    args.map((arg) =>
+      arg.startsWith("-")
+        ? exitWithError(`Invalid argument ${arg}. 
+      You can not use git clone options in this command. Only arguments are allowed.
+      Use git clone then envshh pull in case of this.`)
+        : "",
+    );
+    const directory = getDirectoryFromGitCloneCommand(args);
     runCommand(
-      `git -C ${process.cwd()} clone ${repo} ${directory ? directory : ""}`,
+      `git -C ${process.cwd()} clone ${args[0]} ${directory}`,
       true,
       true,
     );
-    process.chdir(
-      directory
-        ? directory
-        : repo.split("/")[repo.split("/").length - 1].replace(".git", ""),
-    );
+    process.chdir(directory);
     const password = askPassword(false);
     thePull({
       password: password,
-      name:
-        options.project ||
-        getGitRepoName(process.cwd()) ||
-        getCurrentWorkingDirectoryName(),
+      name: options.project || defaultProjectName,
       branch: options.branch,
-      offline: false,
+      offline: options.offline,
       instance: options.instance,
     });
   });

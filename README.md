@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
+ <img width=528px height=119px src="/docs/assets/white_logo.png" alt="Project logo"></a>
 </p>
 
 <h1 align="center">🤫 envshh</h1>
@@ -8,9 +8,6 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
 
@@ -20,63 +17,149 @@
     <br> 
 </p>
 
-## 📝 Table of Contents
+## 🧐 Quick Usage <a name = "quick_usage"></a>
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
+- Create a Private Git Repo (It can be on GitHub, GitLab, or even your own self-hosted git server), copy the Repository URL.
+- Go/`cd` to your Project Root where the .env's are located.
+- Run (With npx / pnpx / yarn dlx)
+  ```sh
+  npx envshh push
+  ```
+- When asked, provide a simple password to encrypt the data
 
-## 🧐 About <a name = "about"></a>
+Congratulations! Your .envs are encrypted and securely stored in your own repo. You can now get your .envs from any device.
 
-Write about 1-2 paragraphs describing the purpose of your project.
+- Now to after any modification / deletion of your .env, or to get back the previous .env, first Go/`cd` to your project root and run
+  ```sh
+  npx envshh pull
+  ```
+- When asked, provide the password to decrypt the data
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+- (More) You can always **push your .env updates** using `npx envshh push`
+- (More) Need to **generate a`.env.example` file?** Use `npx envshh generate`
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
+## 🏁 Prerequisites <a name = "prerequisites"></a>
 
-### Prerequisites
-
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
+- [git](https://git-scm.com/downloads)
+  Envshh completely depends on git. Make sure you have git installed.
+- [NodeJS](https://nodejs.org/en/download)
+  NodeJS comes with a package manager like `npm` by default with most of the systems. Make sure you have the package manager installed by running `npm --version`. If you prefer any other package manager like `pnpm` or `yarn`, Great. Use it to install / execute Envshh commands.
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running.
+Do you know you can use Envshh without even installing? Just run `npx envshh` followed by envshh commands and you are good to go.
 
-Say what the step will be
+But if you are comfortable having it installed on your system and don't want to type `npx` all the time, you can install it
 
-```
-Give the example
-```
+- with `npm`:
+  ```
+  npm install -g envshh
+  ```
+- with `pnpm`:
+  ```
+  pnpm install -g envshh
+  ```
+- with `yarn`:
+  ```
+  yarn global add envshh
+  ```
 
-And repeat
+## 🏁 Core Concepts <a name = "core_concepts"></a>
 
-```
-until finished
-```
+### project
 
-End with an example of getting some data out of the system or using it for a little demo.
+`option: -p, --project <projectName>` Optional (default: current git repository name or current directory name)
 
-## 🔧 Running the tests <a name = "tests"></a>
+A project is a collection of .envs or a single .env from a single project or app. If the option is not specified, Envshh will automatically detect the project name from the current git repository name. If there is no git repository, the current directory name will be the project name.
 
-Explain how to run the automated tests for this system.
+**Supported Commands:** `push`, `pull`, `remove`
 
-### Break down into end to end tests
+**Example:**
+  ```sh
+  npx envshh push -p my-awesome-project
+  ```
 
-Explain what these tests test and why
+### branch
 
-```
-Give an example
-```
+`option: -b, --branch <branchName>` Optional (default: main)
+
+A branch is a version of the .envs. You can have different versions of .envs for different environments like staging, production, etc. If the option is not specified, Envshh will use the default branch name `main`. You can change the default branch name in the config. See [configuration](#configuration) for more details.
+
+**Supported Commands:** `push`, `pull`, `remove`
+
+**Example:**
+  ```sh
+  npx envshh pull -b staging
+  ```
+
+### env-path
+
+`option: -e, --env <relative-path-of-.env-file/directory...>` Seperated by space. Optional (default: current directory) 
+
+Envshh will check for .env file patterns in the project root directory or working directory. If your .envs are not located in the project root, you can manually specify the .env file or directory where the .envs are located.
+
+**Supported commands:** `push`, `remove`
+
+**Example:**
+  ```sh
+  npx envshh push -e newdirecotry/.env anotherdirecotory/.env.random
+  ```
+
+This option is also supported in `pipe` command. However,while using with the `pipe` command, you have to distinguish the .env files with a comma (,). For example, if you want to push two .env files located in `project-root/.env` and `project-root/my-awesome-directory/.env.random`, you have to specify the option as `-e .env,my-awesome-directory/.env.random`
+
+The `pull` command will automatically bring the .envs following the directory structure when it was pushed. So, this option is not required in the `pull` command.
+So if a .env file were pushed as `project-root/my-awesome-directory/.env` using the env-path option, `pull` will automatically bring the .env to `project-root/my-awesome-directory/.env`.
+
+### offline
+
+`option: --offline` Optional (default: false)
+
+If you do not want to push or pull to/from the remote repository, use this option. This will only commit the .envs to the local repository in terms of `push` and get it from there in case of `pull`. You can push to remote repository later using the `push` command.
+
+**Supported Commands:** `push`, `pull`, `clone`
+
+**Example:**
+  ```sh
+  npx envshh push --offline
+  ```
+
+### Instance
+
+Suppose you you are working on a personal project, and a office project. You want to save your personal .env files to a git repo and office .env files to another git repo. So it will only be convenient if we can set up multiple Remote Repositories. That's where the `instance` comes in. 
+
+An `instance` is configured with 3 things.
+
+**1. Name of the instance**
+   An instance will have a name so that you can push your .envs just using the instance name. For example, if you have an instance named `work`, you can push your .envs just by running `npx envshh push -i work`. Or pull from `work` instance by running `npx envshh pull -i work`.
+   
+**2. Remote Repository URL**
+   Remote repository url is the address of the remote repositoy where you want to push your .envs. You can use any git repository like GitHub, GitLab, or even your own self-hosted git server.
+
+**3. Local Directory Path**
+   Envshh will save all the .envs encrypted in a local directory with git initiated. In case you lose your internet and need to do an offline pull or push, local directory is pretty effective. This option is the path of that local directory. If the directory does not exist, Envshh will create it for you.
+
+
+
+You can do that by using the `instance` option. You can create unlimited instances and save the .envs to different git repositories.
+
+`option: -i, --instance <instanceName>` Optional (default: default)
+
+`envshh instance create <options>`: Creates a new instance
+`envshh instance edit <options>`: Modify a new instance
+`envshh instance create <options>`: Creates a new instance
+
+This option will create a new directory in the git repo with the instance name and save the .envs there. If the option is not specified, Envshh will use the default instance name `personal`. You can change the default instance name in the config. See [configuration](#configuration) for more details.
+
+## 🔧 Commands <a name = "commands"></a>
+
+### push
+
+
+> Check `envshh push --help` or `envshh help push` for more details
+
+Pushes and commit the .envs to the local and remote repository
+
+`option: -i, --instance <Instance name>`
 
 ### And coding style tests
 
@@ -96,16 +179,12 @@ Add additional notes about how to deploy this on a live system.
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [NodeJs](https://nodejs.org/en/)
+- [TypeScript](https://www.typescriptlang.org/)
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+- [@sanjib-sen](https://github.com/sanjib-sen) - Idea & Initial work
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 

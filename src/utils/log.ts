@@ -3,23 +3,24 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { isInDebugMode } from "./checks.js";
-import chalk from "chalk";
+import figlet from "figlet";
+import { isInVerboseMode } from "./checks.js";
+import chalk, { ChalkInstance } from "chalk";
 
 export class Log {
   readonly logger = process.stdout.write.bind(process.stdout);
   private masterPrefix = "Envshh";
   constructor(masterPrefix?: string) {
-    if (isInDebugMode()) {
-      this.logger("Debug mode is on");
+    if (isInVerboseMode()) {
+      this.logger(figlet.textSync(`ENVSHH Verbose Mode`) + "\n");
     }
     this.masterPrefix = masterPrefix || this.masterPrefix;
   }
   private toStdout(
     prefix: string,
-    prefixChalkFunction: chalk.Chalk,
+    prefixChalkFunction: ChalkInstance,
     message: string,
-    messageChalkFunction: chalk.Chalk,
+    messageChalkFunction: ChalkInstance,
   ) {
     this.logger(
       `${prefixChalkFunction(
@@ -31,21 +32,24 @@ export class Log {
     this.logger(message);
   }
   info(message: string) {
-    this.toStdout("Info", chalk.blueBright, message, chalk.white);
+    this.toStdout("Info", chalk.blueBright, message, chalk);
   }
-  command(message: string) {
-    this.toStdout(
-      "Command Result",
-      chalk.blueBright,
-      message,
-      chalk.whiteBright,
-    );
+  commandOutput(message: string) {
+    this.toStdout("Command Output", chalk.blueBright, message, chalk);
+  }
+  commandRun(message: string) {
+    this.toStdout("Running Command", chalk.blueBright, message, chalk);
+  }
+  flow(message: string) {
+    isInVerboseMode()
+      ? this.toStdout("Flow", chalk.blueBright, message, chalk)
+      : "";
   }
   commandError(message: string) {
     this.toStdout("Command Output", chalk.redBright, message, chalk.red);
   }
   success(message: string) {
-    this.toStdout("Success", chalk.greenBright, message, chalk.whiteBright);
+    this.toStdout("Success", chalk.greenBright, message, chalk);
   }
   error(message: string) {
     this.toStdout("Error", chalk.redBright, message, chalk.red);
