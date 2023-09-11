@@ -3,11 +3,14 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://sanjib-sen.github.io/envshh/',
+	site: 'https://sanjib-sen.github.io/envshh',
 	integrations: [
 		starlight({
-			favicon: '/public/favicon.ico',
+			favicon: '/favicon.ico',
 			title: "envshh",
+			editLink: {
+				baseUrl: 'https://github.com/sanjib-sen/envshh/edit/main/docs',
+			},
 			logo:{
 				dark: '/src/assets/logo_white.png',
 				light: '/src/assets/logo_black.png',
@@ -17,15 +20,16 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Guides',
-					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', link: '/guides/example/' },
-					],
+					label: 'Start Here',
+					autogenerate: { directory: 'start-here' },
 				},
 				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
+					label: 'Core Concepts',
+					autogenerate: { directory: 'core-concepts' },
+				},
+				{
+					label: 'Commands',
+					autogenerate: { directory: 'commands' },
 				},
 			],
 		}),
