@@ -1,0 +1,79 @@
+---
+title: Welcome to envshh
+description: Get started building your docs site with Starlight.
+template: splash
+hero:
+  tagline: A command line tool to securely and automatically manage, store environment variables
+  image:
+    file: ../../assets/logo_white.png
+  actions:
+    - text: Get Started
+      link: /start-here/02-quick-usage/
+      icon: right-arrow
+      variant: primary
+    - text: Read the docs
+      link: https://starlight.astro.build
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import pushGif from '../../assets/recordings/push.gif';
+import pullGif from '../../assets/recordings/pull.gif';
+import generateGif from '../../assets/recordings/generate.gif';
+import cloneGif from '../../assets/recordings/clone.gif';
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Quick Usage
+<Tabs>
+	<TabItem label="push">
+		Push your environment variables to git repository
+
+		```sh
+		npx envshh push
+		```
+		<Image src={pushGif} alt="tutorial" width="1200"/>
+	</TabItem>
+	<TabItem label="pull">
+		Pull your environment variables from the git repository
+
+		```sh
+		npx envshh pull
+		```
+		<Image src={pullGif} alt="tutorial" width="1200"/>
+	</TabItem>
+	<TabItem label="generate">
+		Generate a `.env.example` file
+
+		```sh
+		npx envshh generate
+		```
+		<Image src={generateGif} alt="tutorial" width="1200"/>
+	</TabItem>
+	<TabItem label="clone">
+		git clone and pull your environment variables from the git repository at the same time
+
+		```sh
+		npx envshh clone [git-repo-url]
+		```
+		<Image src={cloneGif} alt="tutorial" width="1200"/>
+	</TabItem>
+</Tabs>
+
+## Next steps
+
+<CardGrid stagger>
+	<Card title="Update content" icon="pencil">
+		Edit `src/content/docs/index.mdx` to see this page change.
+	</Card>
+	<Card title="Add new content" icon="add-document">
+		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	</Card>
+	<Card title="Configure your site" icon="setting">
+		Edit your `sidebar` and other config in `astro.config.mjs`.
+	</Card>
+	<Card title="Read the docs" icon="open-book">
+		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	</Card>
+</CardGrid>
