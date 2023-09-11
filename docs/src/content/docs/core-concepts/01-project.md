@@ -18,10 +18,10 @@ A project is a collection of .envs or a single .env from a single project or app
 
 #### Supported Commands
 
-- [push](/commands/01-push)
-- [pull](/commands/02-pull)
-- [clone](/commands/03-clone)
-- [remove](/commands/05-remove)
+- [push](/envshh/commands/01-push)
+- [pull](/envshh/commands/02-pull)
+- [clone](/envshh/commands/05-clone)
+- [remove](/envshh/commands/06-remove)
 
 #### Example
 

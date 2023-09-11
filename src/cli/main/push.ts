@@ -18,7 +18,7 @@ export const pushCommand = new Command();
 
 pushCommand
   .name("push")
-  .description("Push local environment variables to Remote Repository")
+  .description("Push local environment variables to Local and/or Remote Repository")
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(envPathOption)

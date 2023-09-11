@@ -34,10 +34,10 @@ Envshh will save all the .envs encrypted in a local directory with git initiated
 
 #### Supported Commands
 
-- [push](/commands/01-push)
-- [pull](/commands/02-pull)
-- [clone](/commands/03-clone)
-- [remove](/commands/05-remove)
+- [push](/envshh/commands/01-push)
+- [pull](/envshh/commands/02-pull)
+- [clone](/envshh/commands/05-clone)
+- [remove](/envshh/commands/06-remove)
 
 #### Example
 
