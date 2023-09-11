@@ -17,7 +17,7 @@ export const pullCommand = new Command();
 
 pullCommand
   .name("pull")
-  .description("Pull environment variables from Remote Repository")
+  .description("Pull environment variables from Local and/or Remote Repository")
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(instanceNameOption)

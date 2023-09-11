@@ -20,8 +20,8 @@ A branch is a version of the .envs. You can have different versions of .envs for
 
 - [push](/commands/01-push)
 - [pull](/commands/02-pull)
-- [clone](/commands/03-clone)
-- [remove](/commands/05-remove)
+- [clone](/commands/05-clone)
+- [remove](/commands/06-remove)
 
 #### Example
 

@@ -19,7 +19,7 @@ export const removeCommand = new Command();
 
 removeCommand
   .name("remove")
-  .description("Delete .envs from local and Remote Repository")
+  .description("Delete .envs from Local and/or Remote Repository")
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(envPathOption)

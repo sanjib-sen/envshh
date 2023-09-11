@@ -19,8 +19,9 @@ Envshh will check for .env file patterns in the project root directory or workin
 #### Supported Commands
 
 - [push](/commands/01-push)
-- [remove](/commands/05-remove)
+- [generate](/commands/03-generate)
 - [pipe](/commands/04-pipe) (See [Below](#with-pipe-command))
+- [remove](/commands/06-remove)
 
 #### Example
 
