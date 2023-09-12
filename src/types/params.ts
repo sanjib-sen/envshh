@@ -33,7 +33,7 @@ export const ProjectPushConfigParams = ProjectConfigParans.extend({ envPath });
 export type ProjectConfigParansType = z.infer<typeof ProjectConfigParans>;
 export type ProjectPushConfigParamsType = z.infer<
   typeof ProjectPushConfigParams
->;
+> & { message?: string };
 
 type RequireAtLeastOneParam<T, R extends keyof T = keyof T> = Omit<T, R> &
   { [P in R]: Required<Pick<T, P>> & Partial<Omit<T, P>> }[R];

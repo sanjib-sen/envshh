@@ -2,6 +2,7 @@
 title: env-path
 description: Core Concets - env-path
 ---
+
 Envshh will check for .env file patterns in the project root directory or working directory. If your .envs are not located in the project root, you can manually specify the .env file or directory where the .envs are located.
 
 ## Usage
@@ -25,9 +26,9 @@ Envshh will check for .env file patterns in the project root directory or workin
 
 #### Example
 
-  ```sh
-  npx envshh push -e newdirecotry/.env anotherdirecotory/.env.random
-  ```
+```sh
+npx envshh push -e newdirecotry/.env anotherdirecotory/.env.random
+```
 
 #### With pipe command
 

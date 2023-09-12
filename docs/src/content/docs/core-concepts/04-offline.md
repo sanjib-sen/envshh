@@ -32,6 +32,6 @@ In that case, you can use the `offline` option. Just provide the `offline` optio
 
 #### Example
 
-  ```sh
-  npx envshh push -o
-  ```
+```sh
+npx envshh push -o
+```

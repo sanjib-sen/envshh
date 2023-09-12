@@ -25,6 +25,6 @@ Every [commands](/envshh/commands) except `help` itself
 
 #### Example
 
-  ```sh
-  npx envshh help push
-  ```
+```sh
+npx envshh help push
+```

@@ -25,6 +25,6 @@ A branch is a version of the .envs. You can have different versions of .envs for
 
 #### Example
 
-  ```sh
-  npx envshh pull -b staging
-  ```
+```sh
+npx envshh pull -b staging
+```

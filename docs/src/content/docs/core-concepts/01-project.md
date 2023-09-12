@@ -25,6 +25,6 @@ A project is a collection of .envs or a single .env from a single project or app
 
 #### Example
 
-  ```sh
-  npx envshh push -p my-awesome-project
-  ```
+```sh
+npx envshh push -p my-awesome-project
+```

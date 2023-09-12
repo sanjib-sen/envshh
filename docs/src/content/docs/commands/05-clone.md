@@ -18,10 +18,10 @@ envshh pull <options> [repository] <directory>
 ## Arguments
 
 - **repository** `<repository>` (Required):
-    Repository to clone from
+  Repository to clone from
 
 - **directory** `<directory>` (Optional):
-    Directory to clone into. If not specified, Envshh will use the repository name as the directory name
+  Directory to clone into. If not specified, Envshh will use the repository name as the directory name
 
 ## Options
 

@@ -4,6 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { createFile } from "../../filesystem/functions.js";
+import { log } from "../../utils/log.js";
 import { exitWithError } from "../../utils/process.js";
 import { readEnvByLine } from "../encryption/common.js";
 import { getAllEnvsFromEnvPath } from "../envs/get.js";
@@ -55,4 +56,5 @@ export function theGenerate({
     const destination = `${envPath}.${suffix}`;
     saveExampleFile(envPath, destination, value);
   }
+  log.success("Example files generated.");
 }

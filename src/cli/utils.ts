@@ -24,6 +24,7 @@ import { getAllEnvsFromEnvPath } from "../envshh/envs/get.js";
 import { readEnvByLine } from "../envshh/encryption/common.js";
 import { spawnSync } from "child_process";
 import { getDirectoryFromGitCloneCommand } from "../git/functions.js";
+import { DBgetOnlyInstance } from "../db/controllers.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -45,10 +46,12 @@ encryptFileCommand
     const password = askPassword(true);
     if (options.isenv) {
       saveEncryptedEnv(file, password, options.output);
+      log.success(`Encrypted .env saved to ${options.output}`);
     } else {
       const decryptedString = readFile(file);
       const encryptedString = encryptString(decryptedString, password);
       createFile(options.output, encryptedString);
+      log.success(`Encrypted file saved to ${options.output}`);
     }
   });
 
@@ -72,10 +75,12 @@ decryptFileCommand
     const password = askPassword(false);
     if (options.isenv) {
       saveDecryptedEnv(file, password, options.output);
+      log.success(`Decrypted .env saved to ${options.output}`);
     } else {
       const encryptedString = readFile(file);
       const decryptedString = decryptString(encryptedString, password);
       createFile(options.output, decryptedString);
+      log.success(`Decrypted file saved to ${options.output}`);
     }
   });
 
@@ -92,6 +97,7 @@ encryptTextCommand
       log.print(encrypted);
     } else {
       createFile(options.output, encrypted);
+      log.success(`Encrypted text saved to ${options.output}`);
     }
   });
 
@@ -108,6 +114,7 @@ decryptTextCommand
       log.print(decrypted);
     } else {
       createFile(options.output, decrypted);
+      log.success(`Decrypted text saved to ${options.output}`);
     }
   });
 
@@ -158,6 +165,9 @@ pipeCommand
         process.env[key] = value;
       });
     });
+    log.info(
+      `.env variables are piped to stdin. Now running: ${args.join(" ")}`,
+    );
     spawnSync(args[0], args.slice(1), { stdio: "inherit" });
   });
 
@@ -178,7 +188,7 @@ cloneCommand
   .option(
     "--instance <Instance name.>",
     `[Advanced Option] Specify the instance name`,
-    defaultInstanceName,
+    DBgetOnlyInstance()?.getName() || defaultInstanceName,
   )
   .option(
     "--offline",

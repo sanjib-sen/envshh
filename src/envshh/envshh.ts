@@ -31,6 +31,7 @@ import { exitWithError } from "../utils/process.js";
 import { handleZodError } from "../utils/error.js";
 import path from "path";
 import { defaultLocalDirectory } from "./defaults/defaults.js";
+import { log } from "../utils/log.js";
 
 export class EnvshhInstance {
   private readonly config: EnvshhInstanceType;
@@ -58,11 +59,11 @@ export class EnvshhInstance {
     deleteDirectoryOrFile(this.config.localDirectory);
   }
 
-  create() {
+  create(commitMessage?: string) {
     this.initChecks();
     DBinsertInstance(this.config);
     this.createLocalDirectory();
-    this.isRemoteRepoUrlSet() ? this.gitClone() : this.gitInit();
+    this.isRemoteRepoUrlSet() ? this.gitClone() : this.gitInit(commitMessage);
     return this;
   }
 
@@ -76,6 +77,7 @@ export class EnvshhInstance {
     if (
       newEnvshhInstance.config.localDirectory !== this.config.localDirectory
     ) {
+      log.info("Local Directory changed. Moving files...");
       newEnvshhInstance.createLocalDirectory();
       if (
         isDirectoryEmpty(newEnvshhInstance.config.localDirectory) &&
@@ -98,6 +100,7 @@ export class EnvshhInstance {
       newEnvshhInstance.config.remoteRepoUrl != this.config.remoteRepoUrl &&
       newEnvshhInstance.config.remoteRepoUrl
     ) {
+      log.info("Remote Repository URL changed. Please wait while we sync...");
       const tempDirectory = path.join(
         defaultLocalDirectory,
         `temp-${this.config.name}-${Date.now()}`,
@@ -135,8 +138,8 @@ export class EnvshhInstance {
     return this;
   }
 
-  gitInit() {
-    initRepo(this.config);
+  gitInit(commitMessage?: string) {
+    initRepo(this.config, commitMessage);
   }
 
   gitClone() {
@@ -160,8 +163,8 @@ export class EnvshhInstance {
     pullRepo(this.config);
   }
 
-  gitCommit() {
-    commitRepo(this.config);
+  gitCommit(message?: string) {
+    commitRepo(this.config, message);
   }
 
   gitPush() {

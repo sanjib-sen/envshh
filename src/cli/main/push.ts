@@ -18,7 +18,10 @@ export const pushCommand = new Command();
 
 pushCommand
   .name("push")
-  .description("Push local environment variables to Local and/or Remote Repository")
+  .description(
+    "Push local environment variables to Local and/or Remote Repository",
+  )
+  .option("-m, --message <message>", "Commit Message")
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(envPathOption)
@@ -27,6 +30,7 @@ pushCommand
   .action((options) => {
     const password = askPassword(true);
     thePush({
+      message: options.message,
       password: password,
       name: options.project,
       envPath: options.env,
