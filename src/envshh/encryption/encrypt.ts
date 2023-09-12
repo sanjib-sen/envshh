@@ -3,14 +3,17 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { createFile } from "../../filesystem/functions.js";
+import { isPathExists } from "../../filesystem/checks.js";
+import { createFile, readFile } from "../../filesystem/functions.js";
 import { log } from "../../utils/log.js";
+import { exitWithWarning } from "../../utils/process.js";
 import {
   getCleanValueFromLine,
   getQuotedValueFromLine,
   getQuteFromValue,
   readEnvByLine,
 } from "./common.js";
+import { getDecryptedEnv } from "./decrypt.js";
 import { encryptString } from "./lib.js";
 
 function getEncryptedValueFromLine(line: string, password: string) {
@@ -47,5 +50,12 @@ export function saveEncryptedEnv(
 ) {
   log.flow(`Encrypting the ${envPath} file and saving to ${destination}`);
   const encryptedEnv = getEncryptedEnv(envPath, password);
+
+  if (isPathExists(destination)) {
+    const decryptedEnv = getDecryptedEnv(destination, password);
+    if (decryptedEnv === readFile(envPath)) {
+      return exitWithWarning(`No changes detected. Skipping ${envPath}`);
+    }
+  }
   createFile(destination, encryptedEnv);
 }

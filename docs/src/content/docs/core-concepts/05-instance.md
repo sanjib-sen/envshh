@@ -41,9 +41,9 @@ Envshh will save all the .envs encrypted in a local directory with git initiated
 
 #### Example
 
-  ```sh
-  npx envshh push -e newdirecotry/.env anotherdirecotory/.env.random
-  ```
+```sh
+npx envshh push -e newdirecotry/.env anotherdirecotory/.env.random
+```
 
 ### As Command
 

@@ -11,14 +11,20 @@ import { defaultBranchNamePrefix } from "../defaults/defaults.js";
 import { createDirectory } from "../../filesystem/functions.js";
 import { saveEncryptedEnv } from "../encryption/encrypt.js";
 import { exitWithError } from "../../utils/process.js";
+import { log } from "../../utils/log.js";
 
 export function thePush(pushConfig: ProjectPushConfigParamsType) {
   const envPaths = getAllEnvsFromEnvPath(pushConfig.envPath);
   if (envPaths.length === 0) {
     exitWithError("No .env found. Consider running envshh push -e <.env-path>");
   }
-  const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
-  if (!pushConfig.offline) {
+  const envshh = handleDefaultInstanceForPushNPull(
+    pushConfig.instance,
+    pushConfig.offline,
+    pushConfig.message,
+  );
+  if (!pushConfig.offline && envshh.getRemoteRepoUrl()) {
+    log.info(`Syncing with ${envshh.getRemoteRepoUrl()}. Please wait...`);
     envshh.gitPull();
   }
   const destinationDirectory = path.join(
@@ -32,8 +38,16 @@ export function thePush(pushConfig: ProjectPushConfigParamsType) {
     const destination = envPath.replace(process.cwd(), destinationDirectory);
     saveEncryptedEnv(envPath, pushConfig.password, destination);
   }
-  envshh.gitCommit();
-  if (!pushConfig.offline) {
+  envshh.gitCommit(pushConfig.message);
+  if (!pushConfig.offline && envshh.getRemoteRepoUrl()) {
+    log.info(`Pushing to ${envshh.getRemoteRepoUrl()}. Please wait...`);
     envshh.gitPush();
+    const destinationUrl =
+      envshh.getRemoteRepoUrl()?.replaceAll(".git", "") +
+      "/tree/main/" +
+      path.join(pushConfig.name, defaultBranchNamePrefix + pushConfig.branch);
+    log.success(`Encrypted .envs are pushed to ${destinationUrl}`);
+  } else {
+    log.success(`Encrypted .envs are saved to ${destinationDirectory}`);
   }
 }

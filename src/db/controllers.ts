@@ -44,6 +44,8 @@ export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
 
 export function handleDefaultInstanceForPushNPull(
   name: EnvshhInstanceNameType,
+  offline?: boolean,
+  commitMessage?: string,
 ) {
   log.flow(
     `Handling instance creation and getter for push and pull commands. Instance: ${name}`,
@@ -53,21 +55,28 @@ export function handleDefaultInstanceForPushNPull(
     (instance) => instance.name === name,
   );
   if (InstanceIndex === -1) {
-    if (name === defaultInstanceName) {
-      log.info(
-        `.envs will be stored on a local directory (${defaultLocalDirectory}) and a Remote Git Repository created by you.
-Enter the already created Repository URL or Create one and then provide the URL.
-Although the .envs are encrypted, it is recommended to make the Remote Repository Private.
-If you do not want to store the .envs in a remote repository, keep the URL blank.
-`,
-      );
-      const repoUrl = readlineSync.question("Remote Repository URL: ");
+    if (name === defaultInstanceName && db.data.instances.length === 0) {
+      let repoUrl = undefined;
+      if (offline) {
+        log.info(
+          `Using offline mode. .envs will only be stored on a local directory (${defaultLocalDirectory}).`,
+        );
+      } else {
+        log.info(
+          `.envs will be stored on a local directory (${defaultLocalDirectory}) and a Remote Git Repository created by you.
+  Enter the already created Repository URL or Create one and then provide the URL.
+  Although the .envs are encrypted, it is recommended to make the Remote Repository Private.
+  If you do not want to store the .envs in a remote repository, keep the URL blank.
+  `,
+        );
+        repoUrl = readlineSync.question("Remote Repository URL: ");
+      }
       const envshh = new EnvshhInstance({
         name: defaultInstanceName,
         remoteRepoUrl: repoUrl,
         localDirectory: path.join(defaultLocalDirectory, defaultInstanceName),
       });
-      envshh.create();
+      envshh.create(commitMessage);
       return envshh;
     } else {
       return exitWithError(
@@ -91,6 +100,15 @@ export function DBgetInstance(name: EnvshhInstanceNameType) {
     );
   }
   return new EnvshhInstance(db.data.instances[InstanceIndex]);
+}
+
+export function DBgetOnlyInstance() {
+  log.flow(`Getting only index from DB`);
+  db.read();
+  if (db.data.instances.length != 1) {
+    return undefined;
+  }
+  return new EnvshhInstance(db.data.instances[0]);
 }
 
 export function DBshow(instanceName?: EnvshhInstanceNameType) {

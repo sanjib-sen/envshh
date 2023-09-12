@@ -4,6 +4,7 @@ import {
   defaultBranchName,
   defaultInstanceName,
 } from "../envshh/defaults/defaults.js";
+import { DBgetOnlyInstance } from "../db/controllers.js";
 
 export const projectNameOption = new Option(
   "-p, --project <project-name>",
@@ -22,7 +23,7 @@ export const envPathOption = new Option(
 export const instanceNameOption = new Option(
   "-i, --instance <Instance name.>",
   `[Advanced Option] Specify the instance name`,
-).default(defaultInstanceName);
+).default(DBgetOnlyInstance()?.getName() || defaultInstanceName);
 
 export const offlineOption = new Option(
   "-o, --offline",

@@ -8,7 +8,10 @@ import * as readlineSync from "readline-sync";
 import { EnvshhInstance } from "../../envshh.js";
 import { exitWithError } from "../../../utils/process.js";
 import { defaultInstanceName } from "../../defaults/defaults.js";
-import { DBCheckInstanceExists } from "../../../db/controllers.js";
+import {
+  DBCheckInstanceExists,
+  DBgetOnlyInstance,
+} from "../../../db/controllers.js";
 
 export function createInstance(
   envshhCreateParams: Partial<EnvshhInstanceType>,
@@ -19,6 +22,7 @@ export function createInstance(
     readlineSync.question(
       `Instance Name (Default: ${defaultInstanceName}): `,
     ) ||
+    DBgetOnlyInstance()?.getName() ||
     defaultInstanceName;
   if (DBCheckInstanceExists(name) && !yes)
     return exitWithError(`Instance ${name} already exists.`);

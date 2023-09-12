@@ -23,18 +23,18 @@ You can install envshh using any of the following package managers
 
 ### with `npm`
 
-  ```sh
-  npm install -g envshh
-  ```
+```sh
+npm install -g envshh
+```
 
 ### with `pnpm`
 
-  ```sh
-  pnpm install -g envshh
-  ```
+```sh
+pnpm install -g envshh
+```
 
 ### with `yarn`
 
-  ```sh
-  yarn global add envshh
-  ```
+```sh
+yarn global add envshh
+```

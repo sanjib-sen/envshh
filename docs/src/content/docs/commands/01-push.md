@@ -23,7 +23,7 @@ envshh push <options>
 - [offline](/envshh/core-concepts/05-offline)
 - [instance](/envshh/core-concepts/04-instance)
 - **message** `-m, --message <message>` (Optional):
-    Customized commit message. If not specified, Envshh will use Cureent Date and Time as the commit message `new Date.toString()`
+  Customized commit message. If not specified, Envshh will use Cureent Date and Time as the commit message `new Date.toString()`
 
 ## Example
 

@@ -81,7 +81,7 @@ export function addRemoteRepo(envshh: EnvshhInstanceType) {
   );
 }
 
-export function initRepo(envshh: EnvshhInstanceType) {
+export function initRepo(envshh: EnvshhInstanceType, commitMessage?: string) {
   log.flow(`Initiating Repo`);
   runCommand(`git -C ${envshh.localDirectory} init`);
   envshh.remoteRepoUrl ?? addRemoteRepo(envshh);
@@ -93,15 +93,17 @@ export function initRepo(envshh: EnvshhInstanceType) {
     )}`,
   );
   const tempInstance = new EnvshhInstance(envshh);
-  tempInstance.gitCommit();
+  tempInstance.gitCommit(commitMessage);
   envshh.remoteRepoUrl ? tempInstance.gitPush() : "";
 }
 
-export function commitRepo(envshh: EnvshhInstanceType) {
+export function commitRepo(envshh: EnvshhInstanceType, message?: string) {
   log.flow(`Executing a git commit on ${envshh.localDirectory}`);
   runCommand(`git -C ${envshh.localDirectory} add .`);
   runCommand(
-    `git -C ${envshh.localDirectory} commit -m "${new Date().toUTCString()}"`,
+    `git -C ${envshh.localDirectory} commit -m "${
+      message || new Date().toUTCString()
+    }"`,
   );
 }
 
