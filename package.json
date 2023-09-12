@@ -10,10 +10,11 @@
     "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist",
     "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && tsc",
-    "test": "$npm_execpath run build && node dist/index.js -v"
+    "test": "$npm_execpath run build && node dist/index.js -v",
+    "register": "$npm_execpath uninstall -g envshh && $npm_execpath run build && cd dist && $npm_execpath install -g ."
   },
   "bin": {
-    "envshh": "src/index.js"
+    "envshh": "./src/index.js"
   },
   "repository": {
     "type": "git",
