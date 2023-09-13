@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width=528px height=119px src="/docs/assets/white_logo.png" alt="Project logo"></a>
+ <img width=528px height=119px src="/docs/src/assets/logo_blue.png" alt="envshh"></a>
 </p>
 
 <h1 align="center">🤫 envshh</h1>
@@ -42,13 +42,11 @@ Congratulations! Your .envs are encrypted and securely stored in your own repo. 
 - (More) You can always **push your .env updates** using `npx envshh push`
 - (More) Need to **generate a`.env.example` file?** Use `npx envshh generate`
 
+Read the [docs](https://sanjib-sen.github.io/envshh/) for more details.
+
 ## Configuration
 
-There are some configuration options that you can set to customize the behavior of Envshh. You can set the configuration options in the `.envshhrc` file in the project root directory. If the file does not exist, Envshh will create it for you.
-
-## 🚀 Deployment
-
-Add additional notes about how to deploy this on a live system.
+There are some configuration options that you can set to customize the behavior of Envshh. You can set the configuration options in the `.config/.envshh/db.json` file. If the file does not exist, envshh will create it for you.
 
 ## ⛏️ Built Using
 
@@ -58,9 +56,3 @@ Add additional notes about how to deploy this on a live system.
 ## ✍️ Authors
 
 - [@sanjib-sen](https://github.com/sanjib-sen) - Idea & Initial work
-
-## 🎉 Acknowledgements
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
