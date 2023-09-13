@@ -1,5 +1,8 @@
 import * as esbuild from 'esbuild'
 import * as fs from 'fs'
+
+const packageInfo = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+fs.writeFileSync('./src/cli/version.ts',`export const version = "${packageInfo.version}"`)
 await esbuild.build({
   entryPoints: ['src/index.ts'],
   bundle: true,
@@ -7,7 +10,6 @@ await esbuild.build({
   outfile: 'dist/envshh.cjs',
 })
 
-const packageInfo = JSON.parse(fs.readFileSync("./package.json", "utf8"));
 packageInfo.dependencies = {}
 packageInfo.devDependencies = {}
 packageInfo.peerDependencies = {}
