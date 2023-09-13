@@ -1,20 +1,25 @@
 {
   "name": "envshh",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
     "lint": "eslint --ext .js,.ts,.json --fix .",
+    "compile": "babel src -d lib",
     "clean": "$npm_execpath run clean:win32 && $npm_execpath run clean:unix",
-    "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist",
-    "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist",
-    "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && tsc",
-    "test": "$npm_execpath run build && node dist/index.js -v",
-    "register": "$npm_execpath uninstall -g envshh && $npm_execpath run build && cd dist && $npm_execpath install -g ."
+    "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist builds",
+    "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist builds",
+    "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && node esbuild.mjs",
+    "compile:linux": "$npm_execpath run build && pkg ./dist/envshh.cjs --out-path=./builds -t latest-linux",
+    "test": "$npm_execpath run build && node dist/envshh.cjs -v",
+    "register": "$npm_execpath run build && cd dist && $npm_execpath install -g ."
   },
   "bin": {
-    "envshh": "./src/index.js"
+    "envshh": "./envshh.cjs"
+  },
+  "pkg": {
+    "outputPath": "build"
   },
   "repository": {
     "type": "git",
@@ -35,6 +40,8 @@
     "commander": "~11.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
     "@types/figlet": "^1.5.6",
     "@types/node": "^20.5.9",
     "@types/readline-sync": "^1.4.4",
@@ -44,11 +51,13 @@
     "eslint-config-prettier": "latest",
     "eslint-plugin-prettier": "latest",
     "husky": "^8.0.3",
+    "pkg": "^5.8.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@commander-js/extra-typings": "~11.0.0",
     "chalk": "^5.3.0",
+    "esbuild": "^0.19.2",
     "figlet": "^1.6.0",
     "lowdb": "^6.0.1",
     "readline-sync": "^1.4.10",
