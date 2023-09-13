@@ -22,7 +22,7 @@ import {
   pipeCommand,
 } from "./utils.js";
 import { removeCommand } from "./main/remove.js";
-const packageInfo = JSON.parse(fs.readFileSync("./package.json", "utf8"));
+const packageInfo = JSON.parse(fs.readFileSync("package.json", "utf8"));
 figlet.parseFont("Standard", standard);
 export const program = new Command();
 program

@@ -1,25 +1,32 @@
 {
   "name": "envshh",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\"",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\" --log-level warn",
     "lint": "eslint --ext .js,.ts,.json --fix .",
-    "compile": "babel src -d lib",
     "clean": "$npm_execpath run clean:win32 && $npm_execpath run clean:unix",
     "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist builds",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist builds",
     "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && node esbuild.mjs",
-    "compile:linux": "$npm_execpath run build && pkg ./dist/envshh.cjs --out-path=./builds -t latest-linux",
     "test": "$npm_execpath run build && node dist/envshh.cjs -v",
-    "register": "$npm_execpath run build && cd dist && $npm_execpath install -g ."
+    "register": "$npm_execpath run build && cd dist && $npm_execpath install -g .",
+    "compile:linux-x64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/x64 -t latest-linux-x64",
+    "compile:win-x64": "pkg ./dist/envshh.cjs --out-path=./builds/win/x64 -t latest-win-x64",
+    "compile:mac-x64": "pkg ./dist/envshh.cjs --out-path=./builds/mac/x64 -t latest-mac-x64",
+    "compile:linx-arm64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/arm64 -t latest-linux-arm64",
+    "compile:win-arm64": "pkg ./dist/envshh.cjs --out-path=./builds/win/arm64 -t latest-win-arm64",
+    "compile:mac-arm64": "pkg ./dist/envshh.cjs --out-path=./builds/mac/arm64 -t latest-mac-arm64",
+    "compile:linux": "$npm_execpath run compile:linux-x64 && $npm_execpath run compile:linx-arm64",
+    "compile:win": "$npm_execpath run compile:win-x64 && $npm_execpath run compile:win-arm64",
+    "compile:mac": "$npm_execpath run compile:mac-x64 && $npm_execpath run compile:mac-arm64",
+    "compile:x64": "$npm_execpath run compile:linux-x64 && $npm_execpath run compile:win-x64 && $npm_execpath run compile:mac-x64",
+    "compile:arm-64": "$npm_execpath run compile:linx-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
+    "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm-x64"
   },
   "bin": {
     "envshh": "./envshh.cjs"
-  },
-  "pkg": {
-    "outputPath": "build"
   },
   "repository": {
     "type": "git",
