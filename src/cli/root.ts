@@ -5,7 +5,6 @@
 
 import figlet from "figlet";
 import { Command } from "@commander-js/extra-typings";
-import * as fs from "fs";
 import { defaultDBPath } from "../db/db.js";
 import { standard } from "../assets/fonts/standard.js";
 import { dbCommand } from "./db.js";
@@ -22,7 +21,7 @@ import {
   pipeCommand,
 } from "./utils.js";
 import { removeCommand } from "./main/remove.js";
-const packageInfo = JSON.parse(fs.readFileSync("package.json", "utf8"));
+import { version } from "./version.js";
 figlet.parseFont("Standard", standard);
 export const program = new Command();
 program
@@ -36,7 +35,7 @@ program
   .description(
     `A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh \n\nConfiguration file location: ${defaultDBPath}`,
   )
-  .version(packageInfo.version, "-v, --version");
+  .version(version, "-v, --version");
 
 program
   .addCommand(pushCommand)
