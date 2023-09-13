@@ -1,6 +1,6 @@
 <p align="center">
   <a href="" rel="noopener">
- <img width="300px" height="321px" src="/docs/src/assets/logo_blue.png" alt="envshh"></a>
+ <img width="120px" height="130px" src="/docs/src/assets/logo_blue.png" alt="envshh"></a>
 </p>
 
 <h1 align="center">🤫 envshh</h1>
