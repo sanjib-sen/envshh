@@ -12,6 +12,7 @@
     "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && node esbuild.mjs",
     "test": "$npm_execpath run build && node dist/envshh.cjs -v",
     "register": "$npm_execpath run build && cd dist && $npm_execpath install -g .",
+    "prepare": "husky install",
     "compile:linux-x64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/x64 -t latest-linux-x64",
     "compile:win-x64": "pkg ./dist/envshh.cjs --out-path=./builds/win/x64 -t latest-win-x64",
     "compile:mac-x64": "pkg ./dist/envshh.cjs --out-path=./builds/mac/x64 -t latest-mac-x64",
