@@ -11,6 +11,8 @@ import {
   instanceNameOption,
   offlineOption,
   projectNameOption,
+  verboseAction,
+  verboseOption,
 } from "../common.js";
 
 export const pullCommand = new Command();
@@ -22,7 +24,9 @@ pullCommand
   .addOption(branchNameOption)
   .addOption(instanceNameOption)
   .addOption(offlineOption)
+  .addOption(verboseOption)
   .action((options) => {
+    verboseAction(options.verbose);
     const password = askPassword(false);
     thePull({
       password: password,

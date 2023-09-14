@@ -7,6 +7,7 @@ import { Command } from "@commander-js/extra-typings";
 import { clearDB } from "../envshh/commands/db/clear.js";
 import { syncDB } from "../envshh/commands/db/sync.js";
 import { showDB } from "../envshh/commands/db/show.js";
+import { forceOption, verboseAction, verboseOption } from "./common.js";
 
 export const dbCommand = new Command();
 
@@ -18,19 +19,25 @@ dbCommand
     "-i, --instance <name>",
     "Show only instance <instance-name> Default: All",
   )
+  .addOption(verboseOption)
   .action((options) => {
+    verboseAction(options.verbose);
     showDB(options.instance);
   });
 dbCommand
   .command("sync")
-  .description("[Advanced] Remove all deleted or moved instances from database")
-  .action(() => {
+  .description("Remove all deleted or moved instances from database")
+  .addOption(verboseOption)
+  .action((opts) => {
+    verboseAction(opts.verbose);
     syncDB();
   });
 dbCommand
   .command("clear")
-  .description("[Advanced][Careful] Reset and clear everything")
-  .option("-y, --yes", "Force clear the database without confirmation", false)
+  .description("[Careful] Reset and clear everything")
+  .addOption(forceOption)
+  .addOption(verboseOption)
   .action((option) => {
+    verboseAction(option.verbose);
     clearDB(option.yes);
   });

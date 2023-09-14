@@ -6,6 +6,7 @@
   "scripts": {
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\" --log-level warn",
     "lint": "eslint --ext .js,.ts,.json --fix .",
+    "preversion": "npm run build",
     "clean": "$npm_execpath run clean:win32 && $npm_execpath run clean:unix",
     "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist builds",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist builds",
@@ -23,8 +24,8 @@
     "compile:win": "$npm_execpath run compile:win-x64 && $npm_execpath run compile:win-arm64",
     "compile:mac": "$npm_execpath run compile:mac-x64 && $npm_execpath run compile:mac-arm64",
     "compile:x64": "$npm_execpath run compile:linux-x64 && $npm_execpath run compile:win-x64 && $npm_execpath run compile:mac-x64",
-    "compile:arm-64": "$npm_execpath run compile:linx-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
-    "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm-x64"
+    "compile:arm64": "$npm_execpath run compile:linx-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
+    "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm64"
   },
   "bin": {
     "envshh": "./envshh.cjs"
@@ -48,8 +49,6 @@
     "commander": "~11.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
     "@types/figlet": "^1.5.6",
     "@types/node": "^20.5.9",
     "@types/readline-sync": "^1.4.4",
@@ -66,7 +65,6 @@
     "@commander-js/extra-typings": "~11.0.0",
     "chalk": "^5.3.0",
     "esbuild": "^0.19.2",
-    "figlet": "^1.6.0",
     "lowdb": "^6.0.1",
     "readline-sync": "^1.4.10",
     "zod": "^3.22.2"

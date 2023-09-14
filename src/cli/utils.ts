@@ -12,19 +12,20 @@ import path from "path";
 import { saveDecryptedEnv } from "../envshh/encryption/decrypt.js";
 import { theGenerate } from "../envshh/commands/generate.js";
 import { askPassword } from "../utils/password.js";
-import {
-  defaultBranchName,
-  defaultInstanceName,
-  defaultProjectName,
-} from "../envshh/defaults/defaults.js";
-import { exitWithError } from "../utils/process.js";
+import { defaultProjectName } from "../envshh/defaults/defaults.js";
 import { runCommand } from "../utils/command.js";
 import { thePull } from "../envshh/commands/pull.js";
 import { getAllEnvsFromEnvPath } from "../envshh/envs/get.js";
 import { readEnvByLine } from "../envshh/encryption/common.js";
 import { spawnSync } from "child_process";
-import { getDirectoryFromGitCloneCommand } from "../git/functions.js";
-import { DBgetOnlyInstance } from "../db/controllers.js";
+import {
+  branchNameOption,
+  envPathOption,
+  instanceNameOption,
+  offlineOption,
+  projectNameOption,
+} from "./common.js";
+import { getProjectNameFromRepoUrl } from "../git/functions.js";
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
@@ -149,12 +150,8 @@ export const pipeCommand = new Command();
 pipeCommand
   .name("pipe")
   .description("Load .env files directly and run command")
-  .argument("<commands...>", "Arguments for git clone command")
-  .option(
-    "-e, --env <relative-path>",
-    "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-    process.cwd(),
-  )
+  .argument("<commands...>", "Commands to run")
+  .addOption(envPathOption)
   .action((args, options) => {
     const files = getAllEnvsFromEnvPath(options.env.split(","));
     files.map((file) => {
@@ -175,38 +172,19 @@ export const cloneCommand = new Command();
 cloneCommand
   .name("clone")
   .description("git clone and envshh pull at the same time")
-  .argument("<clone-args...>", "Arguments for git clone command")
-  .option(
-    "--project <project-name>",
-    "Select a project name. Defaults to GitHub Repo Name or Current Directory Name.",
-  )
-  .option(
-    "--branch <name>",
-    `Keep different branches for different production, development and staging`,
-    defaultBranchName,
-  )
-  .option(
-    "--instance <Instance name.>",
-    `[Advanced Option] Specify the instance name`,
-    DBgetOnlyInstance()?.getName() || defaultInstanceName,
-  )
-  .option(
-    "--offline",
-    "Don't delete from remote repository. Just commit locally.",
-    false,
-  )
+  .argument("<repo>", "Repository url")
+  .argument("[directory]", "Directory name")
+  .addOption(projectNameOption)
+  .addOption(branchNameOption)
+  .addOption(instanceNameOption)
+  .addOption(offlineOption)
   .allowUnknownOption()
-  .action((args, options) => {
-    args.map((arg) =>
-      arg.startsWith("-")
-        ? exitWithError(`Invalid argument ${arg}. 
-      You can not use git clone options in this command. Only arguments are allowed.
-      Use git clone then envshh pull in case of this.`)
-        : "",
-    );
-    const directory = getDirectoryFromGitCloneCommand(args);
+  .action((repo, directory, options) => {
+    if (!directory) {
+      directory = getProjectNameFromRepoUrl(repo);
+    }
     runCommand(
-      `git -C ${process.cwd()} clone ${args[0]} ${directory}`,
+      `git -C ${process.cwd()} clone ${repo} ${directory}`,
       true,
       true,
     );

@@ -13,6 +13,8 @@ import {
   instanceNameOption,
   offlineOption,
   projectNameOption,
+  verboseOption,
+  verboseAction,
 } from "../common.js";
 
 export const removeCommand = new Command();
@@ -26,7 +28,9 @@ removeCommand
   .addOption(instanceNameOption)
   .addOption(offlineOption)
   .addOption(forceOption)
+  .addOption(verboseOption)
   .action((options) => {
+    verboseAction(options.verbose);
     if (!options.yes) {
       const confirm = readlineSync.question(
         "Are you sure you want to delete .envs from local and Remote Repository? (y/N): ",
@@ -37,7 +41,7 @@ removeCommand
     }
     theRemove({
       name: options.project,
-      envPath: options.env,
+      envPath: options.env.split(","),
       branch: options.branch,
       offline: options.offline,
       instance: options.instance,

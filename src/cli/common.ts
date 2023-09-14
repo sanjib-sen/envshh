@@ -16,13 +16,13 @@ export const branchNameOption = new Option(
 ).default(defaultBranchName);
 
 export const envPathOption = new Option(
-  "-e, --env <relative-path...>",
+  "-e, --env <relative-path>",
   "Specify input directory or file where the .env/.envs is/are located. Defaults to current directory.",
-).default([process.cwd()]);
+).default(process.cwd());
 
 export const instanceNameOption = new Option(
   "-i, --instance <Instance name.>",
-  `[Advanced Option] Specify the instance name`,
+  `Specify the instance name`,
 ).default(DBgetOnlyInstance()?.getName() || defaultInstanceName);
 
 export const offlineOption = new Option(
@@ -32,5 +32,31 @@ export const offlineOption = new Option(
 
 export const forceOption = new Option(
   "-y, --yes",
-  "Force delete .envs without asking for confirmation",
+  "Forcefully run the command without asking for confirmation",
 ).default(false);
+
+export const requiredInstanceNameOption = new Option(
+  "-n, --name <name>",
+  `Specify the instance name`,
+).makeOptionMandatory();
+
+export const localDirectoryOption = new Option(
+  "-d, --directory <directory>",
+  "Specify the directory path for the instance",
+);
+
+export const remoteRepoUrlOption = new Option(
+  "-r, --remote <remote-url>",
+  "Specify the Remote Repository URL.",
+);
+
+export const verboseOption = new Option(
+  "--verbose",
+  "Show verbose output",
+).default(false);
+
+export const verboseAction = (enabled: boolean) => {
+  if (enabled) {
+    process.env.VERBOSE = "true";
+  }
+};

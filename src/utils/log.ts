@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import figlet from "figlet";
+import { verboseAscii } from "../assets/fonts/ascii.js";
 import { isInVerboseMode } from "./checks.js";
 import chalk, { ChalkInstance } from "chalk";
 
@@ -12,7 +12,7 @@ export class Log {
   private masterPrefix = "Envshh";
   constructor(masterPrefix?: string) {
     if (isInVerboseMode()) {
-      this.logger(figlet.textSync(`ENVSHH Verbose Mode`) + "\n");
+      this.logger(verboseAscii);
     }
     this.masterPrefix = masterPrefix || this.masterPrefix;
   }

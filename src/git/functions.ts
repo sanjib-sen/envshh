@@ -114,9 +114,12 @@ export function pushRepo(envshh: EnvshhInstanceType) {
   runCommand(`git -C ${envshh.localDirectory} push origin main`);
 }
 
-function getProjectNameFromRepoUrl(url: string) {
+export function getProjectNameFromRepoUrl(url: string) {
   log.flow(`Getting Project Name from Repo Url ${url}`);
   const projectName = url.split("/").pop()?.replace(".git", "").trim();
+  if (!projectName) {
+    return exitWithError(`Error getting project name from ${url}`);
+  }
   log.flow(`Project Name: ${projectName}`);
   return projectName;
 }
@@ -130,13 +133,4 @@ export function getGitRepoName(location: string) {
     return repoName;
   }
   return undefined;
-}
-
-export function getDirectoryFromGitCloneCommand(args: string[]) {
-  if (args.length > 1) {
-    return args[1];
-  } else {
-    const repo = args[0];
-    return repo.split("/")[repo.split("/").length - 1].replace(".git", "");
-  }
 }

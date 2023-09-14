@@ -8,6 +8,14 @@ import { removeInstance } from "../envshh/commands/instance/remove.js";
 import { resetInstance } from "../envshh/commands/instance/reset.js";
 import { createInstance } from "../envshh/commands/instance/create.js";
 import { editInstance } from "../envshh/commands/instance/edit.js";
+import {
+  forceOption,
+  instanceNameOption,
+  localDirectoryOption,
+  remoteRepoUrlOption,
+  verboseAction,
+  verboseOption,
+} from "./common.js";
 
 export const instanceCommand = new Command();
 
@@ -15,22 +23,18 @@ instanceCommand.name("instance").description("[Advanced] Manage Instances");
 instanceCommand
   .command("create")
   .description(
-    "[Advanced] Create an instance. Use this command to create a new instance in interactive mode",
+    "Create an instance. Use this command without any option to create in interactive mode",
   )
-  .option("-n, --name <name>", `Specify the instance name`)
-  .option(
-    "-d, --directory <directory>",
-    "[Advanced] Specify the directory path for the instance",
-  )
-  .option(
-    "-r, --remote <remote-url>",
-    "Specify the Remote Repository URL. Keep this blank if you want to use this instance offline",
-  )
-  .option("-y, --yes", "Force create the instance without confirmation", false)
+  .addOption(instanceNameOption)
+  .addOption(localDirectoryOption)
+  .addOption(remoteRepoUrlOption)
+  .addOption(verboseOption)
+  .addOption(forceOption)
   .action((options) => {
+    verboseAction(options.verbose);
     createInstance(
       {
-        name: options.name,
+        name: options.instance,
         localDirectory: options.directory,
         remoteRepoUrl: options.remote,
       },
@@ -39,16 +43,17 @@ instanceCommand
   });
 instanceCommand
   .command("edit")
-  .description("[Advanced] Modify an instance.")
-  .requiredOption("-n, --name <name>", `Specify the instance name`)
-  .option("--new-name <new-ame>", "Specify the new name for the instance")
-  .option(
-    "--directory <directory-path>",
-    "Modify the directory path for the instance",
+  .description(
+    "Modify an instance. Run this command without any option to edit in interactive mode",
   )
-  .option("--remote <remote-url>", "Modify the Remote Repository URL")
+  .addOption(instanceNameOption.makeOptionMandatory())
+  .option("--new-name <new-ame>", "Specify the new name for the instance")
+  .addOption(localDirectoryOption)
+  .addOption(remoteRepoUrlOption)
+  .addOption(verboseOption)
   .action((options) => {
-    editInstance(options.name, {
+    verboseAction(options.verbose);
+    editInstance(options.instance, {
       name: options.newName,
       localDirectory: options.directory,
       remoteRepoUrl: options.remote,
@@ -56,17 +61,21 @@ instanceCommand
   });
 instanceCommand
   .command("remove")
-  .description("[Advanced][Careful] Delete the instance data")
-  .requiredOption("-n, --name <name>", `Specify the instance name`)
-  .option("-y, --yes", "Force delete the instance without confirmation", false)
+  .description("Delete the instance data")
+  .addOption(instanceNameOption.makeOptionMandatory())
+  .addOption(forceOption)
+  .addOption(verboseOption)
   .action((options) => {
-    removeInstance(options.name, options.yes);
+    verboseAction(options.verbose);
+    removeInstance(options.instance, options.yes);
   });
 instanceCommand
   .command("reset")
-  .description("[Advanced][Careful] Reset the instance")
-  .option("-y, --yes", "Force reset the instance without confirmation", false)
-  .requiredOption("-n, --name <name>", `Specify the instance name`)
+  .description("Reset the instance")
+  .addOption(instanceNameOption.makeOptionMandatory())
+  .addOption(forceOption)
+  .addOption(verboseOption)
   .action((options) => {
-    resetInstance(options.name, options.yes);
+    verboseAction(options.verbose);
+    resetInstance(options.instance, options.yes);
   });

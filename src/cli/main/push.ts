@@ -12,6 +12,8 @@ import {
   instanceNameOption,
   offlineOption,
   projectNameOption,
+  verboseAction,
+  verboseOption,
 } from "../common.js";
 
 export const pushCommand = new Command();
@@ -27,13 +29,15 @@ pushCommand
   .addOption(envPathOption)
   .addOption(instanceNameOption)
   .addOption(offlineOption)
+  .addOption(verboseOption)
   .action((options) => {
+    verboseAction(options.verbose);
     const password = askPassword(true);
     thePush({
       message: options.message,
       password: password,
       name: options.project,
-      envPath: options.env,
+      envPath: options.env.split(","),
       branch: options.branch,
       offline: options.offline,
       instance: options.instance,
