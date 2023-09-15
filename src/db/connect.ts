@@ -56,11 +56,7 @@ db.read();
 log.flow(
   `Verifying Configuration Files. \n${JSON.stringify(db.data.defaults)}`,
 );
-handleZodError(
-  DBSchema,
-  db.data,
-  `Configuration File is not valid.`,
-);
+handleZodError(DBSchema, db.data, `Configuration File is not valid.`);
 export function getConfigs() {
   return db.data.defaults;
 }

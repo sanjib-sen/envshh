@@ -36,7 +36,11 @@ import { exitWithError } from '../utils/process.js';
 export class EnvshhInstance {
   private readonly config: EnvshhInstanceType;
   constructor(EnvshhConfigParams?: EnvshhInstanceType) {
-    this.config = handleZodError(EnvshhInstanceSchema, EnvshhConfigParams, "Not a valid Envshh Instance Config");
+    this.config = handleZodError(
+      EnvshhInstanceSchema,
+      EnvshhConfigParams,
+      'Not a valid Envshh Instance Config',
+    );
   }
   private initChecks() {
     if (!isGitInstalledAndPathed()) {
