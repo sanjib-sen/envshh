@@ -2,9 +2,9 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { z } from 'zod';
 
-import { z } from "zod";
-import { isPathExists } from "../filesystem/checks.js";
+import { isPathExists } from '../filesystem/checks.js';
 
 const defaultValidRegex = /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
 
@@ -17,33 +17,33 @@ const defaultRegexNameConventionMessage = (type: string) => {
 };
 
 const defaultEnvPatterns = [
-  ".env",
-  ".env.development",
-  ".env.test",
-  ".env.production",
-  ".env.local",
-  ".env.development.local",
-  ".env.test.local",
-  ".env.production.local",
+  '.env',
+  '.env.development',
+  '.env.test',
+  '.env.production',
+  '.env.local',
+  '.env.development.local',
+  '.env.test.local',
+  '.env.production.local',
 ];
 
 export const EnvshhInstanceNameSchema = z
   .string()
-  .regex(defaultValidRegex, defaultRegexNameConventionMessage("Instance"))
-  .min(1, { message: "Instance Name cannot be empty" })
-  .max(25, { message: "Instance Name cannot be more than 25 characters" });
+  .regex(defaultValidRegex, defaultRegexNameConventionMessage('Instance'))
+  .min(1, { message: 'Instance Name cannot be empty' })
+  .max(25, { message: 'Instance Name cannot be more than 25 characters' });
 
 export const EnvshhBranchNameSchema = z
   .string()
-  .regex(defaultValidRegex, defaultRegexNameConventionMessage("Branch"))
-  .min(1, { message: "Branch Name cannot be empty" })
-  .max(25, { message: "Branch Name cannot be more than 25 characters" });
+  .regex(defaultValidRegex, defaultRegexNameConventionMessage('Branch'))
+  .min(1, { message: 'Branch Name cannot be empty' })
+  .max(25, { message: 'Branch Name cannot be more than 25 characters' });
 
 export const EnvshhProjectNameSchema = z
   .string()
-  .regex(defaultValidRegex, defaultRegexNameConventionMessage("Project"))
-  .min(1, { message: "Project Name cannot be empty" })
-  .max(25, { message: "Project Name cannot be more than 25 characters" });
+  .regex(defaultValidRegex, defaultRegexNameConventionMessage('Project'))
+  .min(1, { message: 'Project Name cannot be empty' })
+  .max(25, { message: 'Project Name cannot be more than 25 characters' });
 
 export const EnvshhInstanceSchema = z.object({
   name: EnvshhInstanceNameSchema,
@@ -52,22 +52,22 @@ export const EnvshhInstanceSchema = z.object({
 });
 
 export const configSchema = z.object({
-  branchName: EnvshhBranchNameSchema.default("main"),
-  instanceName: EnvshhInstanceNameSchema.default("personal"),
+  branchName: EnvshhBranchNameSchema.default('main'),
+  instanceName: EnvshhInstanceNameSchema.default('personal'),
   envPatterns: z.array(z.string()).default(defaultEnvPatterns),
   envValueQuotations: z.array(z.string()).default(["'", '"']),
   localDirectory: z.string().refine((val) => isPathExists(val), {
-    message: "Invalid local directory path",
+    message: 'Invalid local directory path',
   }),
   ignoreFiles: z
     .array(z.string())
-    .default(["README.md", "Readme.md", ".gitignore"]),
-  branchNamePrefix: z.string().default("envshh-branch-"),
+    .default(['README.md', 'Readme.md', '.gitignore']),
+  branchNamePrefix: z.string().default('envshh-branch-'),
 });
 
 export const DBSchema = z.object({
-  defaults: configSchema.describe("Defaults"),
-  instances: z.array(EnvshhInstanceSchema).describe("Instances"),
+  defaults: configSchema.describe('Defaults'),
+  instances: z.array(EnvshhInstanceSchema).describe('Instances'),
 });
 
 export type EnvshhInstanceType = z.infer<typeof EnvshhInstanceSchema>;

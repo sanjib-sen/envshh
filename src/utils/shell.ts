@@ -2,11 +2,11 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { execSync } from 'child_process';
 
-import { execSync } from "child_process";
-import { log } from "./log.js";
-import { exitProcess } from "./process.js";
-import { isInVerboseMode } from "./checks.js";
+import { isInVerboseMode } from './checks.js';
+import { log } from './log.js';
+import { exitProcess } from './process.js';
 
 export function runCommand(
   command: string,
@@ -20,12 +20,12 @@ export function runCommand(
   try {
     result = execSync(command, {
       stdio: [
-        "ignore",
-        showOnTerminal ? "inherit" : "pipe",
-        showOnTerminal ? "inherit" : "pipe",
+        'ignore',
+        showOnTerminal ? 'inherit' : 'pipe',
+        showOnTerminal ? 'inherit' : 'pipe',
       ],
     })
-      .toString("utf-8")
+      .toString('utf-8')
       .trim();
     if (isInVerboseMode()) {
       log.commandOutput(result);
@@ -39,11 +39,11 @@ export function runCommand(
     let theError: string = (error as any).stderr
       .toString()
       .trim()
-      .split("\n")
-      .join(" ");
-    if (!command.includes("\n"))
-      theError = theError.replaceAll("/bin/sh: line 1: ", "");
-    log.error("Got error while running command: " + command);
+      .split('\n')
+      .join(' ');
+    if (!command.includes('\n'))
+      theError = theError.replaceAll('/bin/sh: line 1: ', '');
+    log.error('Got error while running command: ' + command);
     log.commandError(theError);
     exitProcess();
   }

@@ -2,23 +2,23 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import path from 'path';
 
-import path from "path";
-import { handleDefaultInstanceForPushNPull } from "../../db/controllers.js";
-import { ProjectConfigParansType } from "../../types/params.js";
-import { defaultBranchNamePrefix } from "../../types/defaults.js";
-import { getAllEnvsFromRemoteRepo } from "../../envshh/functions/get.js";
-import { saveDecryptedEnv } from "../../envshh/functions/decrypt.js";
-import { isDirectoryEmpty, isPathExists } from "../../filesystem/checks.js";
-import { exitWithError } from "../../utils/process.js";
-import { log } from "../../utils/log.js";
+import { handleDefaultInstanceForPushNPull } from '../../db/controllers.js';
+import { saveDecryptedEnv } from '../../envshh/functions/decrypt.js';
+import { getAllEnvsFromRemoteRepo } from '../../envshh/functions/get.js';
+import { isDirectoryEmpty, isPathExists } from '../../filesystem/checks.js';
+import { defaultBranchNamePrefix } from '../../types/defaults.js';
+import { ProjectConfigParansType } from '../../types/params.js';
+import { log } from '../../utils/log.js';
+import { exitWithError } from '../../utils/process.js';
 
 export function thePull(pushConfig: ProjectConfigParansType) {
   const envshh = handleDefaultInstanceForPushNPull(pushConfig.instance);
   if (!pushConfig.offline && envshh.getRemoteRepoUrl()) {
     const destinationUrl =
-      envshh.getRemoteRepoUrl()?.replaceAll(".git", "") +
-      "/tree/main/" +
+      envshh.getRemoteRepoUrl()?.replaceAll('.git', '') +
+      '/tree/main/' +
       path.join(pushConfig.name, defaultBranchNamePrefix + pushConfig.branch);
     log.info(`Pulling from ${destinationUrl}. Please wait...`);
     envshh.gitPull();

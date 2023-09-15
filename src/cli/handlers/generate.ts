@@ -2,28 +2,27 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { createFile } from "../../filesystem/functions.js";
-import { log } from "../../utils/log.js";
-import { exitWithError } from "../../utils/process.js";
-import { readEnvByLine } from "../../envshh/functions/common.js";
-import { getAllEnvsFromEnvPath } from "../../envshh/functions/get.js";
+import { readEnvByLine } from '../../envshh/functions/common.js';
+import { getAllEnvsFromEnvPath } from '../../envshh/functions/get.js';
+import { createFile } from '../../filesystem/functions.js';
+import { log } from '../../utils/log.js';
+import { exitWithError } from '../../utils/process.js';
 
 export function getExampleFileString(location: string, defaultValue: string) {
-  let encryptedEnv = "";
+  let encryptedEnv = '';
   const lines = readEnvByLine(location);
   const encryptedLines = [];
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index].trim();
-    if (line === "" || line.startsWith("#") || line === "\n") {
+    if (line === '' || line.startsWith('#') || line === '\n') {
       encryptedLines.push(line);
       continue;
     }
-    const key = line.substring(0, line.indexOf("=")).trim();
+    const key = line.substring(0, line.indexOf('=')).trim();
     const value = defaultValue;
     encryptedLines.push(`${key}=${value}`);
   }
-  encryptedEnv += encryptedLines.join("\n");
+  encryptedEnv += encryptedLines.join('\n');
   return encryptedEnv;
 }
 
@@ -48,7 +47,7 @@ export function theGenerate({
   const envPaths = getAllEnvsFromEnvPath(envPath);
   if (envPaths.length === 0) {
     exitWithError(
-      "No .env found. Consider running envshh generate -e <.env-path>",
+      'No .env found. Consider running envshh generate -e <.env-path>',
     );
   }
   for (let index = 0; index < envPaths.length; index++) {
@@ -56,5 +55,5 @@ export function theGenerate({
     const destination = `${envPath}.${suffix}`;
     saveExampleFile(envPath, destination, value);
   }
-  log.success("Example files generated.");
+  log.success('Example files generated.');
 }

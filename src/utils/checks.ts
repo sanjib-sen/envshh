@@ -3,5 +3,5 @@
 // This software is released under the MIT License.
 
 export function isInVerboseMode() {
-  return process.env.DEBUG === "true" || process.env.VERBOSE === "true";
+  return process.env.DEBUG === 'true' || process.env.VERBOSE === 'true';
 }

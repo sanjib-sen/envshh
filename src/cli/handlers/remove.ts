@@ -2,16 +2,16 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import path from 'path';
 
-import path from "path";
-import { DBgetInstance } from "../../db/controllers.js";
-import { ProjectPushConfigParamsType } from "../../types/params.js";
-import { getAllEnvsFromEnvPath } from "../../envshh/functions/get.js";
-import { defaultBranchNamePrefix } from "../../types/defaults.js";
-import { deleteDirectoryOrFile } from "../../filesystem/functions.js";
+import { DBgetInstance } from '../../db/controllers.js';
+import { getAllEnvsFromEnvPath } from '../../envshh/functions/get.js';
+import { deleteDirectoryOrFile } from '../../filesystem/functions.js';
+import { defaultBranchNamePrefix } from '../../types/defaults.js';
+import { ProjectPushConfigParamsType } from '../../types/params.js';
 
 export function theRemove(
-  removeConfig: Omit<ProjectPushConfigParamsType, "password">,
+  removeConfig: Omit<ProjectPushConfigParamsType, 'password'>,
 ) {
   const envshh = DBgetInstance(removeConfig.instance);
   if (!removeConfig.offline) {

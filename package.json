@@ -6,13 +6,13 @@
   "scripts": {
     "lint": "eslint --fix .",
     "format": "prettier -w . --log-level warn",
-    "preversion": "npm run build",
     "clean": "$npm_execpath run clean:win32 && $npm_execpath run clean:unix",
     "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist builds",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist builds",
     "build": "$npm_execpath run clean && $npm_execpath run lint && $npm_execpath run format && node esbuild.mjs",
     "test": "$npm_execpath run build && node dist/envshh.cjs -v",
     "register": "$npm_execpath run build && cd dist && $npm_execpath install -g .",
+    "preversion": "npm run test",
     "prepare": "husky install",
     "compile:linux-x64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/x64 -t latest-linux-x64",
     "compile:win-x64": "pkg ./dist/envshh.cjs --out-path=./builds/win/x64 -t latest-win-x64",
@@ -26,9 +26,6 @@
     "compile:x64": "$npm_execpath run compile:linux-x64 && $npm_execpath run compile:win-x64 && $npm_execpath run compile:mac-x64",
     "compile:arm64": "$npm_execpath run compile:linx-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
     "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm64"
-  },
-  "imports": {
-    "@envshh/*": "./src/**/*.js"
   },
   "bin": {
     "envshh": "./envshh.cjs"
@@ -52,8 +49,9 @@
     "commander": "~11.0.0"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/figlet": "^1.5.6",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.6.0",
     "@types/readline-sync": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
@@ -68,7 +66,8 @@
   "dependencies": {
     "@commander-js/extra-typings": "~11.0.0",
     "chalk": "^5.3.0",
-    "esbuild": "^0.19.2",
+    "esbuild": "^0.19.3",
+    "eslint-plugin-import": "^2.28.1",
     "lowdb": "^6.0.1",
     "readline-sync": "^1.4.10",
     "zod": "^3.22.2"

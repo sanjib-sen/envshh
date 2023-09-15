@@ -2,10 +2,10 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import * as readlineSync from 'readline-sync';
 
-import { DBgetInstance } from "../../../db/controllers.js";
-import { EnvshhInstanceNameType } from "../../../types/schemas.js";
-import * as readlineSync from "readline-sync";
+import { DBgetInstance } from '../../../db/controllers.js';
+import { EnvshhInstanceNameType } from '../../../types/schemas.js';
 
 export function resetInstance(name: EnvshhInstanceNameType, yes: boolean) {
   const envshh = DBgetInstance(name);
@@ -15,7 +15,7 @@ export function resetInstance(name: EnvshhInstanceNameType, yes: boolean) {
   const confirm = readlineSync.question(
     `Are you sure you want to clear ${name}? (y/N): `,
   );
-  if (confirm === "y") {
+  if (confirm === 'y') {
     return envshh.reset();
   }
 }

@@ -2,14 +2,14 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { z } from 'zod';
 
-import { z } from "zod";
 import {
   EnvshhBranchNameSchema,
   EnvshhInstanceNameSchema,
   EnvshhInstanceType,
   EnvshhProjectNameSchema,
-} from "./schemas.js";
+} from './schemas.js';
 
 export type EnvshhConfigParamsType = {
   name?: string;
@@ -38,8 +38,8 @@ export type ProjectPushConfigParamsType = z.infer<
 type RequireAtLeastOneParam<T, R extends keyof T = keyof T> = Omit<T, R> &
   { [P in R]: Required<Pick<T, P>> & Partial<Omit<T, P>> }[R];
 
-export type EnvshhInstanceModifyParamsType = Pick<EnvshhInstanceType, "name"> &
+export type EnvshhInstanceModifyParamsType = Pick<EnvshhInstanceType, 'name'> &
   RequireAtLeastOneParam<
     EnvshhInstanceType,
-    "localDirectory" | "remoteRepoUrl" | "name"
+    'localDirectory' | 'remoteRepoUrl' | 'name'
   >;

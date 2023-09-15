@@ -2,16 +2,15 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { createFile } from "../../filesystem/functions.js";
-import { log } from "../../utils/log.js";
+import { decryptString } from '../../encryption/lib.js';
+import { createFile } from '../../filesystem/functions.js';
+import { log } from '../../utils/log.js';
 import {
   getCleanValueFromLine,
   getQuotedValueFromLine,
   getQuteFromValue,
   readEnvByLine,
-} from "./common.js";
-import { decryptString } from "../../encryption/lib.js";
+} from './common.js';
 
 function getDecryptedValueFromLine(line: string, password: string) {
   const quotedValue = getQuotedValueFromLine(line);
@@ -23,20 +22,20 @@ function getDecryptedValueFromLine(line: string, password: string) {
 
 export function getDecryptedEnv(location: string, password: string) {
   log.flow(`Decrypting the ${location} file}`);
-  let decryptedEnv = "";
+  let decryptedEnv = '';
   const lines = readEnvByLine(location);
   const decryptedLines = [];
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index];
-    if (line === "" || line.startsWith("#") || line === "\n") {
+    if (line === '' || line.startsWith('#') || line === '\n') {
       decryptedLines.push(line);
       continue;
     }
-    const key = line.substring(0, line.indexOf("=")).trim();
+    const key = line.substring(0, line.indexOf('=')).trim();
     const value = getDecryptedValueFromLine(line, password);
     decryptedLines.push(`${key}=${value}`);
   }
-  decryptedEnv += decryptedLines.join("\n");
+  decryptedEnv += decryptedLines.join('\n');
   return decryptedEnv;
 }
 

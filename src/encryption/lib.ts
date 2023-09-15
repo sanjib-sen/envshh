@@ -2,30 +2,29 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
 // This file is collected and slightly updated from:
 // https://github.com/luke-park/SecureCompatibleEncryptionExamples
+import crypto from 'crypto';
 
-import * as crypto from "crypto";
-import { exitWithError } from "../utils/process.js";
-import { log } from "../utils/log.js";
+import { log } from '../utils/log.js';
+import { exitWithError } from '../utils/process.js';
 
-const ALGORITHM_NAME = "aes-128-gcm";
+const ALGORITHM_NAME = 'aes-128-gcm';
 const ALGORITHM_NONCE_SIZE = 12;
 const ALGORITHM_TAG_SIZE = 16;
 const ALGORITHM_KEY_SIZE = 16;
-const PBKDF2_NAME = "sha256";
+const PBKDF2_NAME = 'sha256';
 const PBKDF2_SALT_SIZE = 16;
 const PBKDF2_ITERATIONS = 32767;
 
 export function encryptString(plaintext: string, password: string) {
-  log.flow("Encrypting the string");
+  log.flow('Encrypting the string');
   // Generate a 128-bit salt using a CSPRNG.
   const salt = crypto.randomBytes(PBKDF2_SALT_SIZE);
 
   // Derive a key using PBKDF2.
   const key = crypto.pbkdf2Sync(
-    Buffer.from(password, "utf8"),
+    Buffer.from(password, 'utf8'),
     salt,
     PBKDF2_ITERATIONS,
     ALGORITHM_KEY_SIZE,
@@ -35,23 +34,23 @@ export function encryptString(plaintext: string, password: string) {
   // Encrypt and prepend salt.
   const ciphertextAndNonceAndSalt = Buffer.concat([
     salt,
-    encrypt(Buffer.from(plaintext, "utf8"), key),
+    encrypt(Buffer.from(plaintext, 'utf8'), key),
   ]);
 
   // Return as base64 string.
-  return ciphertextAndNonceAndSalt.toString("base64");
+  return ciphertextAndNonceAndSalt.toString('base64');
 }
 
 export function decryptString(
   base64CiphertextAndNonceAndSalt: string,
   password: string,
 ) {
-  log.flow("Decrypting the string");
+  log.flow('Decrypting the string');
   try {
     // Decode the base64.
     const ciphertextAndNonceAndSalt = Buffer.from(
       base64CiphertextAndNonceAndSalt,
-      "base64",
+      'base64',
     );
 
     // Create buffers of salt and ciphertextAndNonce.
@@ -61,7 +60,7 @@ export function decryptString(
 
     // Derive the key using PBKDF2.
     const key = crypto.pbkdf2Sync(
-      Buffer.from(password, "utf8"),
+      Buffer.from(password, 'utf8'),
       salt,
       PBKDF2_ITERATIONS,
       ALGORITHM_KEY_SIZE,
@@ -69,9 +68,9 @@ export function decryptString(
     );
 
     // Decrypt and return result.
-    return decrypt(ciphertextAndNonce, key).toString("utf8");
+    return decrypt(ciphertextAndNonce, key).toString('utf8');
   } catch (error) {
-    return exitWithError("Wrong Password");
+    return exitWithError('Wrong Password');
   }
 }
 

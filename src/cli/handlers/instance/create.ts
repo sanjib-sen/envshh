@@ -2,17 +2,16 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { EnvshhInstanceType } from "../../../types/schemas.js";
-import * as readlineSync from "readline-sync";
-import { EnvshhInstance } from "../../../envshh/class.js";
-import { exitWithError } from "../../../utils/process.js";
-import { defaultInstanceName } from "../../../types/defaults.js";
+import * as readlineSync from 'readline-sync';
 
 import {
   DBCheckInstanceExists,
   DBgetOnlyInstance,
-} from "../../../db/controllers.js";
+} from '../../../db/controllers.js';
+import { EnvshhInstance } from '../../../envshh/class.js';
+import { defaultInstanceName } from '../../../types/defaults.js';
+import { EnvshhInstanceType } from '../../../types/schemas.js';
+import { exitWithError } from '../../../utils/process.js';
 
 export function createInstance(
   envshhCreateParams: Partial<EnvshhInstanceType>,
@@ -29,7 +28,7 @@ export function createInstance(
     return exitWithError(`Instance ${name} already exists.`);
   const localDirectory =
     envshhCreateParams?.localDirectory ||
-    readlineSync.question("Directory Path: ");
+    readlineSync.question('Directory Path: ');
   if (!localDirectory)
     return exitWithError(
       `Instance ${name} not created. Directory Path is required.`,
@@ -37,7 +36,7 @@ export function createInstance(
   const remoteRepoUrl =
     envshhCreateParams?.remoteRepoUrl ||
     readlineSync.question(
-      "Remote Repository URL (Keep this blank if you want to use offline): ",
+      'Remote Repository URL (Keep this blank if you want to use offline): ',
     ) ||
     undefined;
   const envshh = new EnvshhInstance({

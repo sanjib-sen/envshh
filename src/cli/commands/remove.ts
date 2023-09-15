@@ -2,27 +2,26 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { Command } from '@commander-js/extra-typings';
+import * as readlineSync from 'readline-sync';
 
-import { Command } from "@commander-js/extra-typings";
-import { theRemove } from "../handlers/remove.js";
-import * as readlineSync from "readline-sync";
+import { theRemove } from '../handlers/remove.js';
+import { verboseAction } from './common/actions.js';
 import {
   branchNameOption,
-  forceOption,
   envPathOption,
+  forceOption,
   instanceNameOption,
   offlineOption,
   projectNameOption,
   verboseOption,
-} from "./common/options.js";
-
-import { verboseAction } from "./common/actions.js";
+} from './common/options.js';
 
 export const removeCommand = new Command();
 
 removeCommand
-  .name("remove")
-  .description("Delete .envs from Local and/or Remote Repository")
+  .name('remove')
+  .description('Delete .envs from Local and/or Remote Repository')
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(envPathOption)
@@ -34,15 +33,15 @@ removeCommand
     verboseAction(options.verbose);
     if (!options.yes) {
       const confirm = readlineSync.question(
-        "Are you sure you want to delete .envs from local and Remote Repository? (y/N): ",
+        'Are you sure you want to delete .envs from local and Remote Repository? (y/N): ',
       );
-      if (confirm !== "y") {
+      if (confirm !== 'y') {
         process.exit(0);
       }
     }
     theRemove({
       name: options.project,
-      envPath: options.env.split(","),
+      envPath: options.env.split(','),
       branch: options.branch,
       offline: options.offline,
       instance: options.instance,

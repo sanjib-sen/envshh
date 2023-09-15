@@ -2,15 +2,14 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { isPathExists } from "../filesystem/checks.js";
-import { runCommand } from "../utils/shell.js";
-import { log } from "../utils/log.js";
-import { exitWithError } from "../utils/process.js";
+import { isPathExists } from '../filesystem/checks.js';
+import { log } from '../utils/log.js';
+import { exitWithError } from '../utils/process.js';
+import { runCommand } from '../utils/shell.js';
 
 export function isGitInstalledAndPathed() {
-  log.flow("Checking if git is installed and added to Path on the system");
-  return runCommand("git --version", true) ? true : false;
+  log.flow('Checking if git is installed and added to Path on the system');
+  return runCommand('git --version', true) ? true : false;
 }
 
 export function isRepositoryExistsOnRemote(repositoryAddress: string) {
@@ -24,7 +23,7 @@ export function isDirectoryAGitRepository(directoryPath: string) {
   log.flow(`Checking if Path ${directoryPath} exists`);
   if (isPathExists(directoryPath) === false)
     exitWithError(
-      "Got invalid path while checking if the directory is a git repo. Path does not exist.",
+      'Got invalid path while checking if the directory is a git repo. Path does not exist.',
     );
   return runCommand(
     `git -C ${directoryPath} rev-parse --is-inside-work-tree`,

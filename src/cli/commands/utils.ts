@@ -2,25 +2,25 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { Command } from '@commander-js/extra-typings';
 
-import { Command } from "@commander-js/extra-typings";
-import { decryptString, encryptString } from "../../encryption/lib.js";
-import { log } from "../../utils/log.js";
-import { createFile, readFile } from "../../filesystem/functions.js";
-import { saveEncryptedEnv } from "../../envshh/functions/encrypt.js";
-import { saveDecryptedEnv } from "../../envshh/functions/decrypt.js";
-import { askPassword } from "../../utils/password.js";
+import { decryptString, encryptString } from '../../encryption/lib.js';
+import { saveDecryptedEnv } from '../../envshh/functions/decrypt.js';
+import { saveEncryptedEnv } from '../../envshh/functions/encrypt.js';
+import { createFile, readFile } from '../../filesystem/functions.js';
+import { log } from '../../utils/log.js';
+import { askPassword } from '../../utils/password.js';
 import {
   inputFileArgument,
   isEnvOption,
   outputFileOption,
   replaceOption,
-} from "./common/options.js";
+} from './common/options.js';
 
 export const encryptFileCommand = new Command();
 encryptFileCommand
-  .name("encryptfile")
-  .description("[Extra Utilities] Encrypt a file")
+  .name('encryptfile')
+  .description('Encrypt a file')
   .addArgument(inputFileArgument)
   .addOption(outputFileOption)
   .addOption(isEnvOption)
@@ -40,8 +40,8 @@ encryptFileCommand
 
 export const decryptFileCommand = new Command();
 decryptFileCommand
-  .name("decryptfile")
-  .description("[Extra Utilities] Decrypt a file")
+  .name('decryptfile')
+  .description('Decrypt a file')
   .addArgument(inputFileArgument)
   .addOption(outputFileOption)
   .addOption(isEnvOption)
@@ -61,10 +61,10 @@ decryptFileCommand
 
 export const encryptTextCommand = new Command();
 encryptTextCommand
-  .name("encrypttext")
-  .description("[Extra Utilities] Encrypt a text")
-  .argument("<text>", "Specify the text to encrypt")
-  .option("-o, --output <output-path>", "Output to file <path>")
+  .name('encrypttext')
+  .description('Encrypt a text')
+  .argument('<text>', 'Specify the text to encrypt')
+  .option('-o, --output <output-path>', 'Output to file <path>')
   .action((text, options) => {
     const password = askPassword(true);
     const encrypted = encryptString(text, password);
@@ -78,10 +78,10 @@ encryptTextCommand
 
 export const decryptTextCommand = new Command();
 decryptTextCommand
-  .name("decrypttext")
-  .description("[Extra Utilities] Decrypt a text")
-  .argument("<text>", "Specify the text to decrypt")
-  .option("-o, --output <output-path>", "Output to file <path>")
+  .name('decrypttext')
+  .description('Decrypt a text')
+  .argument('<text>', 'Specify the text to decrypt')
+  .option('-o, --output <output-path>', 'Output to file <path>')
   .action((text, options) => {
     const password = askPassword(false);
     const decrypted = decryptString(text, password);
@@ -92,3 +92,14 @@ decryptTextCommand
       log.success(`Decrypted text saved to ${options.output}`);
     }
   });
+
+export const utilityCommand = new Command();
+utilityCommand
+  .name('utils')
+  .description(
+    'More handy tools that might be useful for encryption and decryption',
+  )
+  .addCommand(encryptFileCommand)
+  .addCommand(decryptFileCommand)
+  .addCommand(encryptTextCommand)
+  .addCommand(decryptTextCommand);

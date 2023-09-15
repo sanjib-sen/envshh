@@ -2,9 +2,8 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { envQuotations } from "../../types/defaults.js";
-import { readFile } from "../../filesystem/functions.js";
+import { readFile } from '../../filesystem/functions.js';
+import { envQuotations } from '../../types/defaults.js';
 
 function readEnv(path: string) {
   const env = readFile(path);
@@ -17,7 +16,7 @@ export function readEnvByLine(path: string) {
 }
 
 export function getQuotedValueFromLine(line: string) {
-  const value = line.substring(line.indexOf("=") + 1) as string;
+  const value = line.substring(line.indexOf('=') + 1) as string;
   return value;
 }
 
@@ -28,11 +27,11 @@ export function getQuteFromValue(value: string) {
       return quote;
     }
   }
-  return "";
+  return '';
 }
 
 export function getCleanValueFromLine(line: string) {
   const value = getQuotedValueFromLine(line);
   const quote = getQuteFromValue(value);
-  return quote ? value.replaceAll(quote, "") : value;
+  return quote ? value.replaceAll(quote, '') : value;
 }

@@ -2,28 +2,28 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { Command } from '@commander-js/extra-typings';
 
-import { Command } from "@commander-js/extra-typings";
-import { removeInstance } from "../handlers/instance/remove.js";
-import { resetInstance } from "../handlers/instance/reset.js";
-import { createInstance } from "../handlers/instance/create.js";
-import { editInstance } from "../handlers/instance/edit.js";
+import { createInstance } from '../handlers/instance/create.js';
+import { editInstance } from '../handlers/instance/edit.js';
+import { removeInstance } from '../handlers/instance/remove.js';
+import { resetInstance } from '../handlers/instance/reset.js';
+import { verboseAction } from './common/actions.js';
 import {
   forceOption,
   instanceNameOption,
   localDirectoryOption,
   remoteRepoUrlOption,
   verboseOption,
-} from "./common/options.js";
-import { verboseAction } from "./common/actions.js";
+} from './common/options.js';
 
 export const instanceCommand = new Command();
 
-instanceCommand.name("instance").description("[Advanced] Manage Instances");
+instanceCommand.name('instance').description('[Advanced] Manage Instances');
 instanceCommand
-  .command("create")
+  .command('create')
   .description(
-    "Create an instance. Use this command without any option to create in interactive mode",
+    'Create an instance. Use this command without any option to create in interactive mode',
   )
   .addOption(instanceNameOption)
   .addOption(localDirectoryOption)
@@ -42,12 +42,12 @@ instanceCommand
     );
   });
 instanceCommand
-  .command("edit")
+  .command('edit')
   .description(
-    "Modify an instance. Run this command without any option to edit in interactive mode",
+    'Modify an instance. Run this command without any option to edit in interactive mode',
   )
   .addOption(instanceNameOption.makeOptionMandatory())
-  .option("--new-name <new-ame>", "Specify the new name for the instance")
+  .option('--new-name <new-ame>', 'Specify the new name for the instance')
   .addOption(localDirectoryOption)
   .addOption(remoteRepoUrlOption)
   .addOption(verboseOption)
@@ -60,8 +60,8 @@ instanceCommand
     });
   });
 instanceCommand
-  .command("remove")
-  .description("Delete the instance data")
+  .command('remove')
+  .description('Delete the instance data')
   .addOption(instanceNameOption.makeOptionMandatory())
   .addOption(forceOption)
   .addOption(verboseOption)
@@ -70,8 +70,8 @@ instanceCommand
     removeInstance(options.instance, options.yes);
   });
 instanceCommand
-  .command("reset")
-  .description("Reset the instance")
+  .command('reset')
+  .description('Reset the instance')
   .addOption(instanceNameOption.makeOptionMandatory())
   .addOption(forceOption)
   .addOption(verboseOption)

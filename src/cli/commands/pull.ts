@@ -2,24 +2,24 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { Command } from '@commander-js/extra-typings';
 
-import { Command } from "@commander-js/extra-typings";
-import { thePull } from "../handlers/pull.js";
-import { askPassword } from "../../utils/password.js";
+import { askPassword } from '../../utils/password.js';
+import { thePull } from '../handlers/pull.js';
+import { verboseAction } from './common/actions.js';
 import {
   branchNameOption,
   instanceNameOption,
   offlineOption,
   projectNameOption,
   verboseOption,
-} from "./common/options.js";
-import { verboseAction } from "./common/actions.js";
+} from './common/options.js';
 
 export const pullCommand = new Command();
 
 pullCommand
-  .name("pull")
-  .description("Pull environment variables from Local and/or Remote Repository")
+  .name('pull')
+  .description('Pull environment variables from Local and/or Remote Repository')
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(instanceNameOption)

@@ -2,43 +2,42 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { LowSync } from 'lowdb';
+import { JSONFileSync } from 'lowdb/node';
 
-import { LowSync } from "lowdb";
-import { JSONFileSync } from "lowdb/node";
-
-import { createFile } from "../filesystem/functions.js";
-import { isPathExists } from "../filesystem/checks.js";
-import { DBSchema, EnvshhInstanceType, configType } from "../types/schemas.js";
-import { handleZodError } from "../utils/error.js";
-import { log } from "../utils/log.js";
+import { isPathExists } from '../filesystem/checks.js';
+import { createFile } from '../filesystem/functions.js';
+import { DBSchema, EnvshhInstanceType, configType } from '../types/schemas.js';
+import { handleZodError } from '../utils/error.js';
+import { log } from '../utils/log.js';
 
 const jsonDefaultData = {
   defaults: {
-    branchName: "main",
-    instanceName: "personal",
+    branchName: 'main',
+    instanceName: 'personal',
     localDirectory:
-      process.platform === "win32"
+      process.platform === 'win32'
         ? `${process.env.USERPROFILE}\\.envshh`
         : `${process.env.HOME}/.config/.envshh`,
     envPatterns: [
-      ".env",
-      ".env.development",
-      ".env.test",
-      ".env.production",
-      ".env.local",
-      ".env.development.local",
-      ".env.test.local",
-      ".env.production.local",
+      '.env',
+      '.env.development',
+      '.env.test',
+      '.env.production',
+      '.env.local',
+      '.env.development.local',
+      '.env.test.local',
+      '.env.production.local',
     ],
     envValueQuotations: ["'", '"'],
-    ignoreFiles: ["README.md", "Readme.md", ".gitignore"],
-    branchNamePrefix: "envshh-branch-",
+    ignoreFiles: ['README.md', 'Readme.md', '.gitignore'],
+    branchNamePrefix: 'envshh-branch-',
   },
   instances: [],
 };
 
 export const defaultDBPath =
-  process.platform === "win32"
+  process.platform === 'win32'
     ? `${process.env.USERPROFILE}\\.envshh\\config.json`
     : `${process.env.HOME}/.config/.envshh/config.json`;
 if (!isPathExists(defaultDBPath)) {
@@ -57,7 +56,11 @@ db.read();
 log.flow(
   `Verifying Configuration Files. \n${JSON.stringify(db.data.defaults)}`,
 );
-handleZodError(DBSchema, db.data);
+handleZodError(
+  DBSchema,
+  db.data,
+  `Configuration File is not valid.`,
+);
 export function getConfigs() {
   return db.data.defaults;
 }

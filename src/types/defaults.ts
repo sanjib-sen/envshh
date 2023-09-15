@@ -2,11 +2,10 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { getConfigs } from "../db/connect.js";
-import { getCurrentWorkingDirectoryName } from "../filesystem/functions.js";
-import { isDirectoryAGitRepository } from "../git/checks.js";
-import { getGitRepoName } from "../git/functions.js";
+import { getConfigs } from '../db/connect.js';
+import { getCurrentWorkingDirectoryName } from '../filesystem/functions.js';
+import { isDirectoryAGitRepository } from '../git/checks.js';
+import { getGitRepoName } from '../git/functions.js';
 
 export const defaultLocalDirectory = getConfigs().localDirectory;
 

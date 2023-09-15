@@ -2,12 +2,12 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import * as fs from 'fs';
+import path from 'path';
 
-import path from "path";
-import { isPathADirectory, isPathExists } from "../../filesystem/checks.js";
-import { envExtensions } from "../../types/defaults.js";
-import * as fs from "fs";
-import { log } from "../../utils/log.js";
+import { isPathADirectory, isPathExists } from '../../filesystem/checks.js';
+import { envExtensions } from '../../types/defaults.js';
+import { log } from '../../utils/log.js';
 
 function getListOfEnvsInDirectory(directory: string) {
   log.flow(`Getting list of envs in directory ${directory}`);
@@ -20,13 +20,13 @@ function getListOfEnvsInDirectory(directory: string) {
     }
   }
   log.flow(
-    `Found ${envs.length} envs in directory ${directory}. \n ${envs.join(" ")}`,
+    `Found ${envs.length} envs in directory ${directory}. \n ${envs.join(' ')}`,
   );
   return envs;
 }
 
 export function getAllEnvsFromEnvPath(envPaths: string[]) {
-  log.flow(`Getting all envs from env path ${envPaths.join(" ")}`);
+  log.flow(`Getting all envs from env path ${envPaths.join(' ')}`);
   if (envPaths[0] != process.cwd()) {
     envPaths.map(
       (fileOrDirectory, index) =>
@@ -53,9 +53,9 @@ export function getAllEnvsFromRemoteRepo(
   log.flow(`Getting all envs from local repo ${directoryPath}`);
   const files = fs.readdirSync(directoryPath);
   files.forEach(function (file) {
-    if (fs.statSync(directoryPath + "/" + file).isDirectory()) {
+    if (fs.statSync(directoryPath + '/' + file).isDirectory()) {
       arrayOfFiles = getAllEnvsFromRemoteRepo(
-        directoryPath + "/" + file,
+        directoryPath + '/' + file,
         arrayOfFiles,
       );
     } else {
@@ -65,7 +65,7 @@ export function getAllEnvsFromRemoteRepo(
   log.flow(
     `Found ${
       arrayOfFiles.length
-    } envs in local repo ${directoryPath}. \n ${arrayOfFiles.join(" ")}`,
+    } envs in local repo ${directoryPath}. \n ${arrayOfFiles.join(' ')}`,
   );
   return arrayOfFiles;
 }

@@ -2,8 +2,7 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { DBSync } from "../../../db/controllers.js";
+import { DBSync } from '../../../db/controllers.js';
 
 export function syncDB() {
   DBSync();

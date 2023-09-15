@@ -2,22 +2,23 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import path from 'path';
 
-import {
-  isGitInstalledAndPathed,
-  isRepositoryExistsOnRemote,
-} from "../git/checks.js";
-import {
-  copyFileAndFolder,
-  createDirectory,
-  deleteDirectoryOrFile,
-} from "../filesystem/functions.js";
-import { EnvshhInstanceSchema, EnvshhInstanceType } from "../types/schemas.js";
 import {
   DBdeleteInstance,
   DBeditInstance,
   DBinsertInstance,
-} from "../db/controllers.js";
+} from '../db/controllers.js';
+import { isDirectoryEmpty } from '../filesystem/checks.js';
+import {
+  copyFileAndFolder,
+  createDirectory,
+  deleteDirectoryOrFile,
+} from '../filesystem/functions.js';
+import {
+  isGitInstalledAndPathed,
+  isRepositoryExistsOnRemote,
+} from '../git/checks.js';
 import {
   addRemoteRepo,
   cloneRepo,
@@ -25,22 +26,21 @@ import {
   initRepo,
   pullRepo,
   pushRepo,
-} from "../git/functions.js";
-import { isDirectoryEmpty } from "../filesystem/checks.js";
-import { exitWithError } from "../utils/process.js";
-import { handleZodError } from "../utils/error.js";
-import path from "path";
-import { defaultLocalDirectory } from "../types/defaults.js";
-import { log } from "../utils/log.js";
+} from '../git/functions.js';
+import { defaultLocalDirectory } from '../types/defaults.js';
+import { EnvshhInstanceSchema, EnvshhInstanceType } from '../types/schemas.js';
+import { handleZodError } from '../utils/error.js';
+import { log } from '../utils/log.js';
+import { exitWithError } from '../utils/process.js';
 
 export class EnvshhInstance {
   private readonly config: EnvshhInstanceType;
   constructor(EnvshhConfigParams?: EnvshhInstanceType) {
-    this.config = handleZodError(EnvshhInstanceSchema, EnvshhConfigParams);
+    this.config = handleZodError(EnvshhInstanceSchema, EnvshhConfigParams, "Not a valid Envshh Instance Config");
   }
   private initChecks() {
     if (!isGitInstalledAndPathed()) {
-      return exitWithError("Git is not installed or not in path");
+      return exitWithError('Git is not installed or not in path');
     }
     if (
       this.config.remoteRepoUrl &&
@@ -77,7 +77,7 @@ export class EnvshhInstance {
     if (
       newEnvshhInstance.config.localDirectory !== this.config.localDirectory
     ) {
-      log.info("Local Directory changed. Moving files...");
+      log.info('Local Directory changed. Moving files...');
       newEnvshhInstance.createLocalDirectory();
       if (
         isDirectoryEmpty(newEnvshhInstance.config.localDirectory) &&
@@ -91,7 +91,7 @@ export class EnvshhInstance {
         this.setLocalDirectory(newEnvshhInstance.config.localDirectory);
       } else {
         return exitWithError(
-          "Got Error while copying files. Either the source directory does not exist or the destination directory is not empty",
+          'Got Error while copying files. Either the source directory does not exist or the destination directory is not empty',
         );
       }
     }
@@ -100,14 +100,14 @@ export class EnvshhInstance {
       newEnvshhInstance.config.remoteRepoUrl != this.config.remoteRepoUrl &&
       newEnvshhInstance.config.remoteRepoUrl
     ) {
-      log.info("Remote Repository URL changed. Please wait while we sync...");
+      log.info('Remote Repository URL changed. Please wait while we sync...');
       const tempDirectory = path.join(
         defaultLocalDirectory,
         `temp-${this.config.name}-${Date.now()}`,
       );
       createDirectory(tempDirectory);
       copyFileAndFolder(this.config.localDirectory, tempDirectory);
-      deleteDirectoryOrFile(path.join(tempDirectory, ".git"));
+      deleteDirectoryOrFile(path.join(tempDirectory, '.git'));
       this.deleteLocalDirectory();
       newEnvshhInstance.create();
       copyFileAndFolder(tempDirectory, newEnvshhInstance.config.localDirectory);
