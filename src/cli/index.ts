@@ -24,7 +24,7 @@ program
   .description(
     `A command line tool to securely and automatically manage, store environment variables.\nMade by Sanjib Sen <mail@sanjibsen.com> \nGitHub: https://github.com/sanjib-sen/envshh \n\nConfiguration file location: ${defaultDBPath}`,
   )
-  .version(version, '-v, --version');
+  .version('v' + version, '-v, --version');
 
 program
   .addCommand(pushCommand)

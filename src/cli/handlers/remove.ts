@@ -9,12 +9,14 @@ import { getAllEnvsFromEnvPath } from '../../envshh/functions/get.js';
 import { deleteDirectoryOrFile } from '../../filesystem/functions.js';
 import { defaultBranchNamePrefix } from '../../types/defaults.js';
 import { ProjectPushConfigParamsType } from '../../types/params.js';
+import { log } from '../../utils/log.js';
 
 export function theRemove(
   removeConfig: Omit<ProjectPushConfigParamsType, 'password'>,
 ) {
   const envshh = DBgetInstance(removeConfig.instance);
-  if (!removeConfig.offline) {
+  if (!removeConfig.offline && envshh.getRemoteRepoUrl()) {
+    log.info(`Syncing with ${envshh.getRemoteRepoUrl()}. Please wait...`);
     envshh.gitPull();
   }
   const envPaths = getAllEnvsFromEnvPath(removeConfig.envPath);
@@ -30,7 +32,18 @@ export function theRemove(
     deleteDirectoryOrFile(envPath);
   }
   envshh.gitCommit();
-  if (!removeConfig.offline) {
+  if (!removeConfig.offline && envshh.getRemoteRepoUrl()) {
+    const destinationUrl =
+      envshh.getRemoteRepoUrl()?.replaceAll('.git', '') +
+      '/tree/main/' +
+      path.join(
+        removeConfig.name,
+        defaultBranchNamePrefix + removeConfig.branch,
+      );
+    log.info(`Removing from ${destinationUrl}. Please wait...`);
     envshh.gitPush();
+    log.success(`Encrypted .envs are removed from ${destinationUrl}`);
+  } else {
+    log.success(`Encrypted .envs are removed from ${destinationDirectory}`);
   }
 }

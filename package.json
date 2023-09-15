@@ -1,6 +1,6 @@
 {
   "name": "envshh",
-  "version": "0.0.24",
+  "version": "0.0.25-2",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
@@ -10,10 +10,11 @@
     "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist builds",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist builds",
     "build": "$npm_execpath run clean && $npm_execpath run lint && $npm_execpath run format && node esbuild.mjs",
-    "test": "$npm_execpath run build && node dist/envshh.cjs -v",
+    "test": "$npm_execpath run build && $npm_execpath run compile && ./builds/envshh -v",
     "register": "$npm_execpath run build && cd dist && $npm_execpath install -g .",
-    "preversion": "npm run test",
+    "postversion": "npm run test",
     "prepare": "husky install",
+    "compile": "pkg ./dist/envshh.cjs --out-path=./builds -t latest",
     "compile:linux-x64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/x64 -t latest-linux-x64",
     "compile:win-x64": "pkg ./dist/envshh.cjs --out-path=./builds/win/x64 -t latest-win-x64",
     "compile:mac-x64": "pkg ./dist/envshh.cjs --out-path=./builds/mac/x64 -t latest-mac-x64",
@@ -34,7 +35,7 @@
     "type": "git",
     "url": "https://github.com/sanjib-sen/envshh.git"
   },
-  "homepage": "https://github.com/sanjib-sen/envshh#readme",
+  "homepage": "https://sanjib-sen.github.io/envshh",
   "keywords": [
     "dotenv",
     "env",

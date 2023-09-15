@@ -17,6 +17,7 @@ export default defineConfig({
         light: '/src/assets/logo_black.png',
       },
       social: {
+        discord: 'https://discord.gg/y3j7aJZurh',
         github: 'https://github.com/sanjib-sen/envshh',
       },
       sidebar: [
