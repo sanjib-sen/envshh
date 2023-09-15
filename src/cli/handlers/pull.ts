@@ -6,9 +6,9 @@
 import path from "path";
 import { handleDefaultInstanceForPushNPull } from "../../db/controllers.js";
 import { ProjectConfigParansType } from "../../types/params.js";
-import { defaultBranchNamePrefix } from "../defaults/defaults.js";
-import { getAllEnvsFromRemoteRepo } from "../envs/get.js";
-import { saveDecryptedEnv } from "../encryption/decrypt.js";
+import { defaultBranchNamePrefix } from "../../types/defaults.js";
+import { getAllEnvsFromRemoteRepo } from "../../envshh/functions/get.js";
+import { saveDecryptedEnv } from "../../envshh/functions/decrypt.js";
 import { isDirectoryEmpty, isPathExists } from "../../filesystem/checks.js";
 import { exitWithError } from "../../utils/process.js";
 import { log } from "../../utils/log.js";

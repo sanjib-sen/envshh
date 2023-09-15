@@ -4,23 +4,23 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { defaultDBPath } from "../db/db.js";
+import { defaultDBPath } from "../db/connect.js";
 import { envshhAscii } from "../assets/fonts/ascii.js";
-import { dbCommand } from "./db.js";
-import { instanceCommand } from "./instance.js";
-import { pullCommand } from "./main/pull.js";
-import { pushCommand } from "./main/push.js";
+import { dbCommand } from "./commands/db.js";
+import { instanceCommand } from "./commands/instance.js";
+import { pullCommand } from "./commands/pull.js";
+import { pushCommand } from "./commands/push.js";
 import {
-  cloneCommand,
   decryptFileCommand,
   decryptTextCommand,
   encryptFileCommand,
   encryptTextCommand,
-  generateCommand,
-  pipeCommand,
-} from "./utils.js";
-import { removeCommand } from "./main/remove.js";
+} from "./commands/utils.js";
+import { removeCommand } from "./commands/remove.js";
 import { version } from "../../package.json";
+import { cloneCommand } from "./commands/clone.js";
+import { generateCommand } from "./commands/generate.js";
+import { pipeCommand } from "./commands/pipe.js";
 
 export const program = new Command();
 program

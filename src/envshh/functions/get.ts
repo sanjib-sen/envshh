@@ -5,7 +5,7 @@
 
 import path from "path";
 import { isPathADirectory, isPathExists } from "../../filesystem/checks.js";
-import { envExtensions } from "../defaults/defaults.js";
+import { envExtensions } from "../../types/defaults.js";
 import * as fs from "fs";
 import { log } from "../../utils/log.js";
 

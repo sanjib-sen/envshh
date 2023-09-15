@@ -6,8 +6,8 @@
 import { createFile } from "../../filesystem/functions.js";
 import { log } from "../../utils/log.js";
 import { exitWithError } from "../../utils/process.js";
-import { readEnvByLine } from "../encryption/common.js";
-import { getAllEnvsFromEnvPath } from "../envs/get.js";
+import { readEnvByLine } from "../../envshh/functions/common.js";
+import { getAllEnvsFromEnvPath } from "../../envshh/functions/get.js";
 
 export function getExampleFileString(location: string, defaultValue: string) {
   let encryptedEnv = "";

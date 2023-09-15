@@ -6,10 +6,10 @@
 import path from "path";
 import { handleDefaultInstanceForPushNPull } from "../../db/controllers.js";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
-import { getAllEnvsFromEnvPath } from "../envs/get.js";
-import { defaultBranchNamePrefix } from "../defaults/defaults.js";
+import { getAllEnvsFromEnvPath } from "../../envshh/functions/get.js";
+import { defaultBranchNamePrefix } from "../../types/defaults.js";
 import { createDirectory } from "../../filesystem/functions.js";
-import { saveEncryptedEnv } from "../encryption/encrypt.js";
+import { saveEncryptedEnv } from "../../envshh/functions/encrypt.js";
 import { exitWithError } from "../../utils/process.js";
 import { log } from "../../utils/log.js";
 

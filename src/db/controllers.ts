@@ -3,23 +3,23 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { db } from "./db.js";
+import { db } from "./connect.js";
 import {
   EnvshhInstanceNameType,
   EnvshhInstanceType,
 } from "../types/schemas.js";
-import { EnvshhInstance } from "../envshh/envshh.js";
+import { EnvshhInstance } from "../envshh/class.js";
 import { isPathExists } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import {
   defaultInstanceName,
   defaultLocalDirectory,
-} from "../envshh/defaults/defaults.js";
+} from "../types/defaults.js";
 import path from "path";
 import * as readlineSync from "readline-sync";
 import { deleteDirectoryOrFile } from "../filesystem/functions.js";
 import { log } from "../utils/log.js";
-import { defaultDBPath } from "./db.js";
+import { defaultDBPath } from "./connect.js";
 
 export function DBinsertInstance(envshhConfig: EnvshhInstanceType) {
   log.flow(

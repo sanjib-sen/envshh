@@ -4,18 +4,18 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { removeInstance } from "../envshh/commands/instance/remove.js";
-import { resetInstance } from "../envshh/commands/instance/reset.js";
-import { createInstance } from "../envshh/commands/instance/create.js";
-import { editInstance } from "../envshh/commands/instance/edit.js";
+import { removeInstance } from "../handlers/instance/remove.js";
+import { resetInstance } from "../handlers/instance/reset.js";
+import { createInstance } from "../handlers/instance/create.js";
+import { editInstance } from "../handlers/instance/edit.js";
 import {
   forceOption,
   instanceNameOption,
   localDirectoryOption,
   remoteRepoUrlOption,
-  verboseAction,
   verboseOption,
-} from "./common.js";
+} from "./common/options.js";
+import { verboseAction } from "./common/actions.js";
 
 export const instanceCommand = new Command();
 

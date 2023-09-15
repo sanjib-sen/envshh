@@ -4,38 +4,43 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { thePush } from "../../envshh/commands/push.js";
-import { askPassword } from "../../utils/password.js";
+import { theRemove } from "../handlers/remove.js";
+import * as readlineSync from "readline-sync";
 import {
   branchNameOption,
+  forceOption,
   envPathOption,
   instanceNameOption,
   offlineOption,
   projectNameOption,
-  verboseAction,
   verboseOption,
-} from "../common.js";
+} from "./common/options.js";
 
-export const pushCommand = new Command();
+import { verboseAction } from "./common/actions.js";
 
-pushCommand
-  .name("push")
-  .description(
-    "Push local environment variables to Local and/or Remote Repository",
-  )
-  .option("-m, --message <message>", "Commit Message")
+export const removeCommand = new Command();
+
+removeCommand
+  .name("remove")
+  .description("Delete .envs from Local and/or Remote Repository")
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(envPathOption)
   .addOption(instanceNameOption)
   .addOption(offlineOption)
+  .addOption(forceOption)
   .addOption(verboseOption)
   .action((options) => {
     verboseAction(options.verbose);
-    const password = askPassword(true);
-    thePush({
-      message: options.message,
-      password: password,
+    if (!options.yes) {
+      const confirm = readlineSync.question(
+        "Are you sure you want to delete .envs from local and Remote Repository? (y/N): ",
+      );
+      if (confirm !== "y") {
+        process.exit(0);
+      }
+    }
+    theRemove({
       name: options.project,
       envPath: options.env.split(","),
       branch: options.branch,

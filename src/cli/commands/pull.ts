@@ -4,16 +4,16 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { thePull } from "../../envshh/commands/pull.js";
+import { thePull } from "../handlers/pull.js";
 import { askPassword } from "../../utils/password.js";
 import {
   branchNameOption,
   instanceNameOption,
   offlineOption,
   projectNameOption,
-  verboseAction,
   verboseOption,
-} from "../common.js";
+} from "./common/options.js";
+import { verboseAction } from "./common/actions.js";
 
 export const pullCommand = new Command();
 

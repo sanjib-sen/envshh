@@ -4,7 +4,7 @@
 // https://opensource.org/licenses/MIT
 
 import { isPathExists } from "../filesystem/checks.js";
-import { runCommand } from "../utils/command.js";
+import { runCommand } from "../utils/shell.js";
 import { log } from "../utils/log.js";
 import { exitWithError } from "../utils/process.js";
 

@@ -4,42 +4,37 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { theRemove } from "../../envshh/commands/remove.js";
-import * as readlineSync from "readline-sync";
+import { thePush } from "../handlers/push.js";
+import { askPassword } from "../../utils/password.js";
 import {
   branchNameOption,
-  forceOption,
   envPathOption,
   instanceNameOption,
   offlineOption,
   projectNameOption,
   verboseOption,
-  verboseAction,
-} from "../common.js";
+} from "./common/options.js";
+import { verboseAction } from "./common/actions.js";
+export const pushCommand = new Command();
 
-export const removeCommand = new Command();
-
-removeCommand
-  .name("remove")
-  .description("Delete .envs from Local and/or Remote Repository")
+pushCommand
+  .name("push")
+  .description(
+    "Push local environment variables to Local and/or Remote Repository",
+  )
+  .option("-m, --message <message>", "Commit Message")
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(envPathOption)
   .addOption(instanceNameOption)
   .addOption(offlineOption)
-  .addOption(forceOption)
   .addOption(verboseOption)
   .action((options) => {
     verboseAction(options.verbose);
-    if (!options.yes) {
-      const confirm = readlineSync.question(
-        "Are you sure you want to delete .envs from local and Remote Repository? (y/N): ",
-      );
-      if (confirm !== "y") {
-        process.exit(0);
-      }
-    }
-    theRemove({
+    const password = askPassword(true);
+    thePush({
+      message: options.message,
+      password: password,
       name: options.project,
       envPath: options.env.split(","),
       branch: options.branch,

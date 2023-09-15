@@ -4,10 +4,11 @@
 // https://opensource.org/licenses/MIT
 
 import { Command } from "@commander-js/extra-typings";
-import { clearDB } from "../envshh/commands/db/clear.js";
-import { syncDB } from "../envshh/commands/db/sync.js";
-import { showDB } from "../envshh/commands/db/show.js";
-import { forceOption, verboseAction, verboseOption } from "./common.js";
+import { clearDB } from "../handlers/db/clear.js";
+import { syncDB } from "../handlers/db/sync.js";
+import { showDB } from "../handlers/db/show.js";
+import { forceOption, verboseOption } from "./common/options.js";
+import { verboseAction } from "./common/actions.js";
 
 export const dbCommand = new Command();
 

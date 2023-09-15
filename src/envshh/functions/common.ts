@@ -3,7 +3,7 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import { envQuotations } from "../defaults/defaults.js";
+import { envQuotations } from "../../types/defaults.js";
 import { readFile } from "../../filesystem/functions.js";
 
 function readEnv(path: string) {

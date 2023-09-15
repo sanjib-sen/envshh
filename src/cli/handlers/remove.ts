@@ -6,8 +6,8 @@
 import path from "path";
 import { DBgetInstance } from "../../db/controllers.js";
 import { ProjectPushConfigParamsType } from "../../types/params.js";
-import { getAllEnvsFromEnvPath } from "../envs/get.js";
-import { defaultBranchNamePrefix } from "../defaults/defaults.js";
+import { getAllEnvsFromEnvPath } from "../../envshh/functions/get.js";
+import { defaultBranchNamePrefix } from "../../types/defaults.js";
 import { deleteDirectoryOrFile } from "../../filesystem/functions.js";
 
 export function theRemove(

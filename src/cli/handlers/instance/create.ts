@@ -5,9 +5,10 @@
 
 import { EnvshhInstanceType } from "../../../types/schemas.js";
 import * as readlineSync from "readline-sync";
-import { EnvshhInstance } from "../../envshh.js";
+import { EnvshhInstance } from "../../../envshh/class.js";
 import { exitWithError } from "../../../utils/process.js";
-import { defaultInstanceName } from "../../defaults/defaults.js";
+import { defaultInstanceName } from "../../../types/defaults.js";
+
 import {
   DBCheckInstanceExists,
   DBgetOnlyInstance,

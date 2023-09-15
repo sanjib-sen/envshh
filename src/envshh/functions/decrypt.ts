@@ -11,7 +11,7 @@ import {
   getQuteFromValue,
   readEnvByLine,
 } from "./common.js";
-import { decryptString } from "./lib.js";
+import { decryptString } from "../../encryption/lib.js";
 
 function getDecryptedValueFromLine(line: string, password: string) {
   const quotedValue = getQuotedValueFromLine(line);

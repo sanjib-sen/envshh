@@ -1,10 +1,11 @@
-import { Option } from "@commander-js/extra-typings";
+import { Argument, Option } from "@commander-js/extra-typings";
 import {
   defaultProjectName,
   defaultBranchName,
   defaultInstanceName,
-} from "../envshh/defaults/defaults.js";
-import { DBgetOnlyInstance } from "../db/controllers.js";
+} from "../../../types/defaults.js";
+import { DBgetOnlyInstance } from "../../../db/controllers.js";
+import path from "path";
 
 export const projectNameOption = new Option(
   "-p, --project <project-name>",
@@ -55,8 +56,22 @@ export const verboseOption = new Option(
   "Show verbose output",
 ).default(false);
 
-export const verboseAction = (enabled: boolean) => {
-  if (enabled) {
-    process.env.VERBOSE = "true";
-  }
-};
+export const inputFileArgument = new Argument(
+  "<file>",
+  "Specify the input file to encrypt/decrypt",
+);
+
+export const outputFileOption = new Option(
+  "-o, --output <output>",
+  "Specify the output file name/path",
+).default(path.join(process.cwd(), "output.env"));
+
+export const isEnvOption = new Option(
+  "-isenv, --isenv",
+  "Specify if the file is a .env file",
+).default(false);
+
+export const replaceOption = new Option(
+  "-r, --replace",
+  "Replace the input file with the encrypted file",
+).default(false);

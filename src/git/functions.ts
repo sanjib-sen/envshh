@@ -10,10 +10,10 @@ import {
   isRepositoryExistsOnRemote,
 } from "./checks.js";
 import { EnvshhInstanceType } from "../types/schemas.js";
-import { runCommand } from "../utils/command.js";
+import { runCommand } from "../utils/shell.js";
 import { exitWithError } from "../utils/process.js";
 import { handleError } from "../utils/error.js";
-import { EnvshhInstance } from "../envshh/envshh.js";
+import { EnvshhInstance } from "../envshh/class.js";
 import path from "path";
 import { log } from "../utils/log.js";
 import { isInVerboseMode } from "../utils/checks.js";

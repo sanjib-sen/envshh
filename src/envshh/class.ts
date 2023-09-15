@@ -30,7 +30,7 @@ import { isDirectoryEmpty } from "../filesystem/checks.js";
 import { exitWithError } from "../utils/process.js";
 import { handleZodError } from "../utils/error.js";
 import path from "path";
-import { defaultLocalDirectory } from "./defaults/defaults.js";
+import { defaultLocalDirectory } from "../types/defaults.js";
 import { log } from "../utils/log.js";
 
 export class EnvshhInstance {

@@ -7,8 +7,8 @@
 // https://github.com/luke-park/SecureCompatibleEncryptionExamples
 
 import * as crypto from "crypto";
-import { exitWithError } from "../../utils/process.js";
-import { log } from "../../utils/log.js";
+import { exitWithError } from "../utils/process.js";
+import { log } from "../utils/log.js";
 
 const ALGORITHM_NAME = "aes-128-gcm";
 const ALGORITHM_NONCE_SIZE = 12;
