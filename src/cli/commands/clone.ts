@@ -5,7 +5,6 @@
 import { Command } from '@commander-js/extra-typings';
 
 import { getProjectNameFromRepoUrl } from '../../git/functions.js';
-import { defaultProjectName } from '../../types/defaults.js';
 import { askPassword } from '../../utils/password.js';
 import { runCommand } from '../../utils/shell.js';
 import { thePull } from '../handlers/pull.js';
@@ -14,7 +13,6 @@ import {
   branchNameOption,
   instanceNameOption,
   offlineOption,
-  projectNameOption,
   verboseOption,
 } from './common/options.js';
 
@@ -24,7 +22,10 @@ cloneCommand
   .description('git clone and envshh pull at the same time')
   .argument('<repo>', 'Repository url')
   .argument('[directory]', 'Directory name')
-  .addOption(projectNameOption)
+  .option(
+    '-p, --project <project-name>',
+    'Select a project name. Defaults to cloned directory name',
+  )
   .addOption(branchNameOption)
   .addOption(instanceNameOption)
   .addOption(verboseOption)
@@ -44,7 +45,7 @@ cloneCommand
     const password = askPassword(false);
     thePull({
       password: password,
-      name: options.project || defaultProjectName,
+      name: options.project || directory,
       branch: options.branch,
       offline: options.offline,
       instance: options.instance,
