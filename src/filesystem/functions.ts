@@ -2,13 +2,13 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import * as fs from 'fs';
+import path from 'path';
 
-import * as fs from "fs";
-import path from "path";
-import { handleError } from "../utils/error.js";
-import { isPathExists } from "./checks.js";
-import { exitWithError } from "../utils/process.js";
-import { log } from "../utils/log.js";
+import { handleError } from '../utils/error.js';
+import { log } from '../utils/log.js';
+import { exitWithError } from '../utils/process.js';
+import { isPathExists } from './checks.js';
 
 export function createDirectory(directoryPath: string, recursive = true) {
   log.flow(`Creating directory ${directoryPath} if not exists`);
@@ -27,7 +27,7 @@ export function readFile(destination: string) {
   if (isPathExists(destination) === false)
     return exitWithError(`File ${destination} does not exist.`);
   try {
-    return fs.readFileSync(destination, "utf-8");
+    return fs.readFileSync(destination, 'utf-8');
   } catch (error) {
     return handleError(error, `Failed to read file ${destination}.`);
   }
@@ -57,7 +57,10 @@ export function deleteDirectoryOrFile(
   log.flow(`Deleting ${directoryOrFilePath}`);
   try {
     if (fs.existsSync(directoryOrFilePath)) {
-      fs.rmSync(directoryOrFilePath, { recursive: recursive, force: true });
+      fs.rmSync(directoryOrFilePath, {
+        recursive: recursive,
+        force: true,
+      });
     }
   } catch (error) {
     return handleError(error, `Failed to delete ${directoryOrFilePath}.`);
@@ -66,7 +69,7 @@ export function deleteDirectoryOrFile(
 
 export function getParentDirectory(filePath: string) {
   log.flow(`Getting parent directory of ${filePath}`);
-  const parentDirectory = path.resolve(filePath, "..");
+  const parentDirectory = path.resolve(filePath, '..');
   if (isPathExists(parentDirectory)) return parentDirectory;
   else {
     createDirectory(parentDirectory, true);
@@ -102,7 +105,7 @@ export function copyFileAndFolder(sourcePath: string, destinationPath: string) {
 
 export function getCurrentWorkingDirectoryName() {
   log.flow(`Getting current working directory name`);
-  const seperator = process.platform === "win32" ? "\\" : "/";
+  const seperator = process.platform === 'win32' ? '\\' : '/';
   const directoryName = process.cwd().split(seperator).pop() as string;
   log.flow(`Current working directory name: ${directoryName}`);
   return directoryName;

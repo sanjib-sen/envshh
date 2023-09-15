@@ -1,18 +1,20 @@
 {
   "name": "envshh",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json|md)\" --log-level warn",
-    "lint": "eslint --ext .js,.ts,.json --fix .",
+    "lint": "eslint --fix .",
+    "format": "prettier -w . --log-level warn",
     "clean": "$npm_execpath run clean:win32 && $npm_execpath run clean:unix",
     "clean:win32": "node -e \"if (process.platform === 'win32') process.exit(1)\" || , if exist dist rmdir /Q /S dist builds",
     "clean:unix": "node -e \"if (process.platform !== 'win32') process.exit(1)\" || rm -rf dist builds",
-    "build": "$npm_execpath run clean && $npm_execpath run format && $npm_execpath run lint && node esbuild.mjs",
-    "test": "$npm_execpath run build && node dist/envshh.cjs -v",
+    "build": "$npm_execpath run clean && $npm_execpath run lint && $npm_execpath run format && node esbuild.mjs",
+    "test": "$npm_execpath run build && $npm_execpath run compile && ./builds/envshh -v",
     "register": "$npm_execpath run build && cd dist && $npm_execpath install -g .",
+    "postversion": "npx npm-check-updates -u && $npm_execpath install && $npm_execpath run build && $npm_execpath run compile && ./builds/envshh -v",
     "prepare": "husky install",
+    "compile": "pkg ./dist/envshh.cjs --out-path=./builds -t latest",
     "compile:linux-x64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/x64 -t latest-linux-x64",
     "compile:win-x64": "pkg ./dist/envshh.cjs --out-path=./builds/win/x64 -t latest-win-x64",
     "compile:mac-x64": "pkg ./dist/envshh.cjs --out-path=./builds/mac/x64 -t latest-mac-x64",
@@ -23,8 +25,8 @@
     "compile:win": "$npm_execpath run compile:win-x64 && $npm_execpath run compile:win-arm64",
     "compile:mac": "$npm_execpath run compile:mac-x64 && $npm_execpath run compile:mac-arm64",
     "compile:x64": "$npm_execpath run compile:linux-x64 && $npm_execpath run compile:win-x64 && $npm_execpath run compile:mac-x64",
-    "compile:arm-64": "$npm_execpath run compile:linx-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
-    "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm-x64"
+    "compile:arm64": "$npm_execpath run compile:linux-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
+    "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm64"
   },
   "bin": {
     "envshh": "./envshh.cjs"
@@ -33,7 +35,7 @@
     "type": "git",
     "url": "https://github.com/sanjib-sen/envshh.git"
   },
-  "homepage": "https://github.com/sanjib-sen/envshh#readme",
+  "homepage": "https://sanjib-sen.github.io/envshh",
   "keywords": [
     "dotenv",
     "env",
@@ -48,10 +50,9 @@
     "commander": "~11.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
     "@types/figlet": "^1.5.6",
-    "@types/node": "^20.5.9",
+    "@types/node": "^20.6.0",
     "@types/readline-sync": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
@@ -60,13 +61,14 @@
     "eslint-plugin-prettier": "latest",
     "husky": "^8.0.3",
     "pkg": "^5.8.1",
+    "prettier-eslint-cli": "^7.1.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@commander-js/extra-typings": "~11.0.0",
     "chalk": "^5.3.0",
-    "esbuild": "^0.19.2",
-    "figlet": "^1.6.0",
+    "esbuild": "^0.19.3",
+    "eslint-plugin-import": "^2.28.1",
     "lowdb": "^6.0.1",
     "readline-sync": "^1.4.10",
     "zod": "^3.22.2"

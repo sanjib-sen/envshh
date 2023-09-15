@@ -6,7 +6,6 @@
     "target": "ESNext",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
@@ -18,5 +17,5 @@
   },
   "lib": ["ESNext"],
   "include": ["src", "package.json", "README.md"],
-  "exclude": ["node_modules", "dist", "docs"]
+  "exclude": ["node_modules", "dist", "docs", "builds"]
 }

@@ -2,8 +2,7 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
-
-import { log } from "./log.js";
+import { log } from './log.js';
 
 export function exitWithWarning(message: string) {
   log.warn(message);

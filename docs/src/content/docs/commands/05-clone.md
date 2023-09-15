@@ -3,7 +3,7 @@ title: clone
 description: Commands - clone
 ---
 
-> Check `envshh clone --help` or `envshh clone pull` for more details
+> Check `envshh help pull` for more details
 
 git clone and envshh pull at the same time
 

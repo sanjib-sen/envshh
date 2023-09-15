@@ -2,10 +2,10 @@
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
+import { z } from 'zod';
 
-import { z } from "zod";
-import { log } from "./log.js";
-import { exitWithError } from "./process.js";
+import { log } from './log.js';
+import { exitWithError } from './process.js';
 
 export function handleError(error: unknown, customMessage?: string) {
   if (customMessage) log.error(customMessage);
@@ -16,13 +16,18 @@ export function handleError(error: unknown, customMessage?: string) {
   }
 }
 
-export function handleZodError(zodSchema: Zod.Schema, object: unknown) {
+export function handleZodError(
+  zodSchema: Zod.Schema,
+  object: unknown,
+  customMessage?: string,
+) {
   try {
     const parsedData = zodSchema.parse(object);
     return parsedData;
   } catch (err) {
+    if (customMessage) log.error(customMessage);
     if (err instanceof z.ZodError) {
-      exitWithError(err.issues.map((issue) => issue.message).join("\n"));
+      exitWithError(err.message);
     }
     process.exit(1);
   }

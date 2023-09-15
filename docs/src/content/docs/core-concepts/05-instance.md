@@ -70,7 +70,13 @@ envshh instance delete <options>
 List all the instances
 
 ```sh
-envshh list
+envshh db show
+```
+
+View a single instance
+
+```sh
+envshh db show <instanceName>
 ```
 
 See [instance](/commands/instance) for more details.
