@@ -1,6 +1,6 @@
 {
   "name": "envshh",
-  "version": "0.0.25-2",
+  "version": "0.0.25",
   "description": "A command line tool to securely and automatically manage, store environment variables.",
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "build": "$npm_execpath run clean && $npm_execpath run lint && $npm_execpath run format && node esbuild.mjs",
     "test": "$npm_execpath run build && $npm_execpath run compile && ./builds/envshh -v",
     "register": "$npm_execpath run build && cd dist && $npm_execpath install -g .",
-    "postversion": "npm run test",
+    "postversion": "npx npm-check-updates -u && $npm_execpath install && $npm_execpath run build && $npm_execpath run compile && ./builds/envshh -v",
     "prepare": "husky install",
     "compile": "pkg ./dist/envshh.cjs --out-path=./builds -t latest",
     "compile:linux-x64": "pkg ./dist/envshh.cjs --out-path=./builds/linux/x64 -t latest-linux-x64",
@@ -25,7 +25,7 @@
     "compile:win": "$npm_execpath run compile:win-x64 && $npm_execpath run compile:win-arm64",
     "compile:mac": "$npm_execpath run compile:mac-x64 && $npm_execpath run compile:mac-arm64",
     "compile:x64": "$npm_execpath run compile:linux-x64 && $npm_execpath run compile:win-x64 && $npm_execpath run compile:mac-x64",
-    "compile:arm64": "$npm_execpath run compile:linx-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
+    "compile:arm64": "$npm_execpath run compile:linux-arm64 && $npm_execpath run compile:win-arm64 && $npm_execpath run compile:mac-arm64",
     "compile:all": "$npm_execpath run build && $npm_execpath run compile:x64 && $npm_execpath run compile:arm64"
   },
   "bin": {
