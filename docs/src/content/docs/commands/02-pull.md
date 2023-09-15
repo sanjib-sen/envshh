@@ -3,7 +3,7 @@ title: pull
 description: Commands - pull
 ---
 
-> Check `envshh pull --help` or `envshh help pull` for more details
+> Check `envshh help pull` for more details
 
 Pull environment variables from Local and/or Remote Repository
 

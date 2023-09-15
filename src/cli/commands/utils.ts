@@ -10,11 +10,13 @@ import { saveEncryptedEnv } from '../../envshh/functions/encrypt.js';
 import { createFile, readFile } from '../../filesystem/functions.js';
 import { log } from '../../utils/log.js';
 import { askPassword } from '../../utils/password.js';
+import { verboseAction } from './common/actions.js';
 import {
   inputFileArgument,
   isEnvOption,
   outputFileOption,
   replaceOption,
+  verboseOption,
 } from './common/options.js';
 
 export const encryptFileCommand = new Command();
@@ -25,7 +27,9 @@ encryptFileCommand
   .addOption(outputFileOption)
   .addOption(isEnvOption)
   .addOption(replaceOption)
+  .addOption(verboseOption)
   .action((file, options) => {
+    verboseAction(options.verbose);
     const password = askPassword(true);
     if (options.isenv) {
       saveEncryptedEnv(file, password, options.output);
@@ -46,7 +50,9 @@ decryptFileCommand
   .addOption(outputFileOption)
   .addOption(isEnvOption)
   .addOption(replaceOption)
+  .addOption(verboseOption)
   .action((file, options) => {
+    verboseAction(options.verbose);
     const password = askPassword(false);
     if (options.isenv) {
       saveDecryptedEnv(file, password, options.output);
@@ -65,7 +71,9 @@ encryptTextCommand
   .description('Encrypt a text')
   .argument('<text>', 'Specify the text to encrypt')
   .option('-o, --output <output-path>', 'Output to file <path>')
+  .addOption(verboseOption)
   .action((text, options) => {
+    verboseAction(options.verbose);
     const password = askPassword(true);
     const encrypted = encryptString(text, password);
     if (!options.output) {
@@ -82,7 +90,9 @@ decryptTextCommand
   .description('Decrypt a text')
   .argument('<text>', 'Specify the text to decrypt')
   .option('-o, --output <output-path>', 'Output to file <path>')
+  .addOption(verboseOption)
   .action((text, options) => {
+    verboseAction(options.verbose);
     const password = askPassword(false);
     const decrypted = decryptString(text, password);
     if (!options.output) {

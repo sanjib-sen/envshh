@@ -9,11 +9,13 @@ import { defaultProjectName } from '../../types/defaults.js';
 import { askPassword } from '../../utils/password.js';
 import { runCommand } from '../../utils/shell.js';
 import { thePull } from '../handlers/pull.js';
+import { verboseAction } from './common/actions.js';
 import {
   branchNameOption,
   instanceNameOption,
   offlineOption,
   projectNameOption,
+  verboseOption,
 } from './common/options.js';
 
 export const cloneCommand = new Command();
@@ -25,9 +27,11 @@ cloneCommand
   .addOption(projectNameOption)
   .addOption(branchNameOption)
   .addOption(instanceNameOption)
+  .addOption(verboseOption)
   .addOption(offlineOption)
   .allowUnknownOption()
   .action((repo, directory, options) => {
+    verboseAction(options.verbose);
     if (!directory) {
       directory = getProjectNameFromRepoUrl(repo);
     }

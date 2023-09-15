@@ -3,7 +3,7 @@ title: generate
 description: Commands - generate
 ---
 
-> Check `envshh generate --help` or `envshh help generate` for more details
+> Check `envshh help generate` for more details
 
 Generate .env.example file
 

@@ -8,7 +8,8 @@ import { spawnSync } from 'child_process';
 import { readEnvByLine } from '../../envshh/functions/common.js';
 import { getAllEnvsFromEnvPath } from '../../envshh/functions/get.js';
 import { log } from '../../utils/log.js';
-import { envPathOption } from './common/options.js';
+import { verboseAction } from './common/actions.js';
+import { envPathOption, verboseOption } from './common/options.js';
 
 export const pipeCommand = new Command();
 pipeCommand
@@ -16,7 +17,9 @@ pipeCommand
   .description('Load .env files directly and run command')
   .argument('<commands...>', 'Commands to run')
   .addOption(envPathOption)
+  .addOption(verboseOption)
   .action((args, options) => {
+    verboseAction(options.verbose);
     const files = getAllEnvsFromEnvPath(options.env.split(','));
     files.map((file) => {
       const linesFromFile = readEnvByLine(file);

@@ -18,7 +18,7 @@ export const projectNameOption = new Option(
 ).default(defaultProjectName);
 export const branchNameOption = new Option(
   '-b, --branch <name>',
-  `Keep different branches for different production, development and staging`,
+  `Keep different versions of .envs for different environments like staging, production, etc`,
 ).default(defaultBranchName);
 
 export const envPathOption = new Option(
@@ -33,7 +33,7 @@ export const instanceNameOption = new Option(
 
 export const offlineOption = new Option(
   '-o, --offline',
-  "Don't delete from remote repository. Just commit locally.",
+  "Don't push the changes to Remote Repository. Just update the Local Repository.",
 ).default(false);
 
 export const forceOption = new Option(

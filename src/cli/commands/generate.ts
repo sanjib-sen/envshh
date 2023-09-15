@@ -5,6 +5,8 @@
 import { Command } from '@commander-js/extra-typings';
 
 import { theGenerate } from '../handlers/generate.js';
+import { verboseAction } from './common/actions.js';
+import { verboseOption } from './common/options.js';
 
 export const generateCommand = new Command();
 generateCommand
@@ -25,7 +27,9 @@ generateCommand
     "Specify a suffix to put after the .env filename in place of 'example'",
     'example',
   )
+  .addOption(verboseOption)
   .action((options) => {
+    verboseAction(options.verbose);
     theGenerate({
       envPath: options.env,
       value: options.value,
