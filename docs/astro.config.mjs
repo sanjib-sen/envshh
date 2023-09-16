@@ -3,8 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sanjib-sen.github.io',
-  base: '/envshh',
+  site: 'https://envshh.js.org',
   integrations: [
     starlight({
       favicon: '/favicon.ico',
