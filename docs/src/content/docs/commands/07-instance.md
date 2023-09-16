@@ -5,7 +5,7 @@ description: Commands - instance
 
 > Check `envshh help instance` for more details from the command line
 
-Learn everything about [Instance](/envshh/core-concepts/05-instance)
+Learn everything about [Instance](/core-concepts/05-instance)
 
 ## create
 
@@ -23,11 +23,11 @@ Providing no option will prompt for the values (Interactive Mode)
 
 ### Options
 
-- [instanceName](/envshh/core-concepts/05-instance/#1-name-of-the-instance)
+- [instanceName](/core-concepts/05-instance/#1-name-of-the-instance)
   `i, --instance <instanceName>` (Optional for interactive mode, Required for non-interactive mode)
-- [remoteRepoUrl](/envshh/core-concepts/05-instance/#2-remote-repository-url)
+- [remoteRepoUrl](/core-concepts/05-instance/#2-remote-repository-url)
   `-r, --remote <remote-url>` (Optional)
-- [localDirectory](/envshh/core-concepts/05-instance/#3-local-directory-path)
+- [localDirectory](/core-concepts/05-instance/#3-local-directory-path)
   `-d, --directory <directory>` (Optional for interactive mode, Required for non-interactive mode)
 
 ### Example
@@ -60,19 +60,19 @@ Only providing the old instance name option (Required) will prompt for other val
 
 ### Options
 
-- [oldInstanceName](/envshh/core-concepts/05-instance/#1-name-of-the-instance)
+- [oldInstanceName](/core-concepts/05-instance/#1-name-of-the-instance)
   `i, --instance <instanceName>` (Required)
   Previous Instance Name
-- [newInstanceName](/envshh/core-concepts/05-instance/#1-name-of-the-instance)
+- [newInstanceName](/core-concepts/05-instance/#1-name-of-the-instance)
   `--new-name <new-name>` (Optional)
   Change the name of the instance with --new-name option
-- [remoteRepoUrl](/envshh/core-concepts/05-instance/#2-remote-repository-url)
+- [remoteRepoUrl](/core-concepts/05-instance/#2-remote-repository-url)
   `-r, --remote <remote-url>` (Optional)
   Change the remote repository url with -r or --remote option.
   - If you want to remove the remote repository url in interactive mode, just enter "none" as the value of the option.
-  - Removing the remote repository url will make the instance work in [offline](/envshh/core-concepts/04-offline) mode all the time.
+  - Removing the remote repository url will make the instance work in [offline](/core-concepts/04-offline) mode all the time.
   - Changing the remote repository url with a new url will make the instance work in online mode. However, all of the previous commits will be sqaushed to a new commit and set the origin the new repo url.
-- [localDirectory](/envshh/core-concepts/05-instance/#3-local-directory-path)
+- [localDirectory](/core-concepts/05-instance/#3-local-directory-path)
   `-d, --directory <directory>` (Optional)
   Change the local directory path with -d or --directory option
   - Changing the localDirectory will move all previous .envs as well as git commits to the new directory.
@@ -89,7 +89,7 @@ envshh instance edit -i work -r https://github.com/acme-corp/work-envs.git -d /h
 
 ## remove
 
-Remove the local directory (including all the .envs) of an instance. It will also delete the instance from [database](/envshh/commands/08-db). But the remote repository will not be deleted from the hosted git server. So you cannot do `push -i <instance-name>` or `pull -i <instance-name>` anymore. But as it will not be deleted from the hosted git server, you can create a new instance with remote repository url and get those .envs back.
+Remove the local directory (including all the .envs) of an instance. It will also delete the instance from [database](/commands/08-db). But the remote repository will not be deleted from the hosted git server. So you cannot do `push -i <instance-name>` or `pull -i <instance-name>` anymore. But as it will not be deleted from the hosted git server, you can create a new instance with remote repository url and get those .envs back.
 
 ### Usage
 

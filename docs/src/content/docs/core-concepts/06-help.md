@@ -3,7 +3,7 @@ title: help
 description: Core Concets - help
 ---
 
-You can get help for any command by running `envshh help <command>`. For example, `envshh help push` will print the help for the [`push`](/envshh/commands/01-push) command
+You can get help for any command by running `envshh help <command>`. For example, `envshh help push` will print the help for the [`push`](/commands/01-push) command
 
 ## Usage
 
@@ -21,7 +21,7 @@ You can get help for any command by running `envshh help <command>`. For example
 
 #### Supported Commands
 
-Every [commands](/envshh/commands) except `help` itself
+Every [commands](/commands) except `help` itself
 
 #### Example
 

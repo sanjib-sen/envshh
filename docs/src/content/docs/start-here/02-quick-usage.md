@@ -31,6 +31,6 @@ Congratulations! See? It was not very hard! Your .envs are encrypted and securel
 
 - When asked, provide the password to decrypt the data
 
-- (More) You can always [**push your .env updates**](/envshh/commands/01-push) using `npx envshh push`
-- (More) Need to [**generate a`.env.example` file?**](/envshh/commands/03-generate) Use `npx envshh generate`
-- (More) Need to [**remove a .env from your repo?**](/envshh/commands/06-remove) Use `npx envshh remove`
+- (More) You can always [**push your .env updates**](/commands/01-push) using `npx envshh push`
+- (More) Need to [**generate a`.env.example` file?**](/commands/03-generate) Use `npx envshh generate`
+- (More) Need to [**remove a .env from your repo?**](/commands/06-remove) Use `npx envshh remove`
