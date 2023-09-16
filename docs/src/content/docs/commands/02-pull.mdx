@@ -1,0 +1,51 @@
+---
+title: pull
+description: Commands - pull
+---
+
+import pullTutorial from '../../../assets/recordings/pull.webm';
+
+> Check `envshh help pull` for more details from the command line
+
+Pull environment variables from Local and/or Remote Repository
+
+## Demo
+
+<video width="1478" height="772" controls>
+  <source src={pullTutorial} type="video/webm" />
+</video>
+
+## Usage
+
+```sh
+envshh pull <options>
+```
+
+## Options
+
+- [project](/envshh/core-concepts/01-project)
+- [branch](/envshh/core-concepts/02-branch)
+- [offline](/envshh/core-concepts/04-offline)
+- [instance](/envshh/core-concepts/05-instance)
+
+## Example
+
+```sh
+npx envshh pull
+```
+
+```sh
+npx envshh pull -b "staging" # staging / production / development / dev / prod anything you like
+```
+
+```sh
+npx envshh push -p "my-project" # Custom project name if your project name is different from your git repository / directory name
+```
+
+```sh
+npx envshh pull -o # Just pull form local directory. No remote repository will be pulled
+```
+
+```sh
+
+```

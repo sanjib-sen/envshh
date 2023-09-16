@@ -1,0 +1,47 @@
+---
+title: pipe
+description: Commands - pipe
+---
+
+import pipeTutorial from '../../../assets/recordings/pipe.webm';
+
+> Check `envshh help pipe` for more details from the command line
+
+Say goodbye to dotenv. Directly pipe your environment variables to stdin and run your project
+
+For example, `npx envshh pipe npm run dev` will - pipe your environment variables to stdin first - then run `npm run dev`
+So you will not need to install and use `dotenv`, or `dotenv.configure()`, or `dotenv.load()` anymore
+
+## Demo
+
+<video width="1478" height="772" controls>
+  <source src={pipeTutorial} type="video/webm" />
+</video>
+
+## Usage
+
+```bash
+npx envshh pipe <command>
+```
+
+## Options
+
+- [env-path](/envshh/core-concepts/03-env-path)
+
+## Examples
+
+```bash
+npx envshh pipe npm run dev
+```
+
+```bash
+npx envshh pipe -e src/.env.random node index.js # if your .env file is not in the root directory or does not follow .env naming convention
+```
+
+```bash
+npx envshh pipe python main.py # Python project
+```
+
+```bash
+npx envshh pipe -e src/.env.random,src/.env.production node index.js # if you have multiple .env files
+```

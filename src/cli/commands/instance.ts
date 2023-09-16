@@ -47,7 +47,7 @@ instanceCommand
     'Modify an instance. Run this command without any option to edit in interactive mode',
   )
   .addOption(instanceNameOption.makeOptionMandatory())
-  .option('--new-name <new-ame>', 'Specify the new name for the instance')
+  .option('--new-name <new-name>', 'Specify the new name for the instance')
   .addOption(localDirectoryOption)
   .addOption(remoteRepoUrlOption)
   .addOption(verboseOption)

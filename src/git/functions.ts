@@ -19,6 +19,9 @@ import {
 } from './checks.js';
 
 export function cloneRepo(envshh: EnvshhInstanceType) {
+  log.info(
+    `Cloning ${envshh.remoteRepoUrl} to ${envshh.localDirectory}. Please wait...`,
+  );
   log.flow(`Git cloning ${envshh.remoteRepoUrl} to ${envshh.localDirectory}`);
   if (!envshh.remoteRepoUrl) {
     return exitWithError('Repository URL is not defined.');
