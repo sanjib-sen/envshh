@@ -1,5 +1,5 @@
 ---
-title: Welcome to envshh
+title: envshh - .envs made easy
 description: Get started building your docs site with Starlight.
 template: splash
 hero:
@@ -7,35 +7,45 @@ hero:
   image:
     file: ../../assets/logo_blue.png
   actions:
-    - text: Get Started
+    - text: Get Started | Docs
       link: /envshh/start-here/02-quick-usage/
       icon: right-arrow
       variant: primary
-    - text: View Source Code
+    - text: GitHub
       link: https://github.com/sanjib-sen/envshh
-      icon: external
+      icon: github
+    - text: NPM
+      link: https://www.npmjs.com/package/envshh
+      icon: right-arrow
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 import { Image } from 'astro:assets';
 
-import cloneGif from '../../assets/recordings/clone.gif';
-import generateGif from '../../assets/recordings/generate.gif';
-import pullGif from '../../assets/recordings/pull.gif';
-import pushGif from '../../assets/recordings/push.gif';
+import cloneTutorial from '../../assets/recordings/clone.webm';
+import generateTutorial from '../../assets/recordings/generate.webm';
+import pipeTutorial from '../../assets/recordings/pipe.webm';
+import pullTutorial from '../../assets/recordings/pull.webm';
+import pushTutorial from '../../assets/recordings/push.webm';
+import branchTutorial from '../../assets/recordings/branch.webm';
 
 import { TabItem, Tabs } from '@astrojs/starlight/components';
 
-## Quick Usage
+## Quick Demo
 
 <Tabs>
 	<TabItem label="push">
-		Push your environment variables to git repository
-
+		Push your environment variables to a private git repository
+  
     	```sh
     	npx envshh push
     	```
-    	<Image src={pushGif} alt="tutorial" width="1200"/>
+      <video width="1478" height="772" controls>
+        <source src={pushTutorial} type="video/webm"/>
+      </video>
+
+    Learn more about the [Push Command](/envshh/commands/01-push)
+
     </TabItem>
     <TabItem label="pull">
     	Pull your environment variables from the git repository
@@ -43,7 +53,11 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
     	```sh
     	npx envshh pull
     	```
-    	<Image src={pullGif} alt="tutorial" width="1200"/>
+      <video width="1478" height="772" controls>
+        <source src={pullTutorial} type="video/webm"/>
+      </video>
+    Learn more about the [Pull Command](/envshh/commands/02-push)
+
     </TabItem>
     <TabItem label="generate">
     	Generate a `.env.example` file
@@ -51,7 +65,24 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
     	```sh
     	npx envshh generate
     	```
-    	<Image src={generateGif} alt="tutorial" width="1200"/>
+      <video width="1478" height="772" controls>
+        <source src={generateTutorial} type="video/webm"/>
+      </video>
+    Learn more about the [Generate Command](/envshh/commands/03-generate)
+
+    </TabItem>
+    <TabItem label="pipe">
+    	Say goodbye to dotenv. Pipe your environment variables to any command
+
+    	```sh
+    	npx envshh pipe [command]
+    	```
+      <video width="1478" height="772" controls>
+        <source src={pipeTutorial} type="video/webm"/>
+      </video>
+
+    Learn more about the [Pipe Command](/envshh/commands/04-pipe)
+
     </TabItem>
     <TabItem label="clone">
     	git clone and pull your environment variables from the git repository at the same time
@@ -59,7 +90,32 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
     	```sh
     	npx envshh clone [git-repo-url]
     	```
-    	<Image src={cloneGif} alt="tutorial" width="1200"/>
+  
+      <video width="1478" height="772" controls>
+        <source src={cloneTutorial} type="video/webm"/>
+      </video>
+
+      Learn more about the [Clone Command](/envshh/commands/05-clone)
+
+    </TabItem>
+    <TabItem label="branch">
+      Use push or pull for different versions of .env such as staging, production, etc.
+
+    	```sh
+    	npx envshh push -b [branchName]
+    	```
+      And
+
+      ```sh
+      npx envshh pull -b [branchName]
+      ```
+
+      <video width="1478" height="772" controls>
+        <source src={branchTutorial} type="video/webm"/>
+      </video>
+
+      Learn more about the [Branching](/envshh/core-concepts/02-branch)
+
     </TabItem>
 
 </Tabs>

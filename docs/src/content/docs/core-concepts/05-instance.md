@@ -79,6 +79,6 @@ View a single instance
 envshh db show <instanceName>
 ```
 
-See [instance](/commands/instance) for more details.
+See [instance](/commands/07-instance) for more details.
 
 <!-- This option will create a new directory in the git repo with the instance name and save the .envs there. If the option is not specified, Envshh will use the default instance name `personal`. You can change the default instance name in the config. See [configuration](/configuration) for more details. -->

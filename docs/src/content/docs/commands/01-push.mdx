@@ -1,0 +1,65 @@
+---
+title: push
+description: Commands - push
+---
+import pushTutorial from '../../../assets/recordings/push.webm';
+
+> Check `envshh help push` for more details from the command line
+
+Push local environment variables to Local and/or Remote Repository
+
+## Demo
+
+<video width="1478" height="772" controls>
+  <source src={pushTutorial} type="video/webm"/>
+</video>
+
+## Usage
+
+```sh
+envshh push <options>
+```
+
+## Options
+
+- [project](/envshh/core-concepts/01-project)
+- [branch](/envshh/core-concepts/02-branch)
+- [env-path](/envshh/core-concepts/03-env-path)
+- [offline](/envshh/core-concepts/04-offline)
+- [instance](/envshh/core-concepts/05-instance)
+- **message** `-m, --message <message>` (Optional):
+  Customized commit message. If not specified, Envshh will use Cureent Date and Time (`new Date.toString()`) as the commit message
+
+## Examples
+
+```sh
+npx envshh push
+```
+
+```sh
+npx envshh push  -b "staging" # staging / production / development / dev / prod anything you like
+```
+
+```sh
+npx envshh push -m "My Custom Commit Message" # Custom Commit Message
+```
+
+```sh
+npx envshh push -e "src/.env.random" # if your .env file is not in the root directory or does not follow .env naming convention
+```
+
+```sh
+npx envshh push -e "src/.env.random, src/.env.development" # Above example + multiple files
+```
+
+```sh
+npx envshh push -o # Just commit the changes locally without pushing to remote repository
+```
+
+```sh
+npx envshh push -p "my-project" # Custom project name
+```
+
+```sh
+npx envshh push -i "work" # Custom instance. See core-concepts/instance for more details
+```
