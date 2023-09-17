@@ -43,16 +43,16 @@ yarn global add envshh
 
 - First clear the database and delete the configuration directory. Learn More about this [here](/commands/db#clear)
 
-   ```sh
-   envshh db clear
-   ```
+  ```sh
+  envshh db clear
+  ```
 
 - Then uninstall the package
 
-   with `npm`
+  with `npm`
 
-   ```sh
-   npm uninstall -g envshh
-   ```
+  ```sh
+  npm uninstall -g envshh
+  ```
 
-   Or follow you package manager's uninstallation guide.
+  Or follow you package manager's uninstallation guide.

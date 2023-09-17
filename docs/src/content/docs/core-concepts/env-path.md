@@ -3,7 +3,7 @@ title: env-path
 description: Core Concets - env-path
 ---
 
-Envshh will check for .env file patterns in the project root directory or working directory. If your .envs are not located in the project root, you can manually specify the .env file or directory where the .envs are located.
+Envshh will check for [.env fileName patterns](http://localhost:4321/configuration/#envpatterns) in the project root directory or working directory. If your .envs are not located in the project root, you can manually specify the .env file or directory where the .envs are located.
 
 ## Usage
 

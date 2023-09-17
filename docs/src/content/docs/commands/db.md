@@ -5,7 +5,7 @@ description: Commands - db
 
 > Check `envshh help db` for more details
 
-Manage the envshh database of instances
+Manage the envshh [database of instances](/configuration/#instances)
 
 ## show
 
@@ -23,7 +23,6 @@ envshh db show -i <instanceName>
 
 e.g: `envshh db show -i work`
 
-
 ## clear
 
 :::danger
@@ -40,4 +39,3 @@ envshh db clear
 
 - **yes** `-y, --yes` (Optional):
   Skip confirmation prompt
-

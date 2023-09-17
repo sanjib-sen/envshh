@@ -63,7 +63,7 @@ Decrypt a single file using a password (Will be prompted). The decrypted file wi
   > This will not create any output file. The input file will be replaced with the decrypted file.
 
 ### Example Usage
-    
+
 ```sh
 envshh utils decryptFile ./my-file.env
 ```

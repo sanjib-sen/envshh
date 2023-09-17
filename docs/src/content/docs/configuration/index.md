@@ -57,9 +57,9 @@ The name of the [branch](/core-concepts/branch) where the .envs will be pushed t
 
 ```json
 {
-    "defaults": {
-        "branchName": "main",
-    },
+  "defaults": {
+    "branchName": "main"
+  }
 }
 ```
 
@@ -69,9 +69,9 @@ The name of the [instance](/core-concepts/instance) where the .envs will be push
 
 ```json
 {
-    "defaults": {
-        "instanceName": "personal",
-    },
+  "defaults": {
+    "instanceName": "personal"
+  }
 }
 ```
 
@@ -98,18 +98,18 @@ The patterns of the .env files that will be pushed or pulled if no other [envPat
 
 ```json
 {
-    "defaults": {
-        "envPatterns": [
-            ".env",
-            ".env.development",
-            ".env.test",
-            ".env.production",
-            ".env.local",
-            ".env.development.",
-            ".env.test.local",
-            ".env.production.local",
-        ],
-    },
+  "defaults": {
+    "envPatterns": [
+      ".env",
+      ".env.development",
+      ".env.test",
+      ".env.production",
+      ".env.local",
+      ".env.development.",
+      ".env.test.local",
+      ".env.production.local"
+    ]
+  }
 }
 ```
 
@@ -129,9 +129,9 @@ Seems unnecessary. But sometimes it is important if you have predefined suffix o
 
 ```json
 {
-    "defaults": {
-        "envValueQuotations": ["'", "\""],
-    },
+  "defaults": {
+    "envValueQuotations": ["'", "\""]
+  }
 }
 ```
 
@@ -145,9 +145,9 @@ The prefix of the branch name directory that will be created when you run the [p
 
 ```json
 {
-    "defaults": {
-        "branchNamePrefix": "envshh-branch-",
-    },
+  "defaults": {
+    "branchNamePrefix": "envshh-branch-"
+  }
 }
 ```
 
@@ -166,17 +166,17 @@ Example:
 
 ```json
 {
-    "instances": [
-        {
-            "instanceName": "personal",
-            "remoteRepoUrl": "https://github.com/sanjib-sen/my-secrets.git",
-            "localDirectoryPath": "/home/codes/my-secrets",
-        },
-        {
-            "instanceName": "work",
-            "remoteRepoUrl": "https://github.com/my-workplace/workplace-secrets.git",
-            "localDirectoryPath": "/home/work/workplace-secrets",
-        },
-    ],
+  "instances": [
+    {
+      "instanceName": "personal",
+      "remoteRepoUrl": "https://github.com/sanjib-sen/my-secrets.git",
+      "localDirectoryPath": "/home/codes/my-secrets"
+    },
+    {
+      "instanceName": "work",
+      "remoteRepoUrl": "https://github.com/my-workplace/workplace-secrets.git",
+      "localDirectoryPath": "/home/work/workplace-secrets"
+    }
+  ]
 }
 ```

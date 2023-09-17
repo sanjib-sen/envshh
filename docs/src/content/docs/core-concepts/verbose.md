@@ -9,4 +9,3 @@ Verbose option has two modes and can be enabled by two ways:
 
 - Including `--verbose` option with all of the [commands](/commands) except [help](/core-concepts/help) - This will tell you about all the steps that are being executed from the **starting of the executition of that command flow**
 - providing `VERBOSE=true` environment variable - This will tell you about all the steps that are being executed from the **starting of the envshh process**. Then it will show you the steps of the command you are executing. You can do this on linux by running `VERBOSE=true npx envshh <command>` or on windows by running `set VERBOSE=true && npx envshh <command>`
-

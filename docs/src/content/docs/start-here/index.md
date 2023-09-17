@@ -26,18 +26,18 @@ Envshh is a CLI tool that helps you to manage your .env files. It is very simple
 
 ## How does it work?
 
-Envshh uses a simple concept of **Encrypted .envs in git**. You can use any git repository like GitHub, GitLab, or even your own self-hosted git server. Envshh will encrypt your .env files with your own password and store them in your own git repository. You can then pull the .env files from any device you want. 
+Envshh uses a simple concept of **Encrypted .envs in git**. You can use any git repository like GitHub, GitLab, or even your own self-hosted git server. Envshh will encrypt your .env files with your own password and store them in your own git repository. You can then pull the .env files from any device you want.
 
 ## Features
 
 - **Encrypted .envs in git** - Your .envs are encrypted and stored in your own git repository. You can use any git repository like GitHub, GitLab, or even your own self-hosted git server.
-- **Multiple Branches** - You can use multiple [branches](core-concepts/branch) to store different .envs. For example, you can use `dev` branch for development .envs, `prod` branch for production .envs, and `test` branch for testing .envs.
+- **Multiple Branches** - You can use multiple [branches](/core-concepts/branch) to store different .envs. For example, you can use `dev` branch for development .envs, `prod` branch for production .envs, and `test` branch for testing .envs.
 - **Multiple Instances** - You can create unlimited [instances](/core-concepts/instance) and save the .envs to different git repositories.
 - **Super Easy and Convenient** - `envshh pull`, `envshh push`, `envshh push -b staging`, `envshh pull -b staging` , `envshh push -i work-envs`, `envshh pipe`, `envshh generate` - That's all you need to know to use Envshh. How easier can it be?
 - **Offline Mode** - You can use the `offline` option to temporarily disable the remote repository and use only the local directory to store the .envs. Git features will still work.
 - **Generate .env.example** - You can generate a `.env.example` file from your .env files.
 - **Pipe .env to stdin** - You can [pipe](/commands/pipe) a .env file to stdin. Then run your command. The .env variables will be available in the process.env without importing dotenv and using dotenv.config(), dotenv.load() or any other library in your codebase.
-- **git clone and get .envs** - You can [clone](/commands/clone) your project just like `git clone`  but get .envs for the project automatically without any extra steps, even they are in ``.gitignore`.
+- **git clone and get .envs** - You can [clone](/commands/clone) your project just like `git clone` but get .envs for the project automatically without any extra steps, even they are in ``.gitignore`.
 - **Super Secure** - Your .envs are [encrypted](/start-here/security) with a highly secure and encrypted algorithm with your own password. So even if someone gets access to your git repository (Even Microsoft), they won't be able to decrypt the .envs without your password.
 - **Easy to use** - Envshh is very easy to use. You can get started in less than a minute. See [Quick Usage](/start-here/quick-usage) to get started.
 - **Cross Platform** - Envshh is cross platform. It works on Windows, Linux, and Mac.
@@ -72,4 +72,3 @@ MIT © [Sanjib Sen](2023)
 - [@sanjib-sen](https://github.com/sanjib-sen)
 
 ---
-

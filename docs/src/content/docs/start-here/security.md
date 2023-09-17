@@ -19,9 +19,10 @@ The code for encryption is mentioned below. This is enhanced and secure version 
 You can change the encryption algorithm by editing the `/src/encryption/lib.ts` file. If you know any better algorithm or policy, please open an issue or pull request.
 
 `/src/encryption/lib.ts`
-```ts
 
+```ts
 import crypto from 'crypto';
+
 import { exitWithError } from '../utils/process.js';
 
 const ALGORITHM_NAME = 'aes-256-gcm';
@@ -118,7 +119,6 @@ function decrypt(ciphertextAndNonce: Buffer, key: Buffer) {
   cipher.setAuthTag(tag);
   return Buffer.concat([cipher.update(ciphertext), cipher.final()]);
 }
-
 ```
 
 So we can safely say that your environment variables are encrypted with a open and strong encryption algorithm.
@@ -128,4 +128,3 @@ So we can safely say that your environment variables are encrypted with a open a
 When you [push](/commands/push) your environment variables, envshh will first encrypt your environment variables on the fly using the password you provided. Then it will push the encrypted environment variables to your remote repository ([localDirector](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode).
 
 When you [pull](/commands/pull) your environment variables, envshh will first pull the encrypted environment variables from your remote repository ([localDirector](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode). Then it will decrypt the environment variables on the fly using the password you provided. Then it will write the decrypted environment variables to your `.env` file.
-
