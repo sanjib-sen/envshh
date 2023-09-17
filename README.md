@@ -39,14 +39,7 @@ Congratulations! Your .envs are encrypted and securely stored in your own repo. 
 
 - When asked, provide the password to decrypt the data
 
-- (More) You can always **push your .env updates** using `npx envshh push`
-- (More) Need to **generate a`.env.example` file?** Use `npx envshh generate`
-
-Read the [docs](https://sanjib-sen.github.io/envshh/) for more details.
-
-## Configuration
-
-There are some configuration options that you can set to customize the behavior of Envshh. You can set the configuration options in the `.config/.envshh/db.json` file. If the file does not exist, envshh will create it for you.
+Read the [docs](https://envshh.js.org) for more details.
 
 ## ⛏️ Built Using
 

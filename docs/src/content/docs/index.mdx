@@ -8,7 +8,7 @@ hero:
     file: ../../assets/logo_blue.png
   actions:
     - text: Get Started | Docs
-      link: /start-here/02-quick-usage/
+      link: /start-here/quick-usage/
       icon: right-arrow
       variant: primary
     - text: GitHub
@@ -44,7 +44,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
         <source src={pushTutorial} type="video/webm"/>
       </video>
 
-    Learn more about the [Push Command](/commands/01-push)
+    Learn more about the [Push Command](/commands/push)
 
     </TabItem>
     <TabItem label="pull">
@@ -56,7 +56,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
       <video width="1478" height="772" controls>
         <source src={pullTutorial} type="video/webm"/>
       </video>
-    Learn more about the [Pull Command](/commands/02-push)
+    Learn more about the [Pull Command](/commands/push)
 
     </TabItem>
     <TabItem label="generate">
@@ -68,7 +68,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
       <video width="1478" height="772" controls>
         <source src={generateTutorial} type="video/webm"/>
       </video>
-    Learn more about the [Generate Command](/commands/03-generate)
+    Learn more about the [Generate Command](/commands/generate)
 
     </TabItem>
     <TabItem label="pipe">
@@ -81,7 +81,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
         <source src={pipeTutorial} type="video/webm"/>
       </video>
 
-    Learn more about the [Pipe Command](/commands/04-pipe)
+    Learn more about the [Pipe Command](/commands/pipe)
 
     </TabItem>
     <TabItem label="clone">
@@ -95,7 +95,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
         <source src={cloneTutorial} type="video/webm"/>
       </video>
 
-      Learn more about the [Clone Command](/commands/05-clone)
+      Learn more about the [Clone Command](/commands/clone)
 
     </TabItem>
     <TabItem label="branch">
@@ -114,7 +114,7 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
         <source src={branchTutorial} type="video/webm"/>
       </video>
 
-      Learn more about the [Branching](/core-concepts/02-branch)
+      Learn more about the [Branching](/core-concepts/branch)
 
     </TabItem>
 
@@ -124,10 +124,8 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
 
 <CardGrid stagger>
   <Card title="Security" icon="approve-check-circle">
-    Your environment variables are encrypted using AES-128-GCM encryption
-    algorithm. And passwords are never saved or cached anywhere. The encryption
-    and decryption happens on the fly. So, you don't have to worry about your
-    environment variables being exposed.
+    Your environment variables are encrypted using AES-256-GCM encryption
+    algorithm. To learn more about this, check out [Security](/start-here/security)
   </Card>
   <Card title="Unlimited Branches" icon="bars">
     You can create unlimited branches of your environment variables. For
@@ -137,16 +135,18 @@ import { TabItem, Tabs } from '@astrojs/starlight/components';
     You can have a git repo for personal projects, another for work, and another
     for your side projects. You can push and pull from any of these
     repositories. To learn more about this, check out the
-    [Instance](/core-concepts/05-instance) page.
+    [Instance](/core-concepts/instance) page.
   </Card>
   <Card title="Goodbye dotenv" icon="pencil">
     And hello to less code, less dependencies, and less worries. Because with
-    [pipe](/commands/04-pipe) command, you don't need to use dotenv and
+    [pipe](/commands/pipe) command, you don't need to use dotenv and
     dotenv.config() or dotenv.load() in your code anymore.
   </Card>
   <Card title="Customization" icon="setting">
     From default branch to default instance, from directory to .env filename
     patterns, you can customize everything. To learn more about this, check out
-    the [Configuration](/envshh/configuration) page.
+    the [Configuration](/configuration) page.
   </Card>
 </CardGrid>
+
+This project is created and being maintained by [Sanjib Kumar Sen](https://sanjibsen.com).

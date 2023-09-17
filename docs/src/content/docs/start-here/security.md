@@ -1,12 +1,27 @@
-// Copyright (c) 2023 Sanjib Kumar Sen <mail@sanjibsen.com>
-//
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-// This file is collected and slightly updated from:
-// https://github.com/luke-park/SecureCompatibleEncryptionExamples
-import crypto from 'crypto';
+---
+title: Security
+description: Security | envshh.
+---
 
-import { log } from '../utils/log.js';
+When you [push](/commands/push) or [pull](/commands/pull) your environment, envshh will prompt you for a password of more than 4 characters. This password is used to encrypt (push) or decrypt (pull) your environment variables. This password is not stored anywhere and is only used to encrypt/decrypt your environment variables on the fly.
+
+As envshh does not store / cache your password anywhere (neither your device nor on the remote remository), if you forget the password, you will not be able to decrypt your environment variables. You will have to [push](/commands/push) your environment variables again.
+
+## encrypt
+
+Your environment variables are encrypted using [AES-256-GCM encryption algorithm](https://en.wikipedia.org/wiki/Galois/Counter_Mode).
+Which is recommended by many cybersecurity professionals.
+
+### codebase
+
+The code for encryption is mentioned below. This is enhanced and secure version version of [this](https://github.com/luke-park/SecureCompatibleEncryptionExamples) code.
+
+You can change the encryption algorithm by editing the `/src/encryption/lib.ts` file. If you know any better algorithm or policy, please open an issue or pull request.
+
+`/src/encryption/lib.ts`
+```ts
+
+import crypto from 'crypto';
 import { exitWithError } from '../utils/process.js';
 
 const ALGORITHM_NAME = 'aes-256-gcm';
@@ -18,7 +33,6 @@ const PBKDF2_SALT_SIZE = 16;
 const PBKDF2_ITERATIONS = 32767;
 
 export function encryptString(plaintext: string, password: string) {
-  log.flow('Encrypting the string');
   // Generate a 128-bit salt using a CSPRNG.
   const salt = crypto.randomBytes(PBKDF2_SALT_SIZE);
 
@@ -45,7 +59,6 @@ export function decryptString(
   base64CiphertextAndNonceAndSalt: string,
   password: string,
 ) {
-  log.flow('Decrypting the string');
   try {
     // Decode the base64.
     const ciphertextAndNonceAndSalt = Buffer.from(
@@ -105,3 +118,14 @@ function decrypt(ciphertextAndNonce: Buffer, key: Buffer) {
   cipher.setAuthTag(tag);
   return Buffer.concat([cipher.update(ciphertext), cipher.final()]);
 }
+
+```
+
+So we can safely say that your environment variables are encrypted with a open and strong encryption algorithm.
+
+## The Flow
+
+When you [push](/commands/push) your environment variables, envshh will first encrypt your environment variables on the fly using the password you provided. Then it will push the encrypted environment variables to your remote repository ([localDirector](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode).
+
+When you [pull](/commands/pull) your environment variables, envshh will first pull the encrypted environment variables from your remote repository ([localDirector](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode). Then it will decrypt the environment variables on the fly using the password you provided. Then it will write the decrypted environment variables to your `.env` file.
+
