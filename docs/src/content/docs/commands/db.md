@@ -7,6 +7,10 @@ description: Commands - db
 
 Manage the envshh [database of instances](/configuration/#instances)
 
+## Screenshot
+
+![db](../../../assets/screenshots/db.png)
+
 ## show
 
 Show all of the [instances](/core-concepts/instance) (with their [name](/core-concepts/instance#1-name-of-the-instance), [remoteRepoUrl](2-remote-repository-url), and [localDirectoryPath](http://localhost:4321/core-concepts/instance/#3-local-directory-path)) in the database in [console.table()](https://developer.mozilla.org/en-US/docs/Web/API/console/table) format
@@ -22,6 +26,16 @@ envshh db show -i <instanceName>
 ```
 
 e.g: `envshh db show -i work`
+
+## sync
+
+If you manually move your [instances localDirectory](/core-concepts/instance/#3-local-directory-path) without using the [instance edit](/commands/instance#edit) command, then you can't use the [instance push](/commands/instance#push) and [instance pull](/commands/instance#pull) commands using that [instance](/core-concepts/instance) and this might throws an error. In that case you can sync your database which will automatically remove the instance localDirectories that are no longer available. After that, you can use the [instance create](/commands/instance#create) command to add the instance again with the new directory.
+
+```sh
+envshh db sync
+```
+
+e.g: `envshh db sync`
 
 ## clear
 

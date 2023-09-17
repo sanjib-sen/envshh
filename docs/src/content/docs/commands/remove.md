@@ -7,6 +7,10 @@ description: Commands - remove
 
 Delete .envs from local and Remote Repository
 
+## Screenshot
+
+![remove](../../../assets/screenshots/remove.png)
+
 ## Usage
 
 ```sh

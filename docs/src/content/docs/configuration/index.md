@@ -7,6 +7,13 @@ One of the most important features of envshh is the ability to customize it to y
 
 The configuration file is located at `~/.config/.envshh/config.json` (`%USERPROFILE%\.enshh\config.json` in Windows) and is created automatically when you run any envshh [command](/commands). The config file is in JSON format and can be edited manually. The [database](#instances) is also stored in the same file. So the `config.json` file will act both as a configuration file and a database. But this might be changed in the future based on user feedback.
 
+It is important to mention that [lowdb](https://github.com/typicode/lowdb) is used as a `JSON` db (!) management tool because
+
+- it is very simple, blazinly fast and easy to use
+- we don't need anything more than that, like sqlite or mysql or mongodb or anything else
+- you can view and manage the configuration and database very easily with the `config.json` file
+- you can easily backup the configuration and database by copying the `config.json` file
+
 The config file is divided into 2 main sections:
 
 - [defaults](#defaults)
@@ -158,8 +165,8 @@ The instances section is an array of objects. Each object represents an [instanc
 This will act as a Database of Instances and can be managed using the [db](/commands/db) command.
 
 :::danger
-Do not modify the instances section manually. Use the [db](/commands/db) command to manage the instances.
-Otherwise, you might lose your .env data.
+Do not modify the instances section manually. Use the [instance](/commands/instance) commands to manage the instances.
+Otherwise, you might lose your instance data and have to do a [db sync](/commands/db#sync) and [instance create](/commands/instance#create) to fix it.
 :::
 
 Example:

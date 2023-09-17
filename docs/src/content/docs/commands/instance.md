@@ -7,6 +7,10 @@ description: Commands - instance
 
 Learn everything about [Instance](/core-concepts/instance)
 
+## Screenshot
+
+![instance](../../../assets/screenshots/instance.png)
+
 ## create
 
 Create a new instance
