@@ -61,7 +61,7 @@
     "eslint-plugin-prettier": "latest",
     "husky": "^8.0.3",
     "pkg": "^5.8.1",
-    "prettier-eslint-cli": "^7.1.0",
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "dependencies": {
