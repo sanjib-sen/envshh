@@ -7,20 +7,27 @@ It is very simple and most importantly, **IT DOES NOT EVEN TAKE A MINUTE!**
 
 ## Get Started
 
-- Create a Private Git Repo (It can be on GitHub, GitLab, or even your own self-hosted git server), copy the Repository URL.
-  (Your .envs will be pushed to this repo. You can also use an existing repo.)
-- Go/`cd` to your Project Root where the .env's are located.
+- Create a Private Git Repo
+
+  :::note
+  The repo can be on GitHub, GitLab, Gitee, Gitea, or even your own self-hosted git server. Your .envs will be pushed to this repository. You can also use an existing repo
+  :::
+
+- Copy the Repository URL
+- Go/`cd` to your Project Root where the .env's are located
 - Run (With npx / pnpx / yarn dlx)
 
   ```sh
   npx envshh push
   ```
 
-- When asked, provide a simple password and paste the repo url to encrypt the data and store it in your repo.
+- When asked, provide a simple password of 4 characters or more and confirm it.
 
   :::note
   The password is used to encrypt the data. You will need this password to decrypt the data when you need it.
   :::
+
+- When and if asked, paste the repo url
 
 :::tip[Congratulations!🎉]
 Congratulations! See? It was not very hard! Your .envs are encrypted and securely stored in your own repo. You can now get your .envs from any device.

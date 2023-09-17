@@ -26,4 +26,4 @@ But all of these will be only see the light of the day if this project gets enou
 **Don't forget to give a [Star](https://github.com/sanjib-sen/envshh) on GitHub, because it pays bills!**
 
 Oh,my email is: [mail@sanjibsen.com](mailto:mail@sanjibsen.com)
-And you can reach out to me on [Discord](https://discord.gg/2YJb3qYJ), [Facebook](https://www.facebook.com/sanjibsen7) or [LinkedIn](https://www.linkedin.com/in/sanjibsen7/)
+And you can reach out to me on [Discord](https://discord.gg/y3j7aJZurh), [Facebook](https://www.facebook.com/sanjib.kumarsen.96/) or [LinkedIn](https://www.linkedin.com/in/sanjibsen/)
