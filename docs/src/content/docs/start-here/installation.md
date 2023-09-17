@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: envshh installation guide
+description: envshh | Installation
 ---
 
 :::tip[Did you know?]
@@ -38,3 +38,21 @@ pnpm install -g envshh
 ```sh
 yarn global add envshh
 ```
+
+## Uninstall
+
+- First clear the database and delete the configuration directory. Learn More about this [here](/commands/db#clear)
+
+  ```sh
+  envshh db clear
+  ```
+
+- Then uninstall the package
+
+  with `npm`
+
+  ```sh
+  npm uninstall -g envshh
+  ```
+
+  Or follow you package manager's uninstallation guide.

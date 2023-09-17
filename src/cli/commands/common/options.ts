@@ -78,5 +78,5 @@ export const isEnvOption = new Option(
 
 export const replaceOption = new Option(
   '-r, --replace',
-  'Replace the input file with the encrypted file',
+  'Replace the input file with the encrypted/decrypted file',
 ).default(false);

@@ -1,11 +1,14 @@
 ---
 title: Quick Usage
-description: A quick guide to use envshh.
+description: Quick Usage | envshh
 ---
 
-## It does not even take a minute
+It is very simple and most importantly, **IT DOES NOT EVEN TAKE A MINUTE!**
+
+## Get Started
 
 - Create a Private Git Repo (It can be on GitHub, GitLab, or even your own self-hosted git server), copy the Repository URL.
+  (Your .envs will be pushed to this repo. You can also use an existing repo.)
 - Go/`cd` to your Project Root where the .env's are located.
 - Run (With npx / pnpx / yarn dlx)
 
@@ -31,6 +34,13 @@ Congratulations! See? It was not very hard! Your .envs are encrypted and securel
 
 - When asked, provide the password to decrypt the data
 
-- (More) You can always [**push your .env updates**](/commands/01-push) using `npx envshh push`
-- (More) Need to [**generate a`.env.example` file?**](/commands/03-generate) Use `npx envshh generate`
-- (More) Need to [**remove a .env from your repo?**](/commands/06-remove) Use `npx envshh remove`
+:::tip[Once Again🎉]
+Congratulations! You managed to get your .envs back!
+:::
+
+## But wait, there's more!
+
+- You can always [**push your .env updates**](/commands/push) using `npx envshh push`
+- Need to [**generate a`.env.example` file?**](/commands/generate) Use `npx envshh generate`
+- Need to [**pipe a .env file to stdin?**](/commands/pipe) Use `npx envshh pipe`
+- Need to [**remove a .env from your repo?**](/commands/remove) Use `npx envshh remove`
