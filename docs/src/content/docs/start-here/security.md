@@ -14,7 +14,7 @@ Which is recommended by many cybersecurity professionals.
 
 ### codebase
 
-The code for encryption is mentioned below. This is enhanced and secure version version of [this](https://github.com/luke-park/SecureCompatibleEncryptionExamples) code.
+The code for encryption is mentioned below. This is enhanced and more secure version version of [this](https://github.com/luke-park/SecureCompatibleEncryptionExamples/blob/master/JavaScript/SCEE-Node.js) code.
 
 You can change the encryption algorithm by editing the `/src/encryption/lib.ts` file. If you know any better algorithm or policy, please open an issue or pull request.
 
@@ -125,6 +125,6 @@ So we can safely say that your environment variables are encrypted with a open a
 
 ## The Flow
 
-When you [push](/commands/push) your environment variables, envshh will first encrypt your environment variables on the fly using the password you provided. Then it will push the encrypted environment variables to your remote repository ([localDirector](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode).
+When you [push](/commands/push) your environment variables, envshh will first encrypt your environment variables on the fly using the password you provided. Then it will push the encrypted environment variables to your remote repository ([localDirectory](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode).
 
-When you [pull](/commands/pull) your environment variables, envshh will first pull the encrypted environment variables from your remote repository ([localDirector](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode). Then it will decrypt the environment variables on the fly using the password you provided. Then it will write the decrypted environment variables to your `.env` file.
+When you [pull](/commands/pull) your environment variables, envshh will first pull the encrypted environment variables from your remote repository ([localDirectory](/core-concepts/instance/#3-local-directory-path) in [offline](/core-concepts/offline) mode). Then it will decrypt the environment variables on the fly using the password you provided. Then it will write the decrypted environment variables to your `.env` file.

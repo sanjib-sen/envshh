@@ -41,6 +41,9 @@ Envshh uses a simple concept of **Encrypted .envs in git**. You can use any git 
 - **Super Secure** - Your .envs are [encrypted](/start-here/security) with a highly secure and encrypted algorithm with your own password. So even if someone gets access to your git repository (Even Microsoft), they won't be able to decrypt the .envs without your password.
 - **Easy to use** - Envshh is very easy to use. You can get started in less than a minute. See [Quick Usage](/start-here/quick-usage) to get started.
 - **Cross Platform** - Envshh is cross platform. It works on Windows, Linux, and Mac.
+- **Customizable** - From default branch to default instance, from directory to .env filename
+  patterns, you can customize everything. To learn more about this, check out
+  the [Configuration](/configuration) page.
 - **Open Source** - Envshh is completely open source. You can contribute to the project on [GitHub](https://github.com/sanjib-sen/envshh)
 - **Free** - Envshh is free to use and always will be. You can use it for personal or commercial use.
 - **No Registration** - You don't need to register to use Envshh. Just install and use it.
@@ -57,6 +60,18 @@ See [Quick Usage](/start-here/quick-usage) to get started.
 
 Fun fact, you don't need to install Envshh. You can use it with npx or pnpx or yarn dlx. See [Quick Usage](/start-here/quick-usage) for more details.
 But if you can [install](/start-here/installation) it globally if you want. It is recommended though.
+
+## Screenshot
+
+![index](../../../assets/screenshots/index.png)
+
+## Commands
+
+See [Commands](/commands).
+
+## Core Concepts / Common Command Options
+
+See [core-concepts](/core-concepts).
 
 ## License
 

@@ -7,6 +7,10 @@ description: Commands - extras
 
 There are some extra commands in envshh which are not directly related to the core functionality of envshh but may come in handy in related works. These commands are:
 
+## Screenshot
+
+![utils](../../../assets/screenshots/utils.png)
+
 ## encryptFile
 
 Encrypt a single file using a password (Will be prompted). The encrypted file will be saved in the same directory with the same name with `output.env` extension unless specified via the `-o, --output` option.

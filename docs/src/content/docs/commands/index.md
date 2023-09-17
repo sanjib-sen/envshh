@@ -5,6 +5,10 @@ description: Commands | envshh
 
 Usage of the commands in envshh
 
+## Screenshot
+
+![index](../../../assets/screenshots/index.png)
+
 ## Table of Contents
 
 - [push](/commands/push)

@@ -102,6 +102,16 @@ export default defineConfig({
           ],
         },
         { label: 'Configuration', link: '/configuration' },
+        {
+          label: 'Development',
+          items: [
+            { label: 'Building and Compiling', link: '/development/building' },
+            {
+              label: 'Contribution and Roadmap',
+              link: '/development/contribution',
+            },
+          ],
+        },
       ],
     }),
   ],
